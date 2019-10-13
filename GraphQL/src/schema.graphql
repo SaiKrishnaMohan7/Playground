@@ -1,0 +1,87 @@
+# Type Definitions, typeDefs, Schema
+# Scalar types - String, Boolean, Int, Float, ID
+# Custom resolvers are written for fields that return custom types
+
+type Query {
+  users(query: String): [User!]!
+  posts(query: String): [Post!]!
+  comments: [Comment!]!
+  me: User!
+  post: Post!
+}
+
+type Mutation {
+  createUser(newUser: CreateUserInput!): User!
+  createPost(newPost: CreatePostInput!): Post!
+  createComment(newComment: CreateCommentInput!): Comment!
+  deleteUser(id: ID!): User!
+  deletePost(id: ID!): Post!
+  deleteComment(id: ID!): Comment!
+  updateUser(id: ID!, updateOptions: UpdateUserInput!): User!
+  updatePost(id: ID!, updateOptions: UpdatePostInput!): Post!
+  updateComment(id: ID!, updateOptions: UpdateCommentInput!): Comment!
+}
+
+type Subscription {
+  count: Int!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  age: Int
+}
+
+input CreatePostInput {
+  title: String!
+  body: String!
+  published: Boolean!
+  author: ID!
+}
+
+input CreateCommentInput {
+  text: String!
+  author: ID!
+  post: ID!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  age: Int
+}
+
+input UpdatePostInput {
+  title: String
+  body: String
+  published: Boolean
+}
+
+input UpdateCommentInput {
+  text: String
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  age: Int
+  posts: [Post!]!
+  comments: [Comment!]!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  body: String!
+  published: Boolean!
+  author: User!
+  comments: [Comment!]!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: User!
+  post: Post!
+}
