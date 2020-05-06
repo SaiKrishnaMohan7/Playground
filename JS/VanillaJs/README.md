@@ -46,3 +46,5 @@ Follows The YDKJS series by Kyle Simpson
 - Closure
 
 ### this keyword and Prototypes
+
+- [Mini Src](https://static.frontendmasters.com/resources/2019-05-08-getting-into-javascript/getting-into-javascript.pdf)
