@@ -6,25 +6,46 @@ Follows The YDKJS series by Kyle Simpson
 
 ### Types and Coercions
 
-"In JavaScript, everything is an object." FALSE
+"In JavaScript, everything is an object." - FALSE
+Most values can _behave_ like objects but that deosn't necessarily mean they are objects
 
 #### Primitive Types
 
-- undefined (variable created but not assigned or something never created)
+- undefined (variable created but not assigned or something never created; Historic; Temporal Dead Zone (TDZ, uninitialised, ES6))
 - String
 - Number
 - Boolean
 - Object: can be "instantiated" using `new` (!new!)
 - Symbol (ES6)
 
-- null (Object.... A bug in JS)
-- Function: subtype of object but typeof returns function; (!new!)
+- null (Object.... A bug in JS; Historic)
+- Function: subtype of object but typeof returns function; ; Historic; (!new!)
 - Array: subtype of object; (!new!)
 - Date: (!new!)
 - RegExp: (!new!)
 - Error: (!new!)
 
 - NaN (result of an invalid numeric operation) -- "I am a random string" / 2 will give NaN; JS tries to coerce the string to a number but fails since it can't be done
+  - Not a valid representation of a number; IS a number jnust not a valid one, IEEE 754
+  - NaN's are never equal to themselves
+  - `isNaN` checks if a value is NaN by coercing the passed value to a number
+  - `Number.isNaN` tells exactly if a vlaue is NaN or not
+
+- Special Value -> -0
+  - IEEE 754
+  - `Object.is()`
+
+--> String, Number, Boolean are best used as fucntions. Though, it is possible to instantiate them with the `new` keyword.
+
+#### Abstract Operations
+
+-[Spec Link](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-abstract-operations)
+
+- `ToPrimitive(input[,hint])` is an algorithm that is in the ECMAScript spec, used to convert a non-promitive type to a primitive ex: Object to String
+  - `hint is Number` => `.valueOf()`, `.toString()` <--consultation order
+  - `hint is String` => `.toString()`, `.valueOf()`
+  - Type Coercion happens through this algo
+- Empty strings get coreced 0 (ToNumber)
 
 #### Converting Types
 
@@ -135,6 +156,6 @@ otherClass();
     reactJS.ask('React?');
   ```
 
-- class {}
-
 - [Mini Src](https://static.frontendmasters.com/resources/2019-05-08-getting-into-javascript/getting-into-javascript.pdf)
+- [Mini Src_2](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2.pdf)
+- [Language Spec](https://www.ecma-international.org/ecma-262/9.0/index.html#Title)
