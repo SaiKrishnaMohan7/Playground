@@ -55,6 +55,10 @@ Most values can _behave_ like objects but that deosn't necessarily mean they are
   console.log(`There are ${num+""} students.`)
 ```
 
+#### Boxing
+
+Specical type of coercion (Implicit) that let's you access a property on a Primitive Value (Primitive to Object; ex: String.length)
+
 #### Checking Equality
 
 - == vs ===

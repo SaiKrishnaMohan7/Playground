@@ -1,8 +1,51 @@
-// TODO: write the validation functions
+function isValidName(name) {
+  if (typeof name !== 'string') {
+    return false;
+  }
 
+  // Trim whitespace
+  let nameTrimmed = name.trim();
+
+  if (nameTrimmed.length === 0) {
+    return false;
+  }
+
+  if (nameTrimmed.length > 3) {
+    return true;
+  }
+
+  return false;
+}
+
+// Really hate param reassign
+function hoursAttended(attended, length) {
+  if (typeof attended == 'string' && attended.trim() != '') {
+    attended = Number(attended);
+  }
+
+  if (typeof length == 'string' && length.trim() != '') {
+    length = Number(length);
+  }
+
+  if (
+    typeof attended == "number" &&
+    typeof length == "number" &&
+    attended <= length &&
+    attended >= 0 &&
+    length >= 0 &&
+    Number.isInteger(attended) &&
+    Number.isInteger(length)
+    ) {
+      return true;
+  }
+
+  return false;
+}
 
 
 // tests:
+console.log(hoursAttended("",6) === false);
+console.log(hoursAttended("","") === false);
 console.log(isValidName("Frank") === true);
 console.log(hoursAttended(6,10) === true);
 console.log(hoursAttended(6,"10") === true);
@@ -15,9 +58,7 @@ console.log(isValidName(undefined) === false);
 console.log(isValidName("") === false);
 console.log(isValidName("  \t\n") === false);
 console.log(isValidName("X") === false);
-console.log(hoursAttended("",6) === false);
 console.log(hoursAttended(6,"") === false);
-console.log(hoursAttended("","") === false);
 console.log(hoursAttended("foo",6) === false);
 console.log(hoursAttended(6,"foo") === false);
 console.log(hoursAttended("foo","bar") === false);
