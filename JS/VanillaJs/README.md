@@ -63,7 +63,20 @@ Specical type of coercion (Implicit) that let's you access a property on a Primi
 
 - == vs ===
   - Allows Coercion vs Doesn't Allow Coercion (Coerce to the comparing type and then check vs do NOT coerce and check)
-  - if types are same they BOTH behave similarly
+  - `==` ONLY compares primitives. It will invoke `ToPrimitve` Abstract Operation, if the comparing types are a Primitive and an Object OR Object and a Primitive
+  - `==` prefers Numeric Comparison
+  - *if types are same they BOTH behave similarly*
+  - Summary of ==
+    - If the types are the same: ===
+    - If null or undefined: equal
+    - If non-primitives: ToPrimitive
+    - Prefer: ToNumber
+  - [Spec Link for Equality](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-abstract-equality-comparison)
+  - AVOID
+    - == with 0 or "" (or even " ")
+    - == with non-primitives
+    - == true or == false
+--> *NOTE:* Look at the corner cases for this in src 2
 
 ### Scope and Closures
 
@@ -161,5 +174,5 @@ otherClass();
   ```
 
 - [Mini Src](https://static.frontendmasters.com/resources/2019-05-08-getting-into-javascript/getting-into-javascript.pdf)
-- [Mini Src_2](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2.pdf)
+- [Mini Src_Deep](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2.pdf)
 - [Language Spec](https://www.ecma-international.org/ecma-262/9.0/index.html#Title)
