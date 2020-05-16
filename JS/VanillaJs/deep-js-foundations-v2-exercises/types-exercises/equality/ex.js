@@ -1,6 +1,42 @@
 // TODO: write `findAll(..)`
 
+function findAll(value, array) {
+	let returnArray = [];
+	let length = array.length;
 
+	for (let i = 0; i < length ; i++) {
+		if (Object.is(value, array[i])) {
+			returnArray.push(array[i]);
+		} else if(value == null && array[i] == undefined) {
+			// null and undefined are `coercively` equal to each other
+			returnArray.push(array[i]);
+		}
+
+		if (typeof value == 'boolean' && typeof array[i] == 'boolean') {
+			if (value == array[i]) {
+				returnArray.push(array[i]);
+			}
+		} else if (typeof value == 'string' && value.trim() != '' && !Object.is(array[i], -0)) {
+			if (value == array[i]) {
+				returnArray.push(array[i]);
+			}
+		}
+
+		if (
+			typeof value == 'number' &&
+			!Object.is(value, NaN) &&
+			!Object.is(value, Infinity) &&
+			!Object.is(value, -Infinity) &&
+			typeof value == 'string' &&
+			value.trim() !== '') {
+				if (value == array[i]) {
+					returnArray.push(array[i]);
+				}
+		}
+	}
+
+	return returnArray;
+}
 
 // tests:
 var myObj = { a: 2 };
@@ -12,17 +48,17 @@ var values = [
 
 console.log(setsMatch(findAll(null,values),[null,undefined]) === true);
 console.log(setsMatch(findAll(undefined,values),[null,undefined]) === true);
-console.log(setsMatch(findAll(0,values),[0,"0"]) === true);
+console.log(setsMatch(findAll(0,values),[0,"0"]) === true); //
 console.log(setsMatch(findAll(-0,values),[-0]) === true);
 console.log(setsMatch(findAll(13,values),[13]) === true);
-console.log(setsMatch(findAll(42,values),[42,"42"]) === true);
+console.log(setsMatch(findAll(42,values),[42,"42"]) === true); //
 console.log(setsMatch(findAll(NaN,values),[NaN]) === true);
 console.log(setsMatch(findAll(-Infinity,values),[-Infinity]) === true);
 console.log(setsMatch(findAll(Infinity,values),[Infinity]) === true);
 console.log(setsMatch(findAll("",values),[""]) === true);
-console.log(setsMatch(findAll("0",values),[0,"0"]) === true);
+console.log(setsMatch(findAll("0",values),[0,"0"]) === true); //
 console.log(setsMatch(findAll("42",values),[42,"42"]) === true);
-console.log(setsMatch(findAll("42hello",values),["42hello"]) === true);
+console.log(setsMatch(findAll("42hello",values),["42hello"]) === true); //
 console.log(setsMatch(findAll("true",values),["true"]) === true);
 console.log(setsMatch(findAll(true,values),[true]) === true);
 console.log(setsMatch(findAll(false,values),[false]) === true);
