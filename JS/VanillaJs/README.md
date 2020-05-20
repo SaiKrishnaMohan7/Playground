@@ -240,13 +240,16 @@ var newEmptyObject = new ask('What is "new" doing here?');
 
 - What `new` does:
   - Create a brand new empty object
-  - Link that object to another object (*)
-  - Call function with this set to the new object (not the linked oibject but the new object from step 1)
+  - _Link_ that object to another object (*)
+  - Call function (the function in front of which `new` is used) with `this` set to
+  the new object (not the linked object but the new object from step 1)
   - If function does not return an object,
-  assume return of this
+  assume return of `this`
 
 - Prototypes
-  What the `class` keyword does internally
+
+- ![JS Protoype Mechanism](JS/VanillaJs/deep-js-foundations-v2-exercises/JSPrototypeMechanism.png)
+  - What the `class` keyword does internally
 
   ```javascript
     // acts a constructor
@@ -258,6 +261,7 @@ var newEmptyObject = new ask('What is "new" doing here?');
       console.log(this.teacher, question);
     };
 
+    // Follow what the `new` keyword does
     var deepJS = new Workshop('Kyle');
     var reactJS = new Workshop('Suzy');
 
@@ -267,6 +271,7 @@ var newEmptyObject = new ask('What is "new" doing here?');
     reactJS.ask('React?');
   ```
 
+- JS does behaviour delegation (Rewatch the OLOO stuff)
 - [Mini Src](https://static.frontendmasters.com/resources/2019-05-08-getting-into-javascript/getting-into-javascript.pdf)
 - [Mini Src_Deep](https://static.frontendmasters.com/resources/2019-03-07-deep-javascript-v2/deep-js-foundations-v2.pdf)
 - [Language Spec](https://www.ecma-international.org/ecma-262/9.0/index.html#Title)
