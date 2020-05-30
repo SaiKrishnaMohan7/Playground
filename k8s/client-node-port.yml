@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-node-port
+# What sub-type of Service object is this
+spec:
+  type: NodePort
+  # All the ports that need to be opened up on the target object
+  ports:
+    # port opens up the defined port so that if any other container wants to connect to our client-pod (component: web ??) it can do so via this port
+  - port: 3050
+    # port inside of the target pod that we want to open up traffic to (should match containerPort from Pod definition)
+    targetPort: 3000
+    # port accessed by browser to test out container running inside target pod (30000 - 32767); Randomly assigned if not defined; That's why not used in Prod ??
+    nodePort: 31515
+  # label-selector system (relationship) is used to link the container running in the pod to the NodePort that is going to handle the req to the pod
+  # whom am I going to forward this traffic to? To any Pod or object that has `component: web`
+  selector:
+    component: web
+
+# Command run: `kubectl apply -f client-pod.yml`, `kubectl apply -f client-node-port.yml`
+  ##`apply`: change the current configuration (state??) of the cluster with what is in the file (-f) I am supplying you
+    ### When this command is run `kubectl` talks to kubernetes control plane (Talks to the kube-apiserver that inturn talks to the kube-scheduler)
+    # that instructs the container runtime running inside the kubernetes node (VM) to spin up a container (details of which are in the config file),
+    # the conatiner runtime checks its image cache, if the image is there it spins up the container or it fetches from the registry (Docker Hub or yourRegistry).
+
+    ### The Master (control plane??) adds details like how many containers are to be run in a pod, how many pods are to be run etc. to `etcd`
+        # master uses this information to poll the nodes to check all the pods and services defined match what is there in `etcd`, any descrepancy like a container has died etc. triggers an update of `etcd` items (how mayn containers SHOULD be running and how many ARE running)
+        # the master then isntructs conatiner runtime to spin up conatiner that has dies and `etcd` gets updated and peace is restored
+
+# Command run: `kubectl get pods`
+# Prints out the status of group of object types (Pods in this case)
+
+# Command run: `kubectl get services`
+# Prints out the status of group of object types (Services in this case)
+
+# When we try to access `localhost:31515`, nothing since it is not bound to locahost or 0.0.0.0 but to the IP of the VM (Kubernetes Node) that was created by minikube (minikube ip: to find the ip)!
