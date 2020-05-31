@@ -26,7 +26,7 @@ spec:
 
     ### The Master (control plane??) adds details like how many containers are to be run in a pod, how many pods are to be run etc. to `etcd`
         # master uses this information to poll the nodes to check all the pods and services defined match what is there in `etcd`, any descrepancy like a container has died etc. triggers an update of `etcd` items (how mayn containers SHOULD be running and how many ARE running)
-        # the master then isntructs conatiner runtime to spin up conatiner that has dies and `etcd` gets updated and peace is restored
+        # the master then isntructs conatiner runtime to spin up conatiner that has died and `etcd` gets updated and peace is restored
 
 # Command run: `kubectl get pods`
 # Prints out the status of group of object types (Pods in this case)
@@ -35,3 +35,7 @@ spec:
 # Prints out the status of group of object types (Services in this case)
 
 # When we try to access `localhost:31515`, nothing since it is not bound to locahost or 0.0.0.0 but to the IP of the VM (Kubernetes Node) that was created by minikube (minikube ip: to find the ip)!
+
+# Command Run: kubectl describe pods client-pod (kubectl describe <objectType(pods, services etc.)> <name(optional; name of the particular object ex: client-pod)>)
+  ## Gives details about the objectType (all if exact name not specified)
+  ## Why use this: to figure out what pod (objectType) is running what image or why a pod restarted
