@@ -15,7 +15,7 @@ spec:
     - name: client
       image: stephengrider/multi-worker
       ports:
-        - containerPort: 3000
+        - containerPort: 9999
 
 # These config files are supplied to kubectl that in turn talk to the kube-api-server, an implementation of the kubeAPI,
 # to create objects
