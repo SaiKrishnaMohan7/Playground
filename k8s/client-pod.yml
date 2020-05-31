@@ -56,3 +56,6 @@ spec:
 # Event: show you what is happening inside a cluster, such as what decisions were made by the scheduler or why some pods were evicted from the node (apiVersion: v1)
 
 # Endpoint: unclear....
+
+# Imperative deployment: Follow exactly the steps to arrive at the conatiner setup (ex: run these containers on this machine)
+# Declarative Deployment: Our setup should look like this, make it happen (Master chooses where to run the container)
