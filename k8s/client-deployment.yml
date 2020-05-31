@@ -1,1 +1,26 @@
-apiVersion: v1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  # Similar to `selector` in client-node-port.yml
+  # How do I manage the pods after they get created
+  selector:
+    matchLabels:
+      component: web
+  # Pod Template! Similar to client-pod.yml file
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+      - name: client
+        image: stephengrider/multi-client
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000

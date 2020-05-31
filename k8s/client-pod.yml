@@ -15,7 +15,11 @@ spec:
     - name: client
       image: stephengrider/multi-worker
       ports:
-        - containerPort: 9999
+        - containerPort: 3000
+      resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
 
 # These config files are supplied to kubectl that in turn talk to the kube-api-server, an implementation of the kubeAPI,
 # to create objects

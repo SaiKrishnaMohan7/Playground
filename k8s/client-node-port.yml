@@ -13,7 +13,7 @@ spec:
     targetPort: 3000
     # port accessed by browser to test out container running inside target pod (30000 - 32767); Randomly assigned if not defined; That's why not used in Prod ??
     nodePort: 31515
-  # label-selector system (relationship) is used to link the container running in the pod to the NodePort that is going to handle the req to the pod
+  # label-selector system (relationship) is used to link the container running in the pod to the NodePort that is going to handle the (forward the req) req to the pod
   # whom am I going to forward this traffic to? To any Pod or object that has `component: web`
   selector:
     component: web
