@@ -5,6 +5,7 @@ apiVersion: v1
 kind: Pod
 # information about this object, metadata of this pod (object)
 metadata:
+  # name, kind create a unique indentifier that the Master uses to update that object (ex: this pod has to be updated with a new image, we make that change in the config file and Master checks name and kind and looks for that exact pod and updates it)
   name: client-pod
   labels:
     # This key: value pair, is user defined. Could very well be tier: frontend
