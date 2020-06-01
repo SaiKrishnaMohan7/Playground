@@ -33,6 +33,7 @@ spec:
 # Service:
   ## a set of Pods working together (defined by label selector) (apiVersion: v1)
   ## used when some amount of networking is needed in the cluster
+  ## Manages the assignment of IP addrs to the pod, so if a pod gets restarted, user doesnr't have to worry about knowing (finding) the IP addrs
   ## SubTypes:
     ### ClusterIP
     ### NodePort:
