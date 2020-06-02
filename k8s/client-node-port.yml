@@ -58,3 +58,5 @@ spec:
 # Command Run: kubectl delete -f client-pod.yml (Imperative udpate)
 
 # Command Run: minkube ip (ip of the VM created by minikube)
+
+# minikube docker-env: Gives docker env vars from inside of the VM and gives you a chance to point your local docker client to VM's docker server... Can be used for snooping around in there
