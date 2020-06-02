@@ -1,14 +1,14 @@
 # Scopes/Limits the type of objects we want to create within a config file. It gives us access to objects below
 # if we used apiVersion: apps/v1 we'd get access to ControllerRevision, StatefulSet (Objects that override kube scheduler?)
 apiVersion: v1
-# Tells what kind of onbject you want
+# Tells what kind of object you want
 kind: Pod
 # information about this object, metadata of this pod (object)
 metadata:
   # name, kind create a unique indentifier that the Master uses to update that object (ex: this pod has to be updated with a new image, we make that change in the config file and Master checks name and kind and looks for that exact pod and updates it)
   name: client-pod
   labels:
-    # This key: value pair, is user defined. Could very well be tier: frontend
+    # This key: value pair, is user defined. Could very well be `tier: frontend`
     component: web
 spec:
   containers:
@@ -47,7 +47,7 @@ spec:
 # Namespace: offers resource allocation/management by namespace (apiVersion: v1)
 
 # ConfigMap:
-  ##used to store env vars needed by pods; sent to the exact pod that needs the vars. in memory;
+  ## used to store env vars needed by pods; sent to the exact pod that needs the vars. in memory;
   ## if pod is removed, memory is cleared. Original stored in etcd, encrypted (apiVersion: v1)
 
 # Secret: same as ConfigMaps (apiVersion: v1)

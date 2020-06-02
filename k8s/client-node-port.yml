@@ -43,7 +43,7 @@ spec:
 # Limitations to declarative deployment updates:
   ## On changing the containerPort of the client-pod in the client-pod.yml file and running kubectl apply client-pod.yml, we get
     # this: `The Pod "client-pod" is invalid: spec: Forbidden: pod updates may not change fields other than `spec.containers[*].image`, `spec.initContainers[*].image`, `spec.activeDeadlineSeconds` or `spec.tolerations` (only additions to existing tolerations)`
-    # which means we can onmlky update the shown properties for a pod
+    # which means we can onlky update the shown properties for a pod
 
   ## Solution: Deployment object
     # Maintains a set of identical pods, ensuring they have correct config and the right number of them
@@ -55,6 +55,6 @@ spec:
 
   ## Every deployment has a Pod Template associated with it which tells the deployment the details of the pod
 
-  # Command Run: kubectl delete -f client-pod.yml (Imperative udpate)
+# Command Run: kubectl delete -f client-pod.yml (Imperative udpate)
 
-  # Command Run: minkube ip (ip of the VM created by minikube)
+# Command Run: minkube ip (ip of the VM created by minikube)
