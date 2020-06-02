@@ -1,3 +1,6 @@
+# These config files are supplied to kubectl that in turn talk to the kube-api-server, an implementation of the kubeAPI,
+# to create objects
+
 # Scopes/Limits the type of objects we want to create within a config file. It gives us access to objects below
 # if we used apiVersion: apps/v1 we'd get access to ControllerRevision, StatefulSet (Objects that override kube scheduler?)
 apiVersion: v1
@@ -20,48 +23,3 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
-
-# These config files are supplied to kubectl that in turn talk to the kube-api-server, an implementation of the kubeAPI,
-# to create objects
-
-# k8s Objects:
-
-# Pod: a group of interdependent containers (one or more) working together (apiVersion: v1)
-
-# ReplicaSet: maintains a stable set of replica pods to ensure high availability (apiVersion: v1)
-
-# Service:
-  ## a set of Pods working together (defined by label selector) (apiVersion: v1)
-  ## used when some amount of networking is needed in the cluster
-  ## Manages the assignment of IP addrs to the pod, so if a pod gets restarted, user doesnr't have to worry about knowing (finding) the IP addrs
-  ## SubTypes:
-    ### ClusterIP
-    ### NodePort:
-      #### Exposes container to the outside world (good for dev purposes)
-      #### Creates a communication layer between the outside world and the container running inside the pod (req comes to kube-proxy and then to Service NodePort)
-    ### LoadBalancer
-    ### Ingress
-
-# Volume: persistent storage to save data between restarts (apiVersion: v1)
-
-# Namespace: offers resource allocation/management by namespace (apiVersion: v1)
-
-# ConfigMap:
-  ## used to store env vars needed by pods; sent to the exact pod that needs the vars. in memory;
-  ## if pod is removed, memory is cleared. Original stored in etcd, encrypted (apiVersion: v1)
-
-# Secret: same as ConfigMaps (apiVersion: v1)
-
-# StatefulSet:
-## A Controller. Used for statefull applications, like databases, where instance ordering matters (for dbs with primary and secondary instances) (apiVersion: apps/v1)
-
-# DaemonSet: used for instructing k8s to run pods on a particular machine (override kub scheduler) like loggging apps like sysdig, logDNA etc.
-
-# ComponentStatus: get the health of kubernetes components: etcd, controller manager, and scheduler (apiVersion: v1)
-
-# Event: show you what is happening inside a cluster, such as what decisions were made by the scheduler or why some pods were evicted from the node (apiVersion: v1)
-
-# Endpoint: unclear....
-
-# Imperative deployment: Follow exactly the steps to arrive at the conatiner setup (ex: run these containers on this machine)
-# Declarative Deployment: Our setup should look like this, make it happen (Master chooses where to run the container)

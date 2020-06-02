@@ -1,0 +1,116 @@
+# Kubernetes
+
+Container Orchestration and management system
+
+Imperative deployment: Follow exactly the steps to arrive at the conatiner setup (ex: run these containers on this machine)
+Declarative Deployment: Our setup should look like this, make it happen (Master chooses where to run the container)
+
+## Kubernetes Objects
+
+### Pods
+
+a group of interdependent containers (one or more) working together (apiVersion: v1)
+
+### ReplicaSet
+
+  maintains a stable set of replica pods to ensure high availability (apiVersion: v1)
+
+### Service
+
+- a set of Pods working together (defined by label selector) (apiVersion: v1)
+- used when some amount of networking is needed in the cluster
+- Manages the assignment of IP addrs to the pod, so if a pod gets restarted, user doesnr't have to worry about knowing (finding) the IP addrs
+
+#### SubTypes
+
+##### ClusterIP
+
+##### NodePort
+
+- Exposes container to the outside world (good for dev purposes)
+- Creates a communication layer between the outside world and the container running inside the pod (req comes to kube-proxy and then to Service NodePort)
+
+##### LoadBalancer
+
+##### Ingress
+
+##### Volume
+
+persistent storage to save data between restarts (apiVersion: v1)
+
+##### Namespace
+
+offers resource allocation/management by namespace (apiVersion: v1)
+
+##### ConfigMap
+
+- used to store env vars needed by pods; sent to the exact pod that needs the vars. in memory;
+- if pod is removed, memory is cleared. Original stored in etcd, encrypted (apiVersion: v1)
+
+##### Secret
+
+same as ConfigMaps (apiVersion: v1)
+
+##### StatefulSet
+
+- A Controller. Used for statefull applications, like databases, where instance ordering matters (for dbs with primary and secondary instances) (apiVersion: apps/v1)
+
+##### DaemonSet
+
+- used for instructing k8s to run pods on a particular machine (override kub scheduler) like loggging apps like sysdig, logDNA etc.
+
+##### ComponentStatus
+
+- get the health of kubernetes components: etcd, controller manager, and scheduler (apiVersion: v1)
+
+##### Event
+
+- show you what is happening inside a cluster, such as what decisions were made by the scheduler or why some pods were evicted from the node (apiVersion: v1)
+
+<!-- ##### Endpoint: unclear -->
+
+## Commands Run
+
+- `kubectl apply -f client-pod.yml`, `kubectl apply -f client-node-port.yml`
+  - `apply`: change the current configuration (state: deployment as a function of configuration state) of the cluster with what is in the file (-f) I am supplying you
+    - When this command is run `kubectl` talks to kubernetes control plane (Talks to the kube-apiserver that inturn talks to the kube-scheduler) that instructs the container runtime running inside the kubernetes node (VM) to spin up a container (details of which are in the config file), the conatiner runtime checks its image cache, if the image is there it spins up the container or it fetches from the registry (Docker Hub or yourRegistry)
+
+  - The Master (control plane??) adds details like how many containers are to be run in a pod, how many pods are to be run etc. to `etcd` master uses this information to poll the nodes to check all the pods and services defined match what is there in `etcd`, any descrepancy like a container has died etc. triggers an update of `etcd` items (how mayn containers SHOULD be running and how many ARE running) the master then isntructs conatiner runtime to spin up conatiner that has died and `etcd` gets updated and peace is restored
+
+- `kubectl get pods`
+  Prints out the status of group of object types (Pods in this case)
+
+- `kubectl get services`
+  Prints out the status of group of object types (Services in this case)
+
+- When we try to access `localhost:31515`, nothing since it is not bound to locahost or 0.0.0.0 but to the IP of the VM (Kubernetes Node) that was created by minikube (`minikube ip`: to find the ip)
+
+- kubectl describe pods client-pod (`kubectl describe <objectType(pods, services etc.)> <name(optional; name of the particular object ex: client-pod)>`)
+  - Gives details about the objectType (all if exact name not specified)
+  - Why use this: to figure out what pod (objectType) is running what image or why a pod restarted
+
+- `kubectl delete -f client-pod.yml` (Imperative udpate)
+
+- `minikube docker-env`: Gives docker env vars from inside of the VM and gives you a chance to point your local docker client to VM's docker server... Can be used for snooping around in there
+
+## Limitations to declarative deployment updates
+
+- On changing the containerPort of the client-pod in the `client-pod.yml` file and running kubectl apply client-pod.yml, we get
+
+  - this: `The Pod "client-pod" is invalid: spec: Forbidden: pod updates may not change fields other than`spec.containers[*].image`,`spec.initContainers[*].image`,`spec.activeDeadlineSeconds` or `spec.tolerations`(only additions to existing tolerations)` which means we can onlky update the shown properties for a pod
+
+- Solution: Deployment object
+  - Maintains a set of identical pods, ensuring they have correct config and the right number of them
+
+## Pods vs Deployments:
+
+- Runs a single set of tightly coupled containers vs Runs a set of identical pods
+- Good for one-off dev purposes vs Monitors state of each pod, updating as necessary
+- Rarely used in production vs Good for dev and production
+- Every deployment has a Pod Template associated with it which tells the deployment the details of the pod
+
+## Sources
+
+- Kubernetes Docs [https://kubernetes.io/docs/concepts/]
+- Kubernetes Wiki Page [https://en.wikipedia.org/wiki/Kubernetes]
+- Handwritten notes (need to be digitised)
