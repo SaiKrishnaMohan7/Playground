@@ -13,7 +13,7 @@ a group of interdependent containers (one or more) working together (apiVersion:
 
 ### ReplicaSet
 
-  maintains a stable set of replica pods to ensure high availability (apiVersion: v1)
+maintains a stable set of replica pods to ensure high availability (apiVersion: v1)
 
 ### Service
 
@@ -24,6 +24,8 @@ a group of interdependent containers (one or more) working together (apiVersion:
 #### SubTypes
 
 ##### ClusterIP
+
+- Exposes a set of pods to other objects in the cluster
 
 ##### NodePort
 
@@ -102,12 +104,16 @@ same as ConfigMaps (apiVersion: v1)
 - Solution: Deployment object
   - Maintains a set of identical pods, ensuring they have correct config and the right number of them
 
-## Pods vs Deployments:
+## Pods vs Deployments
 
 - Runs a single set of tightly coupled containers vs Runs a set of identical pods
 - Good for one-off dev purposes vs Monitors state of each pod, updating as necessary
 - Rarely used in production vs Good for dev and production
 - Every deployment has a Pod Template associated with it which tells the deployment the details of the pod
+
+## NodePort vs ClusterIP
+
+-
 
 ## Sources
 
