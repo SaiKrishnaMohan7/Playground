@@ -30,6 +30,12 @@ spec:
             value: '5432'
           - name: PGDATABASE
             value: postgres
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgpassword
+                # the key ggiven when running the imperative command to create a secret
+                key: PGPASSWORD
         resources:
           limits:
             memory: "128Mi"
