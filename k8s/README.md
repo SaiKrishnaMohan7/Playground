@@ -51,7 +51,8 @@ offers resource allocation/management by namespace (apiVersion: v1)
 
 ##### Secret
 
-same as ConfigMaps (apiVersion: v1)
+- same as ConfigMaps (apiVersion: v1)
+- Securely stores a piece of information in the cluster like apiKeys, passwords etc.
 
 ##### StatefulSet
 
@@ -68,7 +69,6 @@ same as ConfigMaps (apiVersion: v1)
 ##### Event
 
 - show you what is happening inside a cluster, such as what decisions were made by the scheduler or why some pods were evicted from the node (apiVersion: v1)
-
 <!-- ##### Endpoint: unclear -->
 
 ## Commands Run
@@ -98,6 +98,10 @@ same as ConfigMaps (apiVersion: v1)
 - `kubectl get storageclass`: Lists all options that are availble for creating PVC's or even Persistent Volumes
 
 - `kubectl describe storageclass`: Details about storage options available
+
+- `kubectl create secret <typeOfSecret: generic, docker-registry, tls> <secretName: a name to refer this secret by> --from-literal key=value`: Imperatively create a secret to be strored inside the cluster (etcd??)
+
+- `kubectl get secrets`: gets secrets
 
 ## Limitations to declarative deployment updates
 
