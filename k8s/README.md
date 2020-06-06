@@ -95,6 +95,10 @@ same as ConfigMaps (apiVersion: v1)
 
 - `minikube docker-env`: Gives docker env vars from inside of the VM and gives you a chance to point your local docker client to VM's docker server... Can be used for snooping around in there
 
+- `kubectl get storageclass`: Lists all options that are availble for creating PVC's or even Persistent Volumes
+
+- `kubectl describe storageclass`: Details about storage options available
+
 ## Limitations to declarative deployment updates
 
 - On changing the containerPort of the client-pod in the `client-pod.yml` file and running kubectl apply client-pod.yml, we get
@@ -111,12 +115,27 @@ same as ConfigMaps (apiVersion: v1)
 - Rarely used in production vs Good for dev and production
 - Every deployment has a Pod Template associated with it which tells the deployment the details of the pod
 
-## NodePort vs ClusterIP
+## Persistent Volume Claim (PVC)
 
--
+- Persist data between pod restarts and deletions (scaling up or down is just another flavor of deletion)
+- Volumes in container land vs. kube land
+  - allow container to access fs outside of itself vs a kubernetes object type that allows a container to store data at pod level
+- Persistent Volume vs volume
+  - Storage not tied to pod vs storage not tied to container but to pod
+- Persistent Volume vs PVC
+  - Statically provisioned vs dynamically provisioned (Only created when asked)
+  - Created ahead of time vs Created when need arises (Like an advertisement)
+- PVCs are attached to Pod definition, kubernetes then figures out wether to give it a statically provisioned Volume or provide it Dynamically, create it when need arises
+- PVCs accessModes:
+  - ReadWriteOnce: single node
+  - ReadOnlyMany: Multiple nodes can read from this
+  - ReadWriteMany: Many nodes and can read from and write to
 
 ## Sources
 
 - Kubernetes Docs [https://kubernetes.io/docs/concepts/]
 - Kubernetes Wiki Page [https://en.wikipedia.org/wiki/Kubernetes]
 - Handwritten notes (need to be digitised)
+- [YT Carsonoid](https://www.youtube.com/watch?v=90kZRyPcRZw)
+- [Vimeo Expanded version of the above](https://vimeo.com/245778144/4d1d597c5e)
+- [Inner workings of kube-scheduler](https://www.azuremonk.com/blog/kube-scheduler)
