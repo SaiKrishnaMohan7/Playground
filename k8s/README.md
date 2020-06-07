@@ -34,7 +34,19 @@ maintains a stable set of replica pods to ensure high availability (apiVersion: 
 
 ##### LoadBalancer
 
+- Legacy way of getting traffic into our cluster
+- LoadBalancer will give access to only one pod
+- Ingress is the new kid on the block
+
 ##### Ingress
+
+- Exposes a set of services to the outside world
+- Different types of Ingresses
+- Controllers in the world of k8s work to get your cluster to a desired state (config files) to a from the current state (Dig a bit deeper here, don't trust it)
+- IngressConfig --> kubectl --> kubeapiserver --> Ingress Controller (Maybe the kubeapiserver talks to KubeControllerManager and then an Ingress Controller gets created; Check Carson's vid) --> Som,ething that accepts incoming traffic to the cluster
+- This hacktime is using ingress-nginx, that needs some sepcial stuff to be setup
+  - `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml`: Some sort of config file that sets up the default-backend-pod etc.
+  - `minikube addons enable ingress`: enables ingress addon in minikube
 
 ##### Volume
 
@@ -102,6 +114,8 @@ offers resource allocation/management by namespace (apiVersion: v1)
 - `kubectl create secret <typeOfSecret: generic, docker-registry, tls> <secretName: a name to refer this secret by> --from-literal key=value`: Imperatively create a secret to be strored inside the cluster (etcd??)
 
 - `kubectl get secrets`: gets secrets
+
+- `minikube dashboard`: brings up a fullfledged kubernetes dashboard (All edits and changes are imperative)
 
 ## Limitations to declarative deployment updates
 
