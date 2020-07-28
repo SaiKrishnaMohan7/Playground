@@ -51,7 +51,7 @@ Values passed into the template from the `values.yaml` file and from user-suppli
   - `Template.Name`: A namespaced file path to the current template (e.g. mychart/templates/mytemplate.yaml)
   - `Template.BasePath`: The namespaced path to the templates directory of the current chart (e.g. mychart/templates).
 
-- _The built-in values always begin with a capital letter_. This is in keeping with Go's naming convention. When you create your own names, you are free to use a convention that suits your team. Some teams, like the Kubernetes Charts team, choose to use only initial lower case letters in order to distinguish local names from those built-in. In this guide, we follow that convention.
+- _The built-in values always begin with a capital letter_. This is in keeping with Go's naming convention. When you create your own names, you are free to use a convention that suits your team. Some teams, like the Kubernetes Charts team, choose to use only initial lower case letters in order to distinguish local names from those built-in.
 
 ### Template Functions
 
