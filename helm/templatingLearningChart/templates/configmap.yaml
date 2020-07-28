@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # The leading dot before the Release.Name indicates to start from the top-most namespace
+  #.Release.Name as "start at the top namespace, find the Release object, then look inside of it for an object called Name"
+  name: {{ .Release.Name }}-configmap
+data:
+  myvalue: "Hello World"
+  drink: {{ .Values.favoriteDrink }}
