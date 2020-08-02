@@ -86,7 +86,7 @@ Basic Syntax: `functionName arg1 arg2...`
   {{- end -}}
 ```
 
-  this ^^ will result in `food: "PIZZA"mug:true` so NO NO
+  this ^^ will result in `food: "PIZZA"mug:true` so NO NO (the `-` after `end` _consumed_ the sapce)
 
 - `with`:
   - Scope changing, no need to do what I have done in the above YAML example
