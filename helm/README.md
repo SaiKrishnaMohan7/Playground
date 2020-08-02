@@ -1,16 +1,17 @@
 # Helm
 
-A package manager for k8s like homebrew/npm
-*Newlines are whitespace*
+A package manager for k8s like homebrew/npm is for Mac/JS respectively
 
 ## Helm templating
 
+- *Newlines are whitespace*
+- Walking through [YAML Techniques](https://helm.sh/docs/chart_template_guide/yaml_techniques/) will be very helpful
 - `fullnameOverride` and `nameOverride` are created during `helm create <yourChartName(Release Name)>`
-- Template names do not follow a rigid naming pattern. However, we recommend using the suffix .yaml for YAML files and .tpl for helpers
+- Template names do not follow a rigid naming pattern. Recomended to use `.yaml` for YAML files and `.tpl` for helpers
 - All files in the template directory are sent to the `templating engine`, where it is populated with all the referenced values and then sent to k8s
 - `helm get manifest <nameYouGaveAtInstall(Release Name)>` gives you the complete detail of the deployed manifest (will show the yaml)
   - `Release` is one of the top-level objects. Objects can be created in the code
-- To test template rendering but not install it, `helm install --debug --dry-run <ReleaseName> ./templatingLearningChart`
+- To test template rendering but not install it, `helm install --debug --dry-run <ReleaseName(optional)> ./templatingLearningChart (Chart Dir)`
 
 ### Built-in Objects
 
@@ -171,8 +172,43 @@ data:
 ### Named Templates
 
 - Template names are global
-- Convention for safety: `{{ define "mychart.labels" }}`
+- Convention for safety: `{{ define "<yourChartName>.<whateverYouWantToLabel>" }}`
 - Files that begin with `_` assumed to have no manifest (k8s manifest), used to contain helpers and partials
+- We can pull in shared config with the `template` action but it is better to use `include` fucntion instead as the output of that can be modified
+
+```YAML
+labels:
+# This will biring in the contents of the template `maychart.app` as is (same identation!!)
+# and you won't be able to modify the identation (erroneous chart)
+    {{ template "mychart.app" . }}
+```
+
+```YAML
+labels:
+# using `include` here let's us modify the output and indent it properly
+    {{ include "mychart.app" . | indent 4 }}
+```
+
+- [src](https://helm.sh/docs/chart_template_guide/named_templates/)
+- [Named Templates form the basis of Library and Helper Charts](https://helm.sh/docs/topics/library_charts/)
+
+### Accessing files that are not templates
+
+- Ok to include files other than templates BUT *Charts must be smaller than _1M_* (a k8s storage limitation)
+- Files inside `templates/` CANNOT be accessed via the `.Files` built-in object. Same applies to files in `.helmignore`
+- UNIX mode info is NOT preserved, so, file level permissions (chmod, chown) have no power here (Théoden)
+- [src](https://helm.sh/docs/chart_template_guide/accessing_files/)
+
+### Subcharts and Globals
+
+- [src](https://helm.sh/docs/chart_template_guide/subcharts_and_globals/)
+
+### Futher reading and knowledge expansion
+
+- [Helm Lifecyle Hooks](https://helm.sh/docs/topics/charts_hooks/)
+- [Writing a Hook](https://helm.sh/docs/topics/charts_hooks/#writing-a-hook)
+- [Helm Chart Tests](https://helm.sh/docs/topics/chart_tests/)
+- [YAML Techniques](https://helm.sh/docs/chart_template_guide/yaml_techniques/)
 
 ### Shell Commands run
 
