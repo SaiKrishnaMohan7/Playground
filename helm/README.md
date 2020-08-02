@@ -76,7 +76,7 @@ Basic Syntax: `functionName arg1 arg2...`
 ### Flow Control
 
 - `{{-`(with the dash and space added) indicates that whitespace should be chomped left, while `-}}` means whitespace to the right should be consumed
-- *_Make sure there is a space between the - and the rest of your directive. {{- 3 }} means "trim left whitespace and print 3" while {{-3 }} means "print -3"_*
+- *_Make sure there is a space between the `-` and the rest of your directive. {{- 3 }} means "trim left whitespace and print 3" while {{-3 }} means "print -3"_*
 - *_Be careful with the chomping modifiers. It is easy to accidentally do things like this:_*
 
 ```YAML
