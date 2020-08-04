@@ -20,6 +20,7 @@ maintains a stable set of replica pods to ensure high availability (apiVersion: 
 - a set of Pods working together (defined by label selector) (apiVersion: v1)
 - used when some amount of networking is needed in the cluster
 - Manages the assignment of IP addrs to the pod, so if a pod gets restarted, user doesnr't have to worry about knowing (finding) the IP addrs
+- *_Pods use Services to talk to each other and service get registered as local dns names. This is how the label-selector mechanism is used._*
 
 #### SubTypes
 
