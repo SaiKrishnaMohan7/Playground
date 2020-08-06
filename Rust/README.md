@@ -10,7 +10,7 @@
 
 - Hello World program
   - What is a macro?
-    - The ability to create your own DSL, some sort of convinience snippet for code, like how some ES6 synax covers up the trickiness of JS (`class` keyword for instance)
+    - The ability to create your own DSL, some sort of convinience snippet for code (syntactic sugar), like how some ES6 synax covers up the trickiness of JS (`class` keyword for instance)
 
 ```rust
 error[E0423]: expected function, found macro `println`
