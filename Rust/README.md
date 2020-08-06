@@ -2,7 +2,7 @@
 
 - Systems language like Go, C. Development of drivers, compilers
 - No GC, no manual memory managament
-- `cargo` package manager
+- `cargo` package manager, `rustc` is the compiler
 
 <!-- ### Web Assembly, WASM -->
 
@@ -27,3 +27,4 @@ help: use `!` to invoke the macro
 error: aborting due to previous error
  ```
 
+  - Running the program `rustc` creates a binary of the same name
