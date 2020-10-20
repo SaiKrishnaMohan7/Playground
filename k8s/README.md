@@ -44,7 +44,7 @@ maintains a stable set of replica pods to ensure high availability (apiVersion: 
 - Exposes a set of services to the outside world
 - Different types of Ingresses
 - Controllers in the world of k8s work to get your cluster to a desired state (config files) to a from the current state (Dig a bit deeper here, don't trust it)
-- IngressConfig --> kubectl --> kubeapiserver --> Ingress Controller (Maybe the kubeapiserver talks to KubeControllerManager and then an Ingress Controller gets created; Check Carson's vid) --> Som,ething that accepts incoming traffic to the cluster
+- IngressConfig --> kubectl --> kubeapiserver --> Ingress Controller (Maybe the kubeapiserver talks to KubeControllerManager which talk to the Ingress Controller which creates and manages the Ingress Resource; Check Carson's vid) --> Som,ething that accepts incoming traffic to the cluster
 - This hacktime is using ingress-nginx, that needs some sepcial stuff to be setup
   - `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml`: Some sort of config file that sets up the default-backend-pod etc.
   - `minikube addons enable ingress`: enables ingress addon in minikube
