@@ -88,9 +88,9 @@ offers resource allocation/management by namespace (apiVersion: v1)
 
 - `kubectl apply -f client-pod.yml`, `kubectl apply -f client-node-port.yml`
   - `apply`: change the current configuration (state: deployment as a function of configuration state) of the cluster with what is in the file (-f) I am supplying you
-    - When this command is run `kubectl` talks to kubernetes control plane (Talks to the kube-apiserver that inturn talks to the kube-scheduler) that instructs the container runtime running inside the kubernetes node (VM) to spin up a container (details of which are in the config file), the conatiner runtime checks its image cache, if the image is there it spins up the container or it fetches from the registry (Docker Hub or yourRegistry)
+    - When this command is run `kubectl` talks to kubernetes control plane (Talks to the kube-apiserver that inturn talks to the kube-scheduler which talks to the kubelet instance running on the worker node that talks to the COnatiner Runtime via the Coantiner Network Interface, CNI) that instructs the container runtime running inside the kubernetes node (VM) to spin up a container (details of which are in the config file), the conatiner runtime checks its image cache, if the image is there it spins up the container or it fetches from the registry (Docker Hub or yourRegistry)
 
-  - The Master (control plane??) adds details like how many containers are to be run in a pod, how many pods are to be run etc. to `etcd` master uses this information to poll the nodes to check all the pods and services defined match what is there in `etcd`, any descrepancy like a container has died etc. triggers an update of `etcd` items (how mayn containers SHOULD be running and how many ARE running) the master then isntructs conatiner runtime to spin up conatiner that has died and `etcd` gets updated and peace is restored
+  - The Master (control plane: kube-apiserver, scheduler, ControllerManager are on the Master and so is etcd to maintain cluster state) adds details like how many containers are to be run in a pod, how many pods are to be run etc. to `etcd` master uses this information to poll the nodes to check all the pods and services defined match what is there in `etcd`, any descrepancy like a container has died etc. triggers an update of `etcd` items (how mayn containers SHOULD be running and how many ARE running) the master then isntructs conatiner runtime to spin up conatiner that has died and `etcd` gets updated and peace is restored
 
 - `kubectl get pods`
   Prints out the status of group of object types (Pods in this case)
@@ -123,6 +123,7 @@ offers resource allocation/management by namespace (apiVersion: v1)
 - On changing the containerPort of the client-pod in the `client-pod.yml` file and running kubectl apply client-pod.yml, we get
 
   - this: `The Pod "client-pod" is invalid: spec: Forbidden: pod updates may not change fields other than`spec.containers[*].image`,`spec.initContainers[*].image`,`spec.activeDeadlineSeconds` or `spec.tolerations`(only additions to existing tolerations)` which means we can onlky update the shown properties for a pod
+  - Something similar for statefulsets: `The StatefulSet "redis" is invalid: spec: Forbidden: updates to statefulset spec for fields other than 'replicas', 'template', and 'updateStrategy' are forbidden`
 
 - Solution: Deployment object
   - Maintains a set of identical pods, ensuring they have correct config and the right number of them
