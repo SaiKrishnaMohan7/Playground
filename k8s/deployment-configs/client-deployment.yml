@@ -33,22 +33,3 @@ spec:
 # kubectl scale -replicas=6 -f <k8sObjectDefinitionThatSupportsReplicas>.yaml
 # kubectl scale --replicas=5 rs/new-replica-set
 # kubectl create deployment httpd-frontend --replicas=3 --image=httpd:2.4-alpine
-
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: httpd-frontend-deploy
-
-# spec:
-#   replicas: 3
-#   selector:
-#     matchLabels:
-#       app: httpd-frontend-app
-# template:
-#   metadata:
-#     labels:
-#         app: httpd-frontend-app
-#   spec:
-#     containers:
-#       - name: httpd-frontend
-#         image: httpd:2.4-alpine
