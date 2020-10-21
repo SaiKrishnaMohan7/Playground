@@ -34,3 +34,6 @@ spec:
 # kubectl scale --replicas=5 rs/new-replica-set
 # kubectl create deployment httpd-frontend --replicas=3 --image=httpd:2.4-alpine
 # kubectl create namespace test-123 --dry-run -o json (-o wide, name: print only resource name and nothing else, -o yaml)
+# kubectl run pod redis --image=redis:alpine -l tier=db --dry-run=client -o yaml > redis-pod-spec.yaml
+# kubectl run custom-nginx --image=nginx --port=8080
+# kubectl run httpd --image=httpd:alpine --port=80 --expose create pod and service
