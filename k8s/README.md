@@ -5,6 +5,8 @@ Container Orchestration and management system
 Imperative deployment: Follow exactly the steps to arrive at the conatiner setup (ex: run these containers on this machine)
 Declarative Deployment: Our setup should look like this, make it happen (Master chooses where to run the container)
 
+## Kubernetes Components
+
 ## Kubernetes Objects
 
 ### Pods
@@ -126,7 +128,8 @@ offers resource allocation/management by namespace (apiVersion: v1)
   - Something similar for statefulsets: `The StatefulSet "redis" is invalid: spec: Forbidden: updates to statefulset spec for fields other than 'replicas', 'template', and 'updateStrategy' are forbidden`
 
 - Solution: Deployment object
-  - Maintains a set of identical pods, ensuring they have correct config and the right number of them
+  - Maintains a set of identical pods, ensuring they have correct config and the right number of them (Very similar to the ReplicaSet spec; They both look exactly the same except `kind`)
+  - Deployments help in managing updates to images running in pods, any update (RollingUpdate stragtegy is default) and scaling
 
 ## Pods vs Deployments
 
