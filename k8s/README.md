@@ -24,7 +24,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
   - Generate Deployment YAML file (-o yaml). Don't create it(--dry-run): `kubectl create deployment --image=nginx nginx --dry-run=client -o yaml`
 
 - *IMPORTANT:*
-  - Not too sure kubectl create deployment does not have a --replicas option. You could first create it and then scale it using the kubectl scale command.
+  - Not too sure--> kubectl create deployment does not have a --replicas option. You could first create it and then scale it using the kubectl scale command.
   - Save it to a file - (If you need to modify or add some other details): `kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
   - You can then update the YAML file with the replicas or any other field before creating the deployment.
 
