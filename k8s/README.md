@@ -7,6 +7,50 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
 
 ## Kubernetes Components
 
+- The Master + Worker form the cluster
+- The Nodes can be VMs or baremetal machines
+- When we deploy K8s/setup/spin up a k8s cluster, following things happen (more like follwing processes get deployed):
+  - The **Control Plane**:
+    - Scheduling, Service Discovery, Event Handling
+    - Deployed to the Master Node (Maybe replicated, each component of the control plane should be replicated for HA and resiliency)
+    - Components:
+      - _Kube Controller Manager (the brain, heavy lifter)_
+        - Runs the Controller processes
+        - Logically split into following but is compiled into a single binary (bin; Very cool, mind blowing) and run as a single process
+          - *Node Controller*: Noticing and responding when a node goes down (receives the heartbeats from the nodes to keep track)
+          - *ReplicationController*: Maintain correct set of pods (replaced by ReplicaSet). Talks to etcd via the apiServer to the deed
+          - *Endpoints Controller*: Joins services and pods (services facilitate pod to pod communication)
+          - *Service Account and Token Controller*: Manages defaukts accounts and api access tokens
+
+      - _Kube API Server (the middleman; FrontEnd for k8s processes)_
+        - Front-End of the k8s control plane
+        - All chatter between all components happens through the API Server that sits on the master (kubectl talks to the API Server!)
+        - Main implementation of the kube-api
+
+      - _etcd cluster (cluster state management)_
+        - Cluster state config, service discovery
+        - light-weight distributed key-value store, consensus through *raft* distributed consensus algorithm
+      - _Kube Scheduler (Manager guy)_
+      - _Cloud Controller Manager (Cloud Provider Liason)_
+        - Lets us link to a cloud provider
+        - If running k8s locally, on prem, no cloud controller manager
+        - Logically split into following but is compiled into a single binary (bin; Very cool, mind blowing) and run as a single process
+          - *Node Controller*: Check cloud provider if a node has been deleted after it stops responding i.e. no heartbeat, timeout
+          - *Route Controller*: Sets up routes in the underlying cloud infra
+          - *Service Controller*: CRUD for cloud provider LoadBalancer
+      - ..... PLOT HOLE, coreDNS,  where is it at?
+
+  - K8s node components (Workers)
+    - Run on all nodes
+    - Responsible for pod maintainance, provide runtime environment
+    - Components:
+      - _Kubelet_
+        - Talks to the container runtime env
+
+      - _KubeProxy_
+      - _Container Runtime_
+  - All chatter between all components happens through the API Server that sits on the master (kubectl talks to the API Server!)
+
 ## kubectl Imperative commands
 
 - `--dry-run:` By default as soon as the command is run, the resource will be created. If you simply want to test your command, use the `--dry-run=client` option. This will not create the resource, instead, tell you whether the resource can be created and if your command is right.
@@ -107,6 +151,9 @@ offers resource allocation/management by namespace (apiVersion: v1)
 ##### StatefulSet
 
 - A Controller. Used for statefull applications, like databases, where instance ordering matters (for dbs with primary and secondary instances) (apiVersion: apps/v1)
+- Also manages scaling of pods like a ReplicaSet and Deployments
+- The pods created will be in a particular order, deletion of which will nbe in the reveerse order (default; can be parallelized)
+- PVCs linked to the pods are not deleted and must be manuallyt deleted
 
 ##### DaemonSet
 
