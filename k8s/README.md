@@ -7,6 +7,70 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
 
 ## Kubernetes Components
 
+- The Master + Worker form the cluster
+- The Nodes can be VMs or baremetal machines
+- When we deploy K8s/setup/spin up a k8s cluster, following things happen (more like follwing processes get deployed):
+  - The **Control Plane**:
+    - Scheduling, Service Discovery, Event Handling
+    - Deployed to the Master Node (Maybe replicated, each component of the control plane should be replicated for HA and resiliency)
+    - Components:
+      - _Kube Controller Manager (the brain, heavy lifter)_
+        - Runs the Controller processes
+        - Logically split into following but is compiled into a single binary (bin; Very cool, mind blowing) and run as a single process
+          - *Node Controller*: Noticing and responding when a node goes down (receives the heartbeats from the nodes to keep track)
+          - *ReplicationController*: Maintain correct set of pods (replaced by ReplicaSet). Talks to etcd via the apiServer to the deed
+          - *Endpoints Controller*: Joins services and pods (services facilitate pod to pod communication)
+          - *Service Account and Token Controller*: Manages defaukts accounts and api access tokens
+
+      - _Kube API Server (the middleman; FrontEnd for k8s processes)_
+        - Front-End of the k8s control plane
+        - All chatter between all components happens through the API Server that sits on the master (kubectl talks to the API Server!)
+        - Main implementation of the kube-api
+
+      - _etcd cluster (cluster state management)_
+        - Cluster state config, service discovery (coreDNS running in kube-system ns on the master, part of the control plane; Single process; Three pods managed by a reelicaSet)
+        - light-weight distributed key-value store, consensus through *raft* distributed consensus algorithm
+
+      - _Kube Scheduler (Manager guy)_: [The last link](#Sources)
+
+      - _Cloud Controller Manager (Cloud Provider Liason)_
+        - Lets us link to a cloud provider
+        - If running k8s locally, on prem, no cloud controller manager
+        - Logically split into following but is compiled into a single binary (bin; Very cool, mind blowing) and run as a single process
+          - *Node Controller*: Check cloud provider if a node has been deleted after it stops responding i.e. no heartbeat, timeout
+          - *Route Controller*: Sets up routes in the underlying cloud infra
+          - *Service Controller*: CRUD for cloud provider LoadBalancer
+
+  - K8s node components (Workers)
+    - Run on all nodes
+    - Responsible for pod maintainance, provide runtime environment
+    - Components:
+      - _Kubelet_
+        - Talks to the container runtime env
+        - Communicates with the control plane via the kubeApiServer, gets pod definitions, resource constraints etc. and passes it to the Kube Scheduler
+        - The Kubelet has a client-server type architecture (gRPC client and server) and communicates with the _Container Runtime_ via the _Container Runtime Interface (CRI)_
+          - CRI:
+            - *ImageService*: Image related operations
+            - *RuntimeService*: Pod and container related operations
+
+      - _KubeProxy_
+        - Implements the K8s service concept
+        - Manages networking for pods from netwroking sessions inside/outside the cluster
+        - Uses the OS packet filtering layer , if available, or forwards traffic itself
+        - Updates and maintains all networking rules on nodes and hides Pod networking details and complexity
+        - Deployed as a pod in multi-node clusters and is a DaemonSet
+
+      - _Container Runtime_: Docker, rkt rtc.
+
+  - All chatter between all components happens through the API Server that sits on the master (kubectl talks to the API Server!)
+  - K8s solves networking problems (among many others) when moving from monolith to microservices
+    - Container to Container communication: Solved by namespaces
+    - Pod to Pod comm within same node and between nodes
+    - Pod to Service comm: solved by kind: Service (k8s sees Pods as VMs running in network with IPs assigned to them, IPs are dynamic!)
+    - External to Service comm: Via kind: Service, type: LoadBalancer or via Ingresses (logical separation of routing rules)
+      - Ingresses configure a Level 7 Load Balancer (IP Layer; HTTP/HTTPS) and provides TLS, Name-based virtual Routing, Load Balancing and custom rules
+      - Ingress Contoller: an app that looks for changes to the Ingress Resource configuration (just like any other contollerm talks to etcd via the API server on the Control plane)
+
 ## kubectl Imperative commands
 
 - `--dry-run:` By default as soon as the command is run, the resource will be created. If you simply want to test your command, use the `--dry-run=client` option. This will not create the resource, instead, tell you whether the resource can be created and if your command is right.
@@ -46,7 +110,8 @@ Or
 
 ### Pods
 
-a group of interdependent containers (one or more) working together (apiVersion: v1)
+- a group of interdependent containers (one or more) working together (apiVersion: v1)
+- share the same networking and filesystem space
 
 ### ReplicaSet
 
@@ -107,6 +172,9 @@ offers resource allocation/management by namespace (apiVersion: v1)
 ##### StatefulSet
 
 - A Controller. Used for statefull applications, like databases, where instance ordering matters (for dbs with primary and secondary instances) (apiVersion: apps/v1)
+- Also manages scaling of pods like a ReplicaSet and Deployments
+- The pods created will be in a particular order, deletion of which will nbe in the reveerse order (default; can be parallelized)
+- PVCs linked to the pods are not deleted and must be manuallyt deleted
 
 ##### DaemonSet
 
@@ -193,7 +261,6 @@ offers resource allocation/management by namespace (apiVersion: v1)
 
 - Kubernetes Docs [https://kubernetes.io/docs/concepts/]
 - Kubernetes Wiki Page [https://en.wikipedia.org/wiki/Kubernetes]
-- Handwritten notes (need to be digitised)
 - [YT Carsonoid](https://www.youtube.com/watch?v=90kZRyPcRZw)
 - [Vimeo Expanded version of the above](https://vimeo.com/245778144/4d1d597c5e)
 - [Inner workings of kube-scheduler](https://www.azuremonk.com/blog/kube-scheduler)
