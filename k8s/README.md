@@ -123,6 +123,10 @@ maintains a stable set of replica pods to ensure high availability (apiVersion: 
 - used when some amount of networking is needed in the cluster
 - Manages the assignment of IP addrs to the pod, so if a pod gets restarted, user doesnr't have to worry about knowing (finding) the IP addrs
 - *_Pods use Services to talk to each other and service get registered as local dns names. This is how the label-selector mechanism is used._*
+- services in a ns can reach each other by their names (set in metadata.name; Should always be a fully qualified DNS name) and via `<muServiceName>.<ns>.svc.cluster.local` when trying to reach a diff ns
+  - ex: mysql.connect("db-service.dev.svc.cluster.local")
+    - `cluster.local` is the default doamin name in the cluster
+    - When a service is added to k8s cluster is created the DNS entry is automatically added
 
 #### SubTypes
 
