@@ -157,7 +157,31 @@ persistent storage to save data between restarts (apiVersion: v1)
 
 ##### Namespace
 
-offers resource allocation/management by namespace (apiVersion: v1)
+- offers resource allocation/management/isolation by namespace (apiVersion: v1)
+- *default* ns is created by k8s on cluster init
+- *kube-system*: Kube internal services, DNS, networking etc.
+- *kube-public*: Resources that should made available to all users are deployed here
+- services in a ns can reach each other by their names (set in metadata.name; Should always be a fully qualified DNS name) and via `<muServiceName>.<ns>.svc.cluster.local` when trying to reach a diff ns
+  - ex: mysql.connect("db-service.dev.svc.cluster.local")
+    - `cluster.local` is the default doamin name in the cluster
+    - When a service is added to k8s cluster is created the DNS entry is automatically added
+- To limit resources in a ns, use `kind: ResourceQuota`
+  - ex:
+
+```YAML
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: dev
+spec:
+  hard:
+    pods: "10"
+    requests.cpu: "4"
+    requests.memory: 5Gi
+    limits.cpu: "10"
+    limits.memory: 10Gi
+```
 
 ##### ConfigMap
 
