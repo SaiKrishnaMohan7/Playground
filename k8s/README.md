@@ -287,8 +287,9 @@ spec:
 
 ## Sources
 
-- Kubernetes Docs [https://kubernetes.io/docs/concepts/]
-- Kubernetes Wiki Page [https://en.wikipedia.org/wiki/Kubernetes]
+- [Kubernetes Docs - KING](https://kubernetes.io/docs/concepts/)
+- [Kubernetes Wiki Page](https://en.wikipedia.org/wiki/Kubernetes)
 - [YT Carsonoid](https://www.youtube.com/watch?v=90kZRyPcRZw)
 - [Vimeo Expanded version of the above](https://vimeo.com/245778144/4d1d597c5e)
 - [Inner workings of kube-scheduler](https://www.azuremonk.com/blog/kube-scheduler)
+- [TechWorld With Nana](https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLlUA)
