@@ -255,7 +255,7 @@ spec:
 ##### Event
 
 - show you what is happening inside a cluster, such as what decisions were made by the scheduler or why some pods were evicted from the node (apiVersion: v1)
-<!-- ##### Endpoint: unclear -->
+<!-- ##### Endpoint: See clusterIP service, these are explained there -->
 
 ## Commands Run
 
@@ -309,7 +309,7 @@ spec:
 - Rarely used in production vs Good for dev and production
 - Every deployment has a Pod Template associated with it which tells the deployment the details of the pod
 
-## Persistent Volume Claim (PVC)
+## Persistent Volumes (PV), Persistent Volume Claim (PVC) and Storage Class
 
 - Persist data between pod restarts and deletions (scaling up or down is just another flavor of deletion)
 - Volumes in container land vs. kube land
@@ -324,6 +324,27 @@ spec:
   - ReadWriteOnce: single node
   - ReadOnlyMany: Multiple nodes can read from this
   - ReadWriteMany: Many nodes and can read from and write to
+- PVs are a cluster resource just like memory and CPU
+  - K8s offers PVs as an interface to the actual storage
+  - PVs are not namespaced
+  - There are different types of storage backends (nfs, localVloume (like configMap volumes; linked to pod's lifecycle), cloudStorage; Docs have good details on this
+- Storage classes provision PVs dynamically when a PVC claims it (Dynamic Provisioning or the the sys admin has to manually create the PV before it can be claimed, Static Provisioning)
+  - Is another abstraction that abstracts underlying storage and parameters for that storage
+  - When a pod claims storage via a PVC:
+    - PVC requests storage via StorageClass
+    - StorageClass creates the PV that satisfies the claim
+
+```YAML
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: storage-class-name # ibm-file-silver or ibmc-vpc-block-10iops-tier
+provisioner: kubernetes.io/aws-ebs # vpc.block.csi.ibm.io; external provsioner; kubernetes.io internal provsioner; each storage backend has its own provisioner
+parameters:
+  type: io1
+  iopsPerGB: "10"
+  fsType: ext4
+```
 
 ## Security Context
 
