@@ -7,5 +7,7 @@ spec:
   selector:
     component: postgres
   ports:
+    # port is arbitrary, you can set it to whatever you want
   - port: 5432
+    # The port the container running in the pod is listening at, not arbitrary
     targetPort: 5432

@@ -134,17 +134,56 @@ maintains a stable set of replica pods to ensure high availability (apiVersion: 
 ##### ClusterIP
 
 - Exposes a set of pods to other objects in the cluster
+- Default
+- A service has to matche all the `selectors` to the `lables` of the pod that it is sitting in front of
+  - Once matched, it registers all the replicas as Endpoints (Endpoints object have the same name as the service)
+  - Endpoint object keeps a record of the member pods the service will be forwarding requests to
+  - This object gets updated whenevr a pod dies and a new pod is spun up
+- If the Service is going to be forwarding requests to pods with multiple containers, the ports need to be **named**
+- Only accessible within the cluster
+
+##### Headless
+
+- If a client wants to talk to a particular Pod (as in the case of Stateful appilcations or services using gRPC) or pods want to talk to each otehr directly without involving the service (stateful pods replcas are not the same, in order for them to be syncing data, as in the case of db pods, them talking to each other directly is important)
+- How can a client know the IP addresses of the pods?
+  - One way is talking to the Kube API server directly (would need the serviceAccount Token for this)
+    - This will make the app too dependent on the K8s API
+  - Other way is to do DNS lookup (don't know how to yet), allowed by k8s
+    - When a client does this, a single IP address is returned which is the ClsuterIP of the service BUT when creating a service, if we set `spec.clusterIP=None` (This is how you declare headless service), the pod(s)'s IP is returned (What if there are multiple pods?)
+
+```YAML
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-headless-service
+spec:
+  # Headless!!
+  clusterIP: None
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+```
+
+- When Stateful apps are deployed (StatefulSet), there are two services that exist along side each other (saw this in the elasticesearch-master charts!), ClusterIP and Headless
+  - The ClusterIP service takes care of forwarding requests, LoadBalancing against pods etc. while the Headless service facilitates pod to pod communication for data synchronization
 
 ##### NodePort
 
 - Exposes container to the outside world (good for dev purposes)
 - Creates a communication layer between the outside world and the container running inside the pod (req comes to kube-proxy and then to Service NodePort)
+- Facilatates communication with a Pod on a static port on the worker node (30000 - 32767; port values outside of this range will not be accepted)
+- When a NodePort service is creaetd a clusterIP service is automatically created which will route rwquets to the NodePort service
+- Good for dev; BAD for Prod
 
 ##### LoadBalancer
 
 - Legacy way of getting traffic into our cluster
 - LoadBalancer will give access to only one pod
 - Ingress is the new kid on the block
+- Is an extension of the NodePort service type
 
 ##### Ingress
 
@@ -367,6 +406,10 @@ spec:
 - k8s automatically mounts the default service account to the pod of an application
 - A service account is restructed to running basic queries against teh API server
 - You can choose to not auto mount the service account by settign `spec.automountServiceAccountToken=false`
+
+## Taints and Tolerations
+
+-
 
 ## Sources
 
