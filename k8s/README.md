@@ -92,19 +92,20 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
   - Save it to a file - (If you need to modify or add some other details): `kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
   - You can then update the YAML file with the replicas or any other field before creating the deployment.
 
-- Service
+- *Service*
   - Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379: `kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml` _(This will automatically use the pod's labels as selectors)_
 Or
-
   - `kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml`  _(This will not use the pods labels as selectors, instead it will assume selectors as app=redis. You cannot pass in selectors as an option. So it does not work very well if your pod has a different label set. So generate the file and modify the selectors before creating the service)_
 
   - Create a Service named nginx of type NodePort to expose pod nginx's port 80 on port 30080 on the nodes: `kubectl expose pod nginx --port=80 --name nginx-service --type=NodePort --dry-run=client -o yaml` _(This will automatically use the pod's labels as selectors, but you cannot specify the node port. You have to generate a definition file and then add the node port in manually before creating the service with the pod.)_
-
-  Or
-
+Or
   `kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml` _(This will not use the pods labels as selectors)_
 
   - Both the above commands have their own challenges. While one of it cannot accept a selector the other cannot accept a node port. I would recommend going with the `kubectl expose` command. If you need to specify a node port, generate a definition file using the same command and manually input the nodeport before creating the service.
+
+- *ConfigMap*
+  - from literal: `kc create cm <configMapName> --from-literal=APP_COLOUR=pink`
+  - from env file: `kc create cm <configMapName> --from-file=<pathToEnvFile>` or `kc create cm <configMapName> --from-file=<specialKey>=<pathToEnvFile>`
 
 ## Kubernetes Objects
 
@@ -202,7 +203,7 @@ spec:
 - A Controller. Used for statefull applications, like databases, where instance ordering matters (for dbs with primary and secondary instances) (apiVersion: apps/v1)
 - Also manages scaling of pods like a ReplicaSet and Deployments
 - The pods created will be in a particular order, deletion of which will nbe in the reveerse order (default; can be parallelized)
-- PVCs linked to the pods are not deleted and must be manuallyt deleted
+- PVCs linked to the pods are not deleted and must be manually deleted
 
 ##### DaemonSet
 
@@ -284,6 +285,88 @@ spec:
   - ReadWriteOnce: single node
   - ReadOnlyMany: Multiple nodes can read from this
   - ReadWriteMany: Many nodes and can read from and write to
+
+## Security Context
+
+- Docker World (Link Obsidian here)
+  - The container and host machine share the same kernel space
+  - The host has its own set of processes that are separate from the container process (process isolation achieved by namespaces; Host has its ns and container has its ns)
+  - The container cannot see the host's processes but the host can see the container's processes (With different PIDs associated when checked from the host or container)
+  - By default, docker runs processes wihtin the container as the `root` user unless specified otherwise (Best prectice is to have the USER set as a part of the image in the dockerfile; `root` user within the container is not the same as the `root` user of the host)
+  - If we want to add more capabilities to the USER in the container, `docker run --cap-add <capabilityName> <imageName>`
+  - remove capabilities: `docker run --cap-drop <capabilityName> <imageName>`
+  - All privs: `docker run --privileged <imageName>`
+  - Full capabilities of the linux root user: `/usr/include/linux/capability.h`
+
+- K8s world
+  - securityContext settigns can be at the pod level or at the contianer level (takes precedence over former)
+    - if at pod level: all containers within the pod will have the same security context
+      - `spec.securityContext.runAsUser=1000`
+    - if at container level: obvious
+
+```YAML
+  containers:
+    - name: ubuntu
+      image: ubuntu
+      command: ["sleep", "3600"]
+      securityContext:
+        runAsUser: 1000
+        # capabilities only supported at the container level
+        capabilities:
+          add: ["MAC_ADMIN"]
+```
+
+## Service Account
+
+- user accounts used by humans and service account used by machines or apps (Prometheus, Jenkins etc, use this to talk to kube API server)
+- Creation of service account automatically creates a token secret (this token is used as a bearer toekn to talk to the api-server)
+- Mount service token as a volume into the container for a service that is running in the cluster that needs to talk to the API server, ex: Prometheus
+
+## Resource Requirements
+
+- 0.5 vCPU, 256 Mi default for containers (These defaults need to be created)
+
+```YAML
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+spec:
+  limits:
+  - default:
+      memory: 512Mi
+    defaultRequest:
+      memory: 256Mi
+    type: Container
+
+---
+
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-limit-range
+spec:
+  limits:
+  - default:
+      cpu: 1
+    defaultRequest:
+      cpu: 0.5
+    type: Container
+```
+
+- `resources.request.memory` and `resources.request.cpu`
+- `resources.request.limits.memory` and `resources.request.limts.cpu`
+  - To define upperbounds for cpu adn memory; cpu limit can't be exceeded but memory limit can be
+  - If a pod continously exceeds memory, it will be evicted
+
+## Miscelleneous but important
+
+- `CMD`: `spec.containers.args`
+- `ENTRPOINT`: `spec.containers.command`
+- `kubectl explain <resource or resource.field> --recursive | less`: to get the resource's details and identation right
+- k8s automatically mounts the default service account to the pod of an application
+- A service account is restructed to running basic queries against teh API server
+- You can choose to not auto mount the service account by settign `spec.automountServiceAccountToken=false`
 
 ## Sources
 
