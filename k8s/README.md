@@ -430,7 +430,81 @@ spec:
 
 ## Taints and Tolerations
 
--
+- Taints are on nodes (`kc taint nodes <nodeName> key=value:taint-effect` key-value ex: app=elasticesearch-master) and toleraations on Pods
+  - To untaint, `kubectl taint nodes <nodeName> key:NoSchedule-`
+  - ex: `kubectl taint nodes controlplane node-role.kubernetes.io/master:NoSchedule-`
+- Tells nodes to accept pods with the right tolerations!
+- `taint-effect`: What happens to a Pod if a taint isnot tolerated
+  - NoSchedule: Won't schedule to node
+  - PreferNoSchedule: Try to avoid schduling to the node
+  - NoExecute: No new pods will be scheduled, if there are remaining pods that don't tolerate a taint, evict them
+- At pod level:
+
+```YAML
+...
+kind: Pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+  tolerations:
+    - key: "app"
+      operator: "Equal"
+      value: "blue"
+      effect: "NoSchedule"
+```
+
+- A taint is set on the Master node when the cluster is initialized so that no pods are scheduled
+  - `kcdes node kubemaster | grep Taint`
+- Don't guarantee that your pod won't end up anywhere else
+
+## Node Selectors and Node Affinity
+
+- `kc label nodes <nodeName> <label-key>=<lable-value>`
+  - ex: `kc label nodes node-1 size=Large`
+- You can't be too expressive with this. For instance we cannot say schdule a pod on a Large or Medium node etc. Solution: *NodeAffinity*
+- NodeAffinity
+
+```YAML
+apiVersion: v1
+kind: Pod
+metdata:
+  name: mayapp-pod
+spec:
+  containers:
+  - name: bleh-big-container
+    image: bleh-big-container-image
+  nodeSelector:
+    size: Large # ibm-cloud.kubernetes.io/worker-pool-name: Large
+
+---
+
+# Same thing using NodeAffinity
+apiVersion: v1
+kind: Pod
+metdata:
+  name: mayapp-pod
+spec:
+  containers:
+  - name: bleh-big-container
+    image: bleh-big-container-image
+  affinity:
+    # Both affinity rules have no effect on already running pods
+    # requiredDuringSchedulingRequiredExecution: NEW, not released, will evict pod if label on node changes
+    nodeAffinity:
+      # preferredDuringSchedulingIgnoreDuringExecution: if a matching node is not found, simply ignore the nodeAffinity rules
+      requiredDuringSchedulingIgnoreDuringExecution: #  Should place pod on the node that matches the criteria below
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: size
+            operator: In # NotIn
+            values:
+            - Large
+            # - Medium this will be an OR operation
+            # - Small the NotIn Example
+          # - key: size
+          #   operator: Exists Checks if the key size exists
+```
 
 ## Sources
 
