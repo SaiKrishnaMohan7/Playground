@@ -5,6 +5,9 @@ Container Orchestration and management system
 Imperative deployment: Follow exactly the steps to arrive at the conatiner setup (ex: run these containers on this machine)
 Declarative Deployment: Our setup should look like this, make it happen (Master chooses where to run the container)
 
+- Managed Solution and self-hosted (configured?):
+  - The k8s master node is managed by the (cloud) provider, it is like a blackbox and you can't `kcg nodes` it. If self managed, you will be able to see the master and even deploy pods to it (It has taints on it to prevent that from happening but good to understand concept)
+
 ## Kubernetes Components
 
 - The Master + Worker form the cluster
@@ -68,7 +71,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
     - Pod to Pod comm within same node and between nodes
     - Pod to Service comm: solved by kind: Service (k8s sees Pods as VMs running in network with IPs assigned to them, IPs are dynamic!)
     - External to Service comm: Via kind: Service, type: LoadBalancer or via Ingresses (logical separation of routing rules)
-      - Ingresses configure a Level 7 Load Balancer (IP Layer; HTTP/HTTPS) and provides TLS, Name-based virtual Routing, Load Balancing and custom rules
+      - Ingresses configure a Level 7 Load Balancer (Application Layer) and provides TLS, Name-based virtual Routing, Load Balancing and custom rules
       - Ingress Contoller: an app that looks for changes to the Ingress Resource configuration (just like any other contollerm talks to etcd via the API server on the Control plane)
 
 ## kubectl Imperative commands
@@ -505,6 +508,16 @@ spec:
           # - key: size
           #   operator: Exists Checks if the key size exists
 ```
+
+## Multi-Container Pods
+
+- Same network space (localhost connectivity), volume sharing
+- Ambassador
+  - Facilitates some functionality like connecting to a db. The app conatienr can always connect to a db on localhost and the ambassador caontainer can facilitate this connection
+- Sidecar
+  - Logging container, proxy container
+- Adapter
+  - similar to sidecar but does some extra processing before sending to destination (Concept not too clear)
 
 ## Sources
 
