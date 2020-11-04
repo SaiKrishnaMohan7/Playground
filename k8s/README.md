@@ -384,6 +384,9 @@ parameters:
 - user accounts used by humans and service account used by machines or apps (Prometheus, Jenkins etc, use this to talk to kube API server)
 - Creation of service account automatically creates a token secret (this token is used as a bearer toekn to talk to the api-server)
 - Mount service token as a volume into the container for a service that is running in the cluster that needs to talk to the API server, ex: Prometheus
+- k8s automatically mounts the default service account to the pod of an application
+- A service account is restructed to running basic queries against teh API server
+- You can choose to not auto mount the service account by settign `spec.automountServiceAccountToken=false`
 
 ## Resource Requirements
 
@@ -427,9 +430,6 @@ spec:
 - `CMD`: `spec.containers.args`
 - `ENTRPOINT`: `spec.containers.command`
 - `kubectl explain <resource or resource.field> --recursive | less`: to get the resource's details and identation right
-- k8s automatically mounts the default service account to the pod of an application
-- A service account is restructed to running basic queries against teh API server
-- You can choose to not auto mount the service account by settign `spec.automountServiceAccountToken=false`
 
 ## Taints and Tolerations
 
