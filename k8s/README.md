@@ -55,6 +55,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
           - CRI:
             - *ImageService*: Image related operations
             - *RuntimeService*: Pod and container related operations
+        - _cAdvisor_ is a sub component (container advisor) retrieves metrics from pods and exposes it to the Metrics server via the kubelet API
 
       - _KubeProxy_
         - Implements the K8s service concept
@@ -116,6 +117,13 @@ Or
 
 - a group of interdependent containers (one or more) working together (apiVersion: v1)
 - share the same networking and filesystem space
+- Pod has a a few states in its lifecycle:
+  - Pending: Scheduler figuring out where to put the pod
+  - ContainerCreating
+  - Initializing
+  - Ready
+- A service that routes requests to pods will start doing so the moment it is in the `Ready` state
+  - The app running in the container in the pod may not be ready, Readiness and Liveness probes help with that
 
 ### ReplicaSet
 
@@ -298,8 +306,8 @@ spec:
 
 - On changing the containerPort of the client-pod in the `client-pod.yml` file and running kubectl apply client-pod.yml, we get
 
-  - this: `The Pod "client-pod" is invalid: spec: Forbidden: pod updates may not change fields other than`spec.containers[*].image`,`spec.initContainers[*].image`,`spec.activeDeadlineSeconds` or `spec.tolerations`(only additions to existing tolerations)` which means we can onlky update the shown properties for a pod
-  - Something similar for statefulsets: `The StatefulSet "redis" is invalid: spec: Forbidden: updates to statefulset spec for fields other than 'replicas', 'template', and 'updateStrategy' are forbidden`
+  - this: _The Pod "client-pod" is invalid: spec: Forbidden: pod updates may not change fields other than`spec.containers[*].image`,`spec.initContainers[*].image`,`spec.activeDeadlineSeconds` or `spec.tolerations`(only additions to existing tolerations)` which means we can onlky update the shown properties for a pod_
+  - Something similar for statefulsets: `The StatefulSet "redis" is invalid: spec: Forbidden: updates to statefulset spec for fields other than 'replicas', 'template', and 'updateStrategy' are forbidden
 
 - Solution: Deployment object
   - Maintains a set of identical pods, ensuring they have correct config and the right number of them (Very similar to the ReplicaSet spec; They both look exactly the same except `kind`)
@@ -425,12 +433,6 @@ spec:
   - To define upperbounds for cpu adn memory; cpu limit can't be exceeded but memory limit can be
   - If a pod continously exceeds memory, it will be evicted
 
-## Miscelleneous but important
-
-- `CMD`: `spec.containers.args`
-- `ENTRPOINT`: `spec.containers.command`
-- `kubectl explain <resource or resource.field> --recursive | less`: to get the resource's details and identation right
-
 ## Taints and Tolerations
 
 - Taints are on nodes (`kc taint nodes <nodeName> key=value:taint-effect` key-value ex: app=elasticesearch-master) and toleraations on Pods
@@ -518,6 +520,28 @@ spec:
   - Logging container, proxy container
 - Adapter
   - similar to sidecar but does some extra processing before sending to destination (Concept not too clear)
+
+## Readiness and Liveness Probes
+
+- Readiness: Is the app up to get going; Are you ready to party?
+- Liveness: Is the app working? Check periodically; You having a good time? (If an app freezes, readiness won't check that liveness check will trigger a restart)
+- `httpGet` for apis, `tcpSocket` for ports, `exec.command` for manually defining a script that checks for liveness or readiness
+  - `initialDelaySeconds`: if your app takes 5s to spin up, set this values so that the readiness or liveness check can happen
+  - `periodSeconds`: How often to probe
+  - `failureThreshold`: how many failures are you ok with (default 3)
+
+## Miscelleneous but important
+
+- `CMD`: `spec.containers.args`
+- `ENTRPOINT`: `spec.containers.command`
+- `kubectl explain <resource or resource.field> --recursive | less`: to get the resource's details and identation right
+- `kcl <podName> <containerName-WhenThereAreMultiplePods>`
+- `kubectl top pod` and `kubectl top node` for getting performance metrics for pods and nodes
+
+## Monitoring
+
+- Metrics Server: in-memory, light-weight
+- kubeliet
 
 ## Sources
 
