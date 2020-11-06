@@ -84,7 +84,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
 - Use the above two in combination to generate a resource definition file quickly, that you can then modify and create resources as required, instead of creating the files from scratch.
 
 - _POD_
-  - Create an NGINX Pod: `kubectl run nginx --image=nginx`
+  - Create an NGINX Pod: `kubectl run nginx --image=nginx`: This actually creates a deployment (But I was able to delete the pod; Scrutinize)
   - Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run): `kubectl run nginx --image=nginx  --dry-run=client -o yaml`
 
 - Deployment
@@ -530,13 +530,77 @@ spec:
   - `periodSeconds`: How often to probe
   - `failureThreshold`: how many failures are you ok with (default 3)
 
+## Rolling updates and Rollbacks
+
+- `kubectl top pod` and `kubectl top node` for getting performance metrics for pods and nodes
+- `kubectl rollout status <deploymentNameOrStatefulSetName>` for chceking the status of deployment
+- `kubectl rollout history <deploymentNameOrStatefulSetName>`: To view the history of change on a deployment
+- Deployment Stragtegies
+  - Recreate: Destroy all pods and then bring the new pods up --> Downtime (Scale down first and then Scale up)
+  - RollingUpdate: Gradually kill pods and bring new ones up --> No Downtime (Default) (Scale up then scale down gradually as pods become READY)
+- `kubectl rollout undo <deploymentName> <--revision=revisionNumber>`: to revert to a previous version; If you have revision number, then we can roll back to a particular revision
+
+## Jobs and CronJobs
+
+- Containers running in a pod will be restarted if they stop even if their work is done, say `docker run ubuntu expr 3 + 5` will exit after the job is done but k8s will bring it back up. If we want a short running process then we use `kind: Job`
+  - `restartPolicy: Always`: default
+
+```YAML
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: math-add-job
+spec:
+  # number of pods (replicas kinda deal); Creates pods till three pods complete their job successfully; This is sequential if parallelism not set
+  completions: 3
+  # non-sequential
+  parallelism: 3
+  backoffLimit: 25 # This is so the job does not quit before it succeeds.
+  template:
+    spec:
+      containers:
+        - name: math-add
+          image: ubuntu
+          command: ['expr', '3', '+', '2']
+      restartPolicy: Never
+```
+
+- CronJobs:
+
+```YAML
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: throw-dice-cron-job
+spec:
+  schedule: "30 21 * * *"
+  jobTemplate:
+    spec:
+      completions: 3
+      parallelism: 3
+      backoffLimit: 25 # This is so the job does not quit before it succeeds.
+      template:
+        spec:
+          containers:
+          - name: math-add
+            image: kodekloud/throw-dice
+          restartPolicy: Never
+```
+
 ## Miscelleneous but important
 
 - `CMD`: `spec.containers.args`
 - `ENTRPOINT`: `spec.containers.command`
 - `kubectl explain <resource or resource.field> --recursive | less`: to get the resource's details and identation right
 - `kcl <podName> <containerName-WhenThereAreMultiplePods>`
-- `kubectl top pod` and `kubectl top node` for getting performance metrics for pods and nodes
+- `kcg po --watch`: To actively see the chnage in status of the pod
+- `kubectl set image <deploymentName> <containerImageName=containerImage>` - update the image of the existing deployment
+- `kubectl rollout history deployment nginx --revision=1`: To check the revision of each deployment version (starts from 1)
+- `kubectl set image deployment nginx nginx=nginx:1.17 --record`: To record the change to a deployment (the command that was run)
+- `kubectl cordon <nodeName>`: Cordons the node off and takes it out of schedulable nodes
+- `kubectl drain node <nodeName>`: Drains the node of all pods, statefulsets etc. (If there's a pdb etc. this will require some aditional flags)
+- `kubectl create cronjob <name> --image=<imageName> --sechdule=<CronSchedule>`
+- `kubectl cp`: For copying; needs exploration
 
 ## Monitoring
 
