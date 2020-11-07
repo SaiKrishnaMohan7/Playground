@@ -92,12 +92,12 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
   - Generate Deployment YAML file (-o yaml). Don't create it(--dry-run): `kubectl create deployment --image=nginx nginx --dry-run=client -o yaml`
 
 - *IMPORTANT:*
-  - Not too sure--> kubectl create deployment does not have a --replicas option. You could first create it and then scale it using the kubectl scale command.
   - Save it to a file - (If you need to modify or add some other details): `kubectl create deployment --image=nginx nginx --dry-run=client -o yaml > nginx-deployment.yaml`
   - You can then update the YAML file with the replicas or any other field before creating the deployment.
 
 - *Service*
   - Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379: `kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml` _(This will automatically use the pod's labels as selectors)_
+  - `kubectl expose deployment <deploymentName> --name=<nameOfService> --target-port=<port> --type=<serviceType> --port=<port> --dry-run=client -o yaml > svc.yaml`: to create service imperatively for a deployment ()
 Or
   - `kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml`  _(This will not use the pods labels as selectors, instead it will assume selectors as app=redis. You cannot pass in selectors as an option. So it does not work very well if your pod has a different label set. So generate the file and modify the selectors before creating the service)_
 
@@ -587,6 +587,11 @@ spec:
           restartPolicy: Never
 ```
 
+## Monitoring
+
+- Metrics Server: in-memory, light-weight
+- kubeliet
+
 ## Miscelleneous but important
 
 - `CMD`: `spec.containers.args`
@@ -602,10 +607,44 @@ spec:
 - `kubectl create cronjob <name> --image=<imageName> --sechdule=<CronSchedule>`
 - `kubectl cp`: For copying; needs exploration
 
-## Monitoring
+## An opinion to size clusters, cluster design
 
-- Metrics Server: in-memory, light-weight
-- kubeliet
+- Check this out when setting your cluster. Taken  from Medium so take it with a grain of salt
+- `The number of containers per node = Square root of the closest lower perfect square to the total number of containers, provided the number of containers per node doesn’t exceed the recommended value`
+- `Number of nodes = Total number of containers / The number of containers per node`
+- `Overprovision factor = Number of containers per node * max resource per container / (Number of nodes — Max planned unavailable nodes)`
+- `Node capacity = max resource required per container * the number of containers per node + overprovision factor + Kubernetes system resource requirements`
+
+Example
+
+Let’s say we need two node pools:
+
+Microservices — 200 microservices with 0.1 core and 100MB RAM max resource requirement per container
+Databases — 20 PostgreSQL databases with 2 cores and 4GB RAM max resource requirement per container
+
+Assuming that the Kube system resources utilise 0.5 cores and 0.5 GB of RAM and we plan for one node to fail at a time
+For the microservices node pool:
+
+```
+Nearest lower perfect square number = 196
+Number of Containers per node = sqrt(196) = 14
+Number of Nodes = 200/14 = 14.28 ~ 15
+Max planned unavailable nodes = 1
+Overprovision factor = 14 * (0.1 core + 100MB RAM)/(15–1) = 0.1 core + 100MB RAM
+Node Capacity = (0.1 core + 100MB RAM) * 14 + 0.1 core + 100MB RAM + 0.5 cores + 500MB RAM = 2 core + 2GB RAM
+```
+
+For the database pool:
+
+```
+Nearest lower perfect square number = 16
+Number of Containers per node = sqrt(16) = 4
+Number of Nodes = 20/4 = 5
+Max planned unavailable nodes = 1
+Overprovision factor = 4 * (2 core + 4GB RAM)/(5–1) = 2 core + 4GB RAM
+Node Capacity = (two core + 4GB RAM) * 4 + 2 core + 4GB RAM + 0.5 cores + 0.5 GB RAM = 10.5 core + 20.5 GB RAM
+Therefore, for the microservices pool, you would need 15 worker nodes with 2 cores and 2 GB RAM each, and for the database pool, you would need five worker nodes with 10.5 cores and 20.5 GB RAM each. You can round the numbers to the next higher available machine type for simplicity.
+```
 
 ## Sources
 
