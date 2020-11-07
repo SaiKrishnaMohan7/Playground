@@ -515,7 +515,7 @@ spec:
 
 - Same network space (localhost connectivity), volume sharing
 - Ambassador
-  - Facilitates some functionality like connecting to a db. The app conatienr can always connect to a db on localhost and the ambassador caontainer can facilitate this connection
+  - The Ambassador container is a special type of sidecar container which simplifies accessing services outside the Pod
 - Sidecar
   - Logging container, proxy container
 - Adapter
