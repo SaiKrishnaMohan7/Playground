@@ -355,6 +355,32 @@ parameters:
   type: io1
   iopsPerGB: "10"
   fsType: ext4
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-log-1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /pv/logcontrolplane
 ```
 
 ## Security Context
@@ -590,7 +616,71 @@ spec:
 ## Monitoring
 
 - Metrics Server: in-memory, light-weight
-- kubeliet
+- kubelet
+
+## Network Policy
+
+- Tightening Ingress and Egress from pods to only specific pods (ex: the front-end app doesn't need to talk to the db pod directly)
+- By default, All-Allow, k8s allows any pod to talk to any other pod or services within the cluster
+- Only applicable to the pod on which the network policy is applied
+- They are enforced by the network solutions (calico etc.) that are implemented in the cluster (all network solutions do not support this)
+
+```YAML
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: api-pod
+    ports:
+    - protocol: TCP
+      port: 3306
+```
+
+```YAML
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internal-policy
+spec:
+  podSelector:
+    matchLabels:
+      name: internal
+  policyTypes:
+  - Egress
+  - Ingress
+  ingress:
+    - {}
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          name: payroll-service
+      ports:
+      - protocol: TCP
+        port: 8080
+  - to:
+    - podSelector:
+        mathcLabels:
+          name: my-sql
+      ports:
+      - protocol: TCP
+        port: 3306
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+```
 
 ## Miscelleneous but important
 
