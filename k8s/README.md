@@ -161,6 +161,7 @@ maintains a stable set of replica pods to ensure high availability (apiVersion: 
     - This will make the app too dependent on the K8s API
   - Other way is to do DNS lookup (don't know how to yet), allowed by k8s
     - When a client does this, a single IP address is returned which is the ClsuterIP of the service BUT when creating a service, if we set `spec.clusterIP=None` (This is how you declare headless service), the pod(s)'s IP is returned (What if there are multiple pods?)
+- All it does is create DNS entries (no LoadBalancing against Endpoint pods)
 
 ```YAML
 apiVersion: v1
@@ -176,6 +177,26 @@ spec:
     - protocol: TCP
       port: 27017
       targetPort: 27017
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongo-pod
+spec:
+  containers:
+    - name: mongodb:latest
+      image: mongodb
+  # name of the headless service so that a DNS record can be created
+  subdomain: mongodb-headless-service
+  # Required for the DNS record (DNS A Records: indicates IP address of a domain), basically you can make this up but it has to be the same across all pods
+  # of course, if creating an Deployment the pod spec would be a part of the Deployment. Setting this makes the address constant, this pod (or set of pods) will
+  # always be available at hostname[+1 for other pods of same kind].subdomain.namespace.cluster.local
+  ## BUT, when using a StatefulSet, this is taken care of by it for you all that is needed is the spec.serviceName: <yourHeadlessService> and the SS automagically
+  # constructs the DNS A entry for your pod
+  hostname: mongo-pod
+
 ```
 
 - When Stateful apps are deployed (StatefulSet), there are two services that exist along side each other (saw this in the elasticesearch-master charts!), ClusterIP and Headless
