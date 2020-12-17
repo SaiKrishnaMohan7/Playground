@@ -1,13 +1,13 @@
 # Go for JavaScript Developers
 
-Prepared for Frontend Masters
-September, 2019
+Systems programming language
 
-## How To Use This Repo
+## JS vs Go
 
-Welcome to [Go for JavaScript Developers][go]!
-
-The master branch of this repo is a starting point that is meant to go along with a series of [slides][slides]. Each chapter contains markdown files that include instructions for the exercise as well as teaching materials. All Go files are located under the code/ directory of each chapter that include both teaching materials and solutions to the exercises (if applicable).
+- Dynamically typed vs strict typing
+- Built in Error handling vs Explicit error handling, errors are values (huh?) so you need to tackle what all can go wromg first and then get to the meat of it
+- Single Threaded vs Multithreaded, concurrency
+- Fluid opinions (yuck) vs Built in linters, tooling hard to write shit code
 
 ## Setup
 
