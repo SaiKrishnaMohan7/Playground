@@ -30,6 +30,7 @@ func printAgeAndReturnMultipleNamed(age int) (randomVarOne int, randomVarTwo int
 	return
 }
 
+// Variadic function
 // ages is a collection! We can iterate
 // Notice no return, void fucntion concept?
 func printAgeVariadic(ages ...int) {
