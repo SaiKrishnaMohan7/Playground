@@ -2,10 +2,8 @@ package main
 
 import "fmt"
 
-func updateEmail(user User, email string) string {
+func updateEmail(user *User, email string) {
 	user.Email = email
-
-	return email
 }
 
 // User struct tries things
@@ -17,6 +15,6 @@ type User struct {
 func main() {
 	user := User{ID: 1, FirstName: "Thitla", Email: "hello@challo.com"}
 	fmt.Println("User: ", user)
-	updateEmail(user, "challo@aao.com")
-	fmt.Println("User")
+	updateEmail(&user, "challo@aao.com")
+	fmt.Println("User", user)
 }
