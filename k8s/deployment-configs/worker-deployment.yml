@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: worker
+  template:
+    metadata:
+      labels:
+        component: worker
+    spec:
+      containers:
+      - name: worker
+        image: stephengrider/multi-worker
+        # Environment variables for this container, name - value pairs
+        env:
+          - name: REDIS_HOST
+            # name of the clusterIp service via which this container will connect to the redis conatiner
+            value: redis-cluster-ip-service
+          - name: REDIS_PORT
+            value: '6379'
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

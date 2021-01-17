@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      # When this pod gets created, it needs a persistent store. So we tell it to look for a persistentVolumeClaim defined by `database-persistent-volume-claim.yml`
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+              claimName: database-persistent-volume-claim
+      containers:
+      - name: postgres
+        image: postgres
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgpassword
+                key: PGPASSWORD
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+          - name: postgres-storage # matches `name` provided in the `volumes` section
+            mountPath: /var/lib/postgresql/data
+            # Any data inside the conatiner stores in the mounPath will be stored in a subFolder defined by `subPath` (postgres specific)
+            subPath: postgres

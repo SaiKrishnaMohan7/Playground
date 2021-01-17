@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+# A spec for any k8s object `spec` defines what is inside the object we are creating
+spec:
+  # Some ReplicaSet (same for Replication Controller) action
+  replicas: 3
+  # ReplicaSets (monitor pods and spin up new ones, is a process that checks this) needs a `selector` definition (Replication Controller doesn't require this but is also old is replced by ReplicaSet)
+  ## With this a ReplicaSet can manage pods that were created before the ReplicaSet was created i.e. pods that were created not as a part of the pod template in a ReplicaSet
+  ## This label-selector mechanism helps replicaSets to monitor pods (filter)
+  selector:
+    matchLabels:
+      component: web
+  # Pod Template, also has `spec` and defines what is in the Pod
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+      - name: client
+        image: stephengrider/multi-client
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+# kubectl replace -f <k8sObjectDefinition>.yaml
+# kubectl edit <k8sObjectDefinition>.yaml (Brings it up in Vi)
+# kubectl scale -replicas=6 -f <k8sObjectDefinitionThatSupportsReplicas>.yaml
+# kubectl scale --replicas=5 rs/new-replica-set
+# kubectl create deployment httpd-frontend --replicas=3 --image=httpd:2.4-alpine
+# kubectl create namespace test-123 --dry-run -o json (-o wide, name: print only resource name and nothing else, -o yaml)
+# kubectl run pod redis --image=redis:alpine -l tier=db --dry-run=client -o yaml > redis-pod-spec.yaml
+# kubectl run custom-nginx --image=nginx --port=8080
+# kubectl run httpd --image=httpd:alpine --port=80 --expose create pod and service

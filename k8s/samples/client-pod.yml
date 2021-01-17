@@ -1,0 +1,25 @@
+# These config files are supplied to kubectl that in turn talk to the kube-api-server, an implementation of the kubeAPI,
+# to create objects
+
+# Scopes/Limits the type of objects we want to create within a config file. It gives us access to objects below
+# if we used apiVersion: apps/v1 we'd get access to ControllerRevision, StatefulSet (Objects that override kube scheduler?)
+apiVersion: v1
+# Tells what kind of object you want
+kind: Pod
+# information about this object, metadata of this pod (object)
+metadata:
+  # name, kind create a unique indentifier that the Master uses to update that object (ex: this pod has to be updated with a new image, we make that change in the config file and Master checks name and kind and looks for that exact pod and updates it)
+  name: client-pod
+  labels:
+    # This key: value pair, is user defined. Could very well be `tier: frontend`
+    component: web
+spec:
+  containers:
+    - name: client
+      image: stephengrider/multi-worker
+      ports:
+        - containerPort: 3000
+      resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

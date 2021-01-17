@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-node-port
+# What sub-type of Service object is this
+spec:
+  type: NodePort
+  # All the ports that need to be opened up on the target object
+  ports:
+    # port opens up the defined port so that if any other container wants to connect to our client-pod (component: web ??) it can do so via this port
+  - port: 3050
+    # port inside of the target pod that we want to open up traffic to (should match containerPort from Pod definition)
+    targetPort: 3000
+    # port accessed by browser to test out container running inside target pod (30000 - 32767); Randomly assigned if not defined; That's why not used in Prod ??
+    nodePort: 31515
+  # label-selector system (relationship) is used to link the container running in the pod to the NodePort that is going to handle the (forward the req) req to the pod
+  # whom am I going to forward this traffic to? To any Pod or object that has `component: web`
+  selector:
+    component: web
