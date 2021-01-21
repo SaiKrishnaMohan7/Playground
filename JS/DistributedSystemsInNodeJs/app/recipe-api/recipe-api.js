@@ -55,3 +55,22 @@ app.get('recipes/:id', async (req, reply) => {
 app.listen(PORT, HOST, () => {
   console.log(`Prducer service (Recipe) running at http://${HOST}:${PORT}`);
 });
+
+/**
+ * Configure TLS, https
+ * NOTE: This should never be handled by the app server, this should be done by a Reverse Proxy as it is CPU intensive
+ *
+ * const app = server({
+  https: {
+    key: fs.readFileSync(__dirname + '/tls/self-signed_basic-key.key'),
+    cert: fs.readFileSync(__dirname + 'shared/tls/self-signed_basic-certificate.cert')
+  }
+});
+ *
+ *
+ * The command in the book did not work, Chap2: Protocols, pg 29-30
+ * used this:
+ *
+ * for private key: openssl genrsa -out self-signed_basic-key.key 2048
+ * for cert: openssl req -new -x509 -key self-signed_basic-key.key -out self-signed_basic-certificate.cert -days 365
+ */

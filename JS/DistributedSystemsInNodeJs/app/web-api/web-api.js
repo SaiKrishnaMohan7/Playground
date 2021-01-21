@@ -29,3 +29,22 @@ server.get('/', async () => {
 app.listen(PORT, HOST, () => {
   console.log(`Consuer service (Web API) running at http://${HOST}:${PORT}`);
 });
+
+/**
+ * Talking to a service that has https enabled
+ *
+ * const options = {
+  agent: new https.Agent({
+    ca: fs.readFileSync(__dirname + 'shared/tls/self-signed_basic-certificate.cert'),
+  })
+};
+ * server.get('/', async () => {
+  const req = await fetch(`http://${TARGET}/recipes/42`, options);
+  const producerData = await req.json();
+
+  return {
+    consumerId: process.pid,
+    producerData,
+  };
+});
+ */
