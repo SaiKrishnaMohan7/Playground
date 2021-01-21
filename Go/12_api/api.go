@@ -72,7 +72,7 @@ func getPeople(responseWriter http.ResponseWriter, request *http.Request) {
 
 	var allPeople AllPeople
 
-	// Marshalling - Converting to JSON from another type?
+	// Marshalling - Manually controlling how an internal object is represented in JSON (using JSON.stringify(obj), in JS, is a bad idea)
 	// Convert to JSON and store in the allPeople var; since we want to actually modify the variable, pass in memory adrress
 	if err := json.Unmarshal(bytes, &allPeople); err != nil {
 		http.Error(responseWriter, err.Error(), http.StatusBadRequest)
