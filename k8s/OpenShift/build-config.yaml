@@ -1,0 +1,21 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: "my-build-config"
+spec:
+  runPolicy: Serial
+  source:
+      git:
+        ref: master
+        uri: https://github.com/mmumshad/simple-webapp-docker
+      type: Git
+  strategy:
+      sourceStrategy: dockerStrategy
+      type: Docker # Dockerfile is already available (user provided)
+      # type: Source # source to image startegy - auto create dockerfile (image) by scanning the app repo
+  output:
+    to:
+      kind: ImageStreamTag # Builds a SHA-256 id to prevent version skew and keep the app imgae stable and dependable (Say the source where you pull the image from gets modified, this ImageStream component will refer to the SHA256 id it created to refer to thhe previous version of the image)
+      name: simple-webapp-docker:latest
+  triggers:
+    - type: ConfigChange
