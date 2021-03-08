@@ -21,7 +21,9 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
         - Runs the Controller processes
         - Logically split into following but is compiled into a single binary (bin; Very cool, mind blowing) and run as a single process
           - *Node Controller*: Noticing and responding when a node goes down (receives the heartbeats from the nodes to keep track)
-          - *ReplicationController*: Maintain correct set of pods (replaced by ReplicaSet). Talks to etcd via the apiServer to the deed
+          - *ReplicationController*:
+            - Maintain correct set of pods (replaced by ReplicaSet). Talks to etcd via the apiServer to the deed
+            - ReplicaSet use `selector` (required in ReplicaSet, optional in Replication Controller) to figure out what pods it is responsible for; This can be used to include pods that were created before the ReplicaSet was created
           - *Endpoints Controller*: Joins services and pods (services facilitate pod to pod communication)
           - *Service Account and Token Controller*: Manages defaukts accounts and api access tokens
 
@@ -29,6 +31,13 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
         - Front-End of the k8s control plane
         - All chatter between all components happens through the API Server that sits on the master (kubectl talks to the API Server!)
         - Main implementation of the kube-api
+        - **Duties**:
+          - Authenticate user
+          - Validate Request
+          - Update etcd and inform user of action (get pod for example)
+          - Scheduler sees there's a pod with no home so it places the pod on the approrpiate node and informs the kube-api-server
+          - Update Etcd
+          - KubeAPI server let's Kubelet know that talks to the Container runtime to deploy the image and reports back to kubeAPI server
 
       - _etcd cluster (cluster state management)_
         - Cluster state config, service discovery (coreDNS running in kube-system ns on the master, part of the control plane; Single process; Three pods managed by a reelicaSet)
@@ -216,6 +225,7 @@ spec:
 - LoadBalancer will give access to only one pod
 - Ingress is the new kid on the block
 - Is an extension of the NodePort service type
+- If on a cloud platform this service type can be leveraged to set up a load balancer on the cloud
 
 ##### Ingress
 
