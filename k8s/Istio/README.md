@@ -2,7 +2,7 @@
 
 A kind of Service Mesh. An extra layer of software atop k8s
 Think of it as Pods sitting on top of the service mesh
-![ServiceMeshConcept]("https://github.com/SaiKrishnaMohan7/Playground/blob/master/k8s/Istio/diagrams/ServiceMeshConcept.png")
+![ServiceMeshConcept](https://github.com/SaiKrishnaMohan7/Playground/blob/235a3298b2be359489db5cae8b5349caa424d4e5/k8s/Istio/diagrams/ServiceMeshConcept.png)
 
 Istio injects a sidecar (Envoy) into the pod.
 ![Istio implementation of Service Mesh Concept](https://github.com/SaiKrishnaMohan7/Playground/blob/master/k8s/Istio/diagrams/IstioImplementationOfServiceMeshConcept.png)
