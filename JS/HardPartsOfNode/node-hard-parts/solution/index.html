@@ -1,0 +1,60 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <!-- Comment out the line below to do the extension problem! -->
+<link rel="stylesheet" type="text/css" href="./style.css"> -->
+</head>
+<body>
+Display only this page
+<button id='hiButton'>Say hi!</button>
+<button id='helloButton'>Greet the server with hello!</button>
+<button id='whatsUpButton'>Greet the server with what's up!</button>
+<button id='updateButton'>Send an updated message!</button>
+<button id='deleteButton'>Delete the messages!</button>
+
+</body>
+<script>
+var xmlHttp = new XMLHttpRequest();
+xmlHttp.onreadystatechange = function(req, res) {
+  if (xmlHttp.readyState === 4) {
+    console.log(xmlHttp.responseText); // what is providing this responseText?
+  }
+}
+
+hiButton.onclick = function() {
+  // what route are we sending this request to?
+  xmlHttp.open('POST','/sayHi', true);
+  xmlHttp.setRequestHeader('Content-type','text');
+  xmlHttp.send('hi'); // what is receiving this greeting?
+}
+
+helloButton.onclick = function() {
+  // what route are we sending this request to?
+  xmlHttp.open('POST','/greeting', true);
+  xmlHttp.setRequestHeader('Content-type','text');
+  xmlHttp.send('hello'); // what is receiving this greeting?
+}
+
+whatsUpButton.onclick = function() {
+  // what route are we sending this request to?
+  xmlHttp.open('POST','/greeting', true);
+  xmlHttp.setRequestHeader('Content-type','text');
+  xmlHttp.send('what\'s up'); // what is receiving this greeting?
+}
+
+updateButton.onclick = function() {
+    // what route are we sending this request to?
+    xmlHttp.open('PUT','/update-greeting', true);
+    xmlHttp.setRequestHeader('Content-type','text');
+    xmlHttp.send('updated message'); // what is receiving this greeting?
+}
+
+deleteButton.onclick = function() {
+    // what route are we sending this request to?
+    xmlHttp.open('DELETE','/delete-greeting', true);
+    xmlHttp.setRequestHeader('Content-type','text');
+    xmlHttp.send(); // what is receiving this greeting?
+}
+</script>
+</html>
