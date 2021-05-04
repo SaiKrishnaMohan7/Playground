@@ -727,6 +727,8 @@ spec:
 - `kubectl drain node <nodeName>`: Drains the node of all pods, statefulsets etc. (If there's a pdb etc. this will require some aditional flags)
 - `kubectl create cronjob <name> --image=<imageName> --sechdule=<CronSchedule>`
 - `kubectl cp`: For copying; needs exploration
+- CIDR Calculation for number of addresses in a subnet
+  - The number of addresses of a subnet may be calculated as 2^^(address length − prefix length), where address length is 128 for IPv6 and 32 for IPv4. For example, in IPv4, the prefix length /29 gives: 32 − 29 = 23 = 8 addresses.
 
 ## An opinion to size clusters, cluster design
 
