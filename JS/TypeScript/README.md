@@ -3,6 +3,11 @@
 Typed, syntactic superset of JS; *Compiles* to readable JS; Comes with Language, LanguageServer and Compiler; Moves errors from runtime to compile time
 
 - A typing system for a dynamically typed language
+- A structural type system, only cares about the shape of the object and not if an object is an instance of a particular type
+- A **Union** (|) will contain an *intersection* of properties of the uniting types (you can only access properties that are common in both types) and an **intersection** (&) will contain a *union* of properties of intesecting types (you can acces _any_ property that are on either of the types)
+
+## Type equivalence
+
 
 ## Commands run
 

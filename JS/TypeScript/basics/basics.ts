@@ -132,6 +132,9 @@ let ee: Address = { houseNumber: 33 };
 /**
  * (14) Union types
  * Sometimes we have a type that can be one of several things
+ *
+ * 🔺 Better Explanation: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types
+ * 🧡  A union of types seems to have the _intersection_ of those types' properties
  */
 
 export interface HasPhoneNumber {
@@ -144,6 +147,7 @@ export interface HasEmail {
   email: string;
 }
 
+// contactInfo can be of either HasEmail OR HasPhoneNumber type and will ONLY have properties that are COMMON in both types
 let contactInfo: HasEmail | HasPhoneNumber =
   Math.random() > 0.5
     ? {
@@ -162,6 +166,8 @@ contactInfo.name; // NOTE: we can only access the .name property  (the stuff Has
 /**
  * (15) Intersection types
  */
+
+
 let otherContactInfo: HasEmail & HasPhoneNumber = {
   // we _must_ initialize it to a shape that's asssignable to HasEmail _and_ HasPhoneNumber
   name: "Mike",
