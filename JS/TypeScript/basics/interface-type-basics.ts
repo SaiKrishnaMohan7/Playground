@@ -14,7 +14,10 @@ type NumVal = 1 | 2 | 3 | NumVal[];
 
 // == INTERFACE == //
 /**
- * (2) Interfaces can extend from other interfaces
+ * (2) Interfaces can extend from other interfaces (Interfaces can describe objects, arrays, call signatures)
+ * Type Aliases are more flexible than Intefaces, they can be used with primitive types but not Interfaces
+ * Interfaces cannot be used to describe primitive types
+ * Interfaces can be used to describe anything that has a prototype chain associated with it like Object, Fucntion and cutom defined types but not primitves
  */
 
 export interface HasInternationalPhoneNumber extends HasPhoneNumber {
@@ -29,12 +32,13 @@ interface ContactMessenger1 {
   (contact: HasEmail | HasPhoneNumber, message: string): void;
 }
 
+// A type alias expressing the same thing as the interface above; this is describing a fucntion type with a type alias (custom defined function type)
 type ContactMessenger2 = (
   contact: HasEmail | HasPhoneNumber,
   message: string
 ) => void;
 
-// NOTE: we don't need type annotations for contact or message
+// NOTE: we don't need type annotations for contact or message (contextual inference for params and return type; don't need to add type annotation to params)
 const emailer: ContactMessenger1 = (_contact, _message) => {
   /** ... */
 };
@@ -62,7 +66,7 @@ interface ContactConstructor {
 interface PhoneNumberDict {
   // arr[0],  foo['myProp']
   [numberName: string]:
-    | undefined
+    | undefined // narrowing this type with this, means, when you access this property it may not be there at all or will be that object if it is
     | {
         areaCode: number;
         num: number;
@@ -104,14 +108,14 @@ phoneDict.mobile; // MAYBE present
 // == TYPE ALIASES vs INTERFACES == //
 
 /**
- * (7) Type aliases are initialized synchronously, but
+ * (8) Type aliases are initialized synchronously, but
  * -   can reference themselves
  */
 
 type NumberVal = 1 | 2 | 3 | NumberVal[];
 
 /**
- * (8) Interfaces are initialized lazily, so combining it
+ * (9) Interfaces are initialized lazily, so combining it
  * -   w/ a type alias allows for recursive types!
  */
 
