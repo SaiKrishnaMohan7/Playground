@@ -47,6 +47,17 @@
     - Break CPU heavy operations across different stacks
       - ex: for processing 1000 records, break into batches of 10, use `setImmediate()` at the end of each to continue processing
     - DO NOT USE `nextTick` for this, the microtask queue (first) will *never* empty, no RangeError will be thrown and the process will be a zombie process that will eat through CPU
+
+    ```javascript
+    const nt_recursive = () => process.nextTick(nt_recursive);
+    nt_recursive();
+
+    const si_recursive = () => setImmediate(si_recursive); // Making setImmediate calls within a check phase adds cbs to the next event loop iteration's check phase, not the current
+    si_recursive();
+
+    setInterval(() => console.log('hi'), 10);
+    ```
+
   - a fucntion passed to `setImmediate()` runs in the *next* iteration of the event loop (next tick) and the fucntion passed to `nexTick()` will run during the *same* iteration of the event loop (opposite of name)
 
   - *Don't introduce Zalgo*
