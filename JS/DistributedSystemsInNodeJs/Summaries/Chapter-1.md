@@ -10,7 +10,7 @@
 
 - **EventLoop** (pg 4-6)
   - Concurrency in JS - EventLoop
-  - Manages a queue of events that re used to trigger callbacks (cb) and move the app along
+  - Manages a queue of events that are used to trigger callbacks (cb) and move the app along
   - EventLoop checks for more work to **only once a stack is complete**
   - takes non-zero amount of time to check for more work to do
   - a long running fucntion *blocks the Event Loop*
