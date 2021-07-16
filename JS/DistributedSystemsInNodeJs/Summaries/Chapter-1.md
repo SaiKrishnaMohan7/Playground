@@ -38,14 +38,14 @@
 - `.ref() and .unref()`
   - Keep process alive v/s don't
 - `setTimeout()` in browser returns number, in Node returns an object with methods attached to it just like most NodeJS APIs
-  - the methods in that returned object gives userland contol over compter internals (links strongly THP Node Will Sentance)
+  - the methods in that returned object gives userland contol over computer internals (links strongly THP Node Will Sentance)
   - ref and unref are two such methods
   - Think, when we run `fs.readFile()` or run `http.createServer()`, these NodeAPIs are giving you direct control over computer internals, the case of http module, a network socket!
 
 - **Event Loop Tips**
   - *Don't starve the event loop*
     - Break CPU heavy operations across different stacks
-      - ex: for processing 1000 records, break into batches of 10, use `setImmediate()` at the end of each to continue processing
+      - ex: for processing 1000 records, break into batches of 100, use `setImmediate()` at the end of each to continue processing
     - DO NOT USE `nextTick` for this, the microtask queue (first) will *never* empty, no RangeError will be thrown and the process will be a zombie process that will eat through CPU
 
     ```javascript

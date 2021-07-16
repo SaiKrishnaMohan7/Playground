@@ -41,6 +41,43 @@
       - *QUIC Streams*
         - Using a single UDP connection, send parallel requests/responses! It can tell the difference between the parallel requests/responses. This means that if one req/res experiences packet loss, the others aren't stopped.
 
+- **HTTP Semantics**
+  - *HTTP methods*
+  - *Idempotency*
+    - If the result of an operation is unknown (network failure or something) it is safe for client to try again
+  - *Status Codes*
+    - text following the number (200 OK) is called Reason Phrase. HTTP/2 omits this, only code
+  - *Client versus Server errors*
+    - `400 - 499`: Client messed up
+    - `500 - 599`: Server messed up
+  - *Response Caching*
+    - Only responses get cached, typically successsful GETs
+      - if error code, don't cache
+    - *How long a response should be cached?*
+      - `Expires` header
+  - *Statelessness*
+    - Every request has enough info to set desired state
+    - There are ways to simulate state (appears like it has state) over HTTP
+      - `Cookie` header and setting a unique session identifier in db
+
+- **HTTP Compression**
+  - *Only compresses **BODY** of request*, only part of header that is touched is setting `Content-Length`
+    - Not a pain point when it comes to service to service comm, that can work with a finite set (subset) of HTTP headers
+    - In browser land, headers can be few kilobytes, not ideal (think yucky tracking cookies)
+      - HTTP/2 solves this by using HPACK to compress headers as well (this reason and parallel req/res is why HTTP/2 was invented)
+  - Client supports compression?
+    - use `Accept-Encoding` header to choose which algo (gzip, most common, there's also brotli)
+    - server encounters ^ header, compresses response using algo specified, sets `Content-Encoding` (gzip or br for brotli) header and sends it back
+  - *Compression is a teade-off between payload size and CPU usage*
+    - Node is not the best for compression, CPU heavy, don't do it in the application server; Solution: Reverse-Proxy (automatically handles compression)
+    - `gzip` works by removing redundancy in response bodies
+
+- **HTTPS/TLS**
+  - used for encrypting HTTP traffic
+  - encrypts headers too!
+  - CPU intensive, do not do this in app server, Reverse Proxy is better suited
+  - replaces SSL (Secure Sockets Layer)
+
 ## SRC
 
 - [HTTP 1,2,3 in a nutshell](https://start.jcolemorrison.com/http-1-2-and-3-in-a-nutshell/)
