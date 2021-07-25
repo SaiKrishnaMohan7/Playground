@@ -132,6 +132,7 @@
     - This is why Network caching is hard for graphql service
 
 - **RPC with gRPC**
+  - Call methods on a remote service as if the method existed locally
   - Expose a method in a service over the network (mapped to a netwrok interface)
   - gRPC: providing networked RPC endpoints over HTTP/2 between services
     - Group related method calls by accepting a message on one type and returning a message of another type
@@ -144,6 +145,7 @@
       - are shared by both client and server to decode and encode messages
 
       ```protobuf
+        // recipe.proto
         syntax = "proto3";
         package recipe;
         service RecipeService {
@@ -176,6 +178,8 @@
       - Bi-Directional streaming RPC
       - if streaming, instance of `EventEmitter` to work with in code or callbacks if singular messages
     - There's a small application startup cost when the protobuf gets loaded
+    - HTTP routes associated with method calls is composed of *name of the service* and the *name of the method*
+      - From the above .proto file the req would like this: `https://localhost:4000/recipe.RecipeService/GetMetaData`
     - Alternatives
       - MessagePack
         - no separate schema file (.proto)
