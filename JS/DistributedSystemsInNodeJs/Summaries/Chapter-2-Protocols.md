@@ -1,4 +1,4 @@
-# Chapter-1 Summary by Sai; Book Thomas Hunter II
+# Chapter-2 Summary by Sai; Book Thomas Hunter II
 
 - Open Systems Interconnect (OSI) model - Concept describing relationship between different network protocols
 

@@ -78,7 +78,7 @@
     ```javascript
       function foo(count, cb) {
         if (count <=0) {
-          return process.nextTick(() => callback(new TypeError('count should be > 0'))); // asynch! Run in the same iteraion of the event loop
+          return process.nextTick(() => callback(new TypeError('count should be > 0'))); // asynch! Run in the same iteraion of the event loop OR Promises can be used, leverage the microtask queue that will be checked in the same teration but before transitioning to the next phase!
         }
 
         myCustomAsyncOperation(count, callback); // asynch
