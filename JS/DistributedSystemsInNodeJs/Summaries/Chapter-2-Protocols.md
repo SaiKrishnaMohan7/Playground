@@ -74,8 +74,9 @@
 
 - **HTTPS/TLS**
   - used for encrypting HTTP traffic
-  - encrypts headers too!
-  - CPU intensive, do not do this in app server, Reverse Proxy is better suited
+  - encrypts headers path and method, the whole HTTP message because TLS is transport-layer encryption (i.e. over TCP, beneath HTTP). Which means, the query string gets encrypted as well!
+    - Query string vulnerability is more because of browser history
+  - CPU intensive, do not do this in app server, Reverse Proxy is better suited (trust boundary)
   - replaces SSL (Secure Sockets Layer)
   - **TLS**
     - Works by using certs
@@ -96,6 +97,7 @@
   - *Marshalling*
     - Represent data that needs to be serialized as a class with a `toJSON()` method instead of a plain JS object
     - is a better approach to serialize JS objects
+  - using getters/setters (or methods) for non-serializable data is a similar but less painful way of achieving the same thing
 
   ```javascript
   const userOne = {
