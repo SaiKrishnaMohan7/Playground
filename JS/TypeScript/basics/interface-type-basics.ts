@@ -17,7 +17,7 @@ type NumVal = 1 | 2 | 3 | NumVal[];
  * (2) Interfaces can extend from other interfaces (Interfaces can describe objects, arrays, call signatures)
  * Type Aliases are more flexible than Intefaces, they can be used with primitive types but not Interfaces
  * Interfaces cannot be used to describe primitive types
- * Interfaces can be used to describe anything that has a prototype chain associated with it like Object, Fucntion and cutom defined types but not primitves
+ * Interfaces can be used to describe anything that has a prototype chain associated with it like Object, Fucntion and custom defined types but not primitves
  */
 
 export interface HasInternationalPhoneNumber extends HasPhoneNumber {

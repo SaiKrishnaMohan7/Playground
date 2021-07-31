@@ -161,7 +161,7 @@ let contactInfo: HasEmail | HasPhoneNumber =
         email: "mike@example.com"
       };
 
-contactInfo.name; // NOTE: we can only access the .name property  (the stuff HasPhoneNumber and HasEmail have in common)
+contactInfo.name; // NOTE: we can only access the .name property  (the properties HasPhoneNumber and HasEmail have in common)
 
 /**
  * (15) Intersection types

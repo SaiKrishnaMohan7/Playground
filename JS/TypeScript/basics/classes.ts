@@ -23,7 +23,7 @@ export class Contact implements HasEmail {
  */
 
 /**
- * (3) Access modifier keywords - "who can access this thing"
+ * (3) Access modifier keywords - "who can access this thing?"
  *
  * - public - everyone
  * - protected - me and subclasses
@@ -52,7 +52,7 @@ class OtherContact implements HasEmail, HasPhoneNumber {
 class AnotherOtherContact implements HasEmail, HasPhoneNumber {
   protected age: number = 0;
   private password!: string; // a definite assignment operator; to be used when you know for sure that you will always take this path where password will be available
-  // private password!: string | undefined; // this can be done to, in this case there has to be some typeof handling here
+  // private password!: string | undefined; // this can be done too, in this case there has to be some `typeof` handling here
   constructor(public name: string, public email: string, public phone: number) {
     // () password must either be initialized like this, or have a default value
   }
