@@ -1,10 +1,10 @@
 # BDD with Cucumber
 
-Testing system behaviour as oppossed to implementation
-Domain modelling -> Write some code -> Make it compile -> Run the scenario & watch it fail
-Scenarios no longer than 5 steps long, too many `When`'s  means we are testing more than one business rule
+- Testing system behaviour as oppossed to implementation
+- Domain modelling -> Write some code -> Make it compile -> Run the scenario & watch it fail
+- Scenarios no longer than 5 steps long, too many `When`'s  means we are testing more than one business rule
 
-![BDD Mental Model](./BDDMentalModel.png)
+![BDD Mental Model](https://github.com/SaiKrishnaMohan7/Playground/blob/master/JS/BDD-Cucumber/BDDmentalModel.png)
 
 ## Keywords and meanings - Gherkin
 
