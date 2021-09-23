@@ -18,7 +18,7 @@
   - Action, some change that'd trigger some cascading chnage within the system
 - `Then`
   - *explains what should happen at the end of the scenario*
-  - Outcome, **STATE TRANSITION**, system behavior, what will the system do `When` action happens
+  - Outcome, **STATE TRANSITION**, system behavior, what will the system do `When` action happens; What will the system state be?
 - `Before`
   - A hook to do a common setup for tests, runs before every scenario... Just like `Jest.Before()`; Applies at step def level
 - `Background`
