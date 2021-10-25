@@ -10,6 +10,8 @@
  * Check - cbs triggered by setImmediate
  * Close - cbs triggered by EventEmitter `close` events
  * Timers - cbs scheduled using setTimeout and setInterval
+ *  - Fns get in the Timers cb queue after the timer has lapsed for setTimeout (run the given fn anytime after the time passed in has lapsed) and will be allowed on the call stack only after the all the synchronous is done
+ *  - Fns are added to the Timers cb queue after the timer has lapsed for setInterval (keep running passed in fn after waiting minimum passed in time) and will be allowed on the call stack only after the all the synchronous is done
  * Pending - Special system events, like ECONNREFUSED, EADDRINUSE etc
  *
  * Microtask queues - Cbs here take priority over the cbs in the Phase queues
