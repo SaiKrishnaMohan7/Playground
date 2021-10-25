@@ -1,4 +1,11 @@
 /**
+ * Asynchronousity in JS:
+ *  - Defer certain functionality only to be allowed back in to JS the when two conditions are satisfied:
+ *    - The global execution context is done running all the code (synchronous) it wanted to run
+ *    - The call stack is empty
+ *  - Event loop checks the cb queques (macrotask queue) if there's anything to be allowed back into the call stack for execution and allows it back on
+ * only when the above two conditions are satisfied
+ *
  * Phases in the nodejs event loop; Page 11
  *
  * a `tick` is a complete pass through the event loop (`setImmediate` takes a full tick to run while `nextTick` is more immediate)
