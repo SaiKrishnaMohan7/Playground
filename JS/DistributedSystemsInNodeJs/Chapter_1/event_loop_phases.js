@@ -18,7 +18,8 @@
  *  - When we call `.then(someFnToBeCalledWithData)` method on the Promise object, it pushes the function that we passed into the
  * `.then()` into the `onFulfilment` array. When we call `.then(fnToRunOnPromiseSucces, fnToRunOnPromiseRject)` or `.catch(fnToRunOnPromiseRject)` will place these
  * fns in the `onRejected` array
- *
+ ******************************************
+
  * Phases in the nodejs event loop; Page 11
  *
  * a `tick` is a complete pass through the event loop (`setImmediate` takes a full tick to run while `nextTick` is more immediate)
