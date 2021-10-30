@@ -1,24 +1,5 @@
 /**
- * Asynchronousity in JS:
- *  - Defer certain functionality only to be allowed back in to JS the when two conditions are satisfied:
- *    - The global execution context is done running all the code (synchronous) it wanted to run
- *    - The call stack is empty
- *  - Event loop checks the cb queques (macrotask queue) if there's anything to be allowed back into the call stack for execution and allows it back on
- * only when the above two conditions are satisfied
- *
- *  - setTimeout and setInterval don't do anything JS, all of it is happening in the computer land outside the browser but by interacting with it via Browser APIs
- *
- *  - Promises add readability enhancement to JS and immediately returns a Promise object with a
- * `value`, `onFulfilment`(An array that holds the function to call to be called when we get data or promise is fulfilled),
- * `status` (resolve, reject, Pending; When this value transitions from `Pending` to `resolved` the fns in the `onFulfilment` array are called),
- * `onRejected` (An array that holds fns to call when there's a rejection i.e. `status` changes from `Pending` to `Rejected`)
- * key that gets set when the background web browser feature (interacted with via Browser APIs)
- * is done doing whatever it is suppossed to do
- *
- *  - When we call `.then(someFnToBeCalledWithData)` method on the Promise object, it pushes the function that we passed into the
- * `.then()` into the `onFulfilment` array. When we call `.then(fnToRunOnPromiseSucces, fnToRunOnPromiseRject)` or `.catch(fnToRunOnPromiseRject)` will place these
- * fns in the `onRejected` array
- ******************************************
+  Check this too: https://github.com/SaiKrishnaMohan7/Playground/blob/master/JS/NewHardParts/README.md
 
  * Phases in the nodejs event loop; Page 11
  *
@@ -35,7 +16,7 @@
  *  - Fns are added to the Timers cb queue after the timer has lapsed for setInterval (keep running passed in fn after waiting minimum passed in time) and will be allowed on the call stack only after the all the synchronous is done
  * Pending - Special system events, like ECONNREFUSED, EADDRINUSE etc
  *
- * Microtask queues - Cbs here take priority over the cbs in the Phase queues
+ * Microtask queues - Cbs here take priority over the cbs in the Phase queues (Checked by Event Loop between every phase)
  *
  * first microtask queue - cbs registered using process.nextTick()
  * second microtask queue - cbs registered using Promises (reject or resolve)
