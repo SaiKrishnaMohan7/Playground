@@ -116,6 +116,17 @@ console.log('Hello, world!');
 // Challenge 9
 // Use async/await to console.log a sentence comprised of a noun and verb in which the non async function takes in a noun, concatenates it with a hard coded verb and returns it to the async function to be console.logged after a duration of 3 seconds. Call the async function only once, feeding it a noun to make this happen.
 
+/**
+ * A rule of thumb for closures
+ *
+ * Think what do you want the function to REMEMBER between executions
+ * Think what piece of data do you want in your BACKPACK
+ *
+ *
+ * CLOSED OVER VARIABLE ENVIRONMENT - C.O.V.E
+ *
+ */
+
 // Challenge 1
 // A) Create a for loop that iterates through an array and returns the sum of the elements of the array.
 // B) Create a functional iterator for an array that returns each value of the array when called, one element at a time.
