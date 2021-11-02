@@ -106,8 +106,6 @@ getAllData().then((val) => console.log(val))
 
 // ******************************** //
 
-// ITERATORS - lost my solutions on reload
-// Type JavaScript here and click "Run Code" or press Ctrl + s
 console.log('Hello, world!');
 
 // Challenge 8
