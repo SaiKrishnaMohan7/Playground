@@ -1,5 +1,7 @@
 /**
-  Check this too: https://github.com/SaiKrishnaMohan7/Playground/blob/master/JS/NewHardParts/README.md
+  Check these too: https://github.com/SaiKrishnaMohan7/Playground/blob/master/JS/NewHardParts/README.md
+  https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
+  https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/
 
  * Phases in the nodejs event loop; Page 11
  *
@@ -16,7 +18,7 @@
  *  - Fns are added to the Timers cb queue after the timer has lapsed for setInterval (keep running passed in fn after waiting minimum passed in time) and will be allowed on the call stack only after the all the synchronous is done
  * Pending - Special system events, like ECONNREFUSED, EADDRINUSE etc
  *
- * Microtask queues - Cbs here take priority over the cbs in the Phase queues (Checked by Event Loop between every phase)
+ * Microtask queues - Cbs here take priority over the cbs in the Phase queues (Checked by Event Loop between every phase; Call stack should be empty)
  *
  * first microtask queue - cbs registered using process.nextTick()
  * second microtask queue - cbs registered using Promises (reject or resolve)

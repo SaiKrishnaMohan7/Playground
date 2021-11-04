@@ -1,15 +1,14 @@
 // Challenge 1
 
 function sayHello() {
-	function printHello() {
-    console.log('HELLO');
+  function printHello() {
+    console.log("HELLO");
   }
-  setTimeout(printHello, 1000)
+  setTimeout(printHello, 1000);
 }
 
 // Uncomment the line below when ready
 sayHello(); // should log "Hello" after 1000ms
-
 
 // Challenge 2
 var promise = new Promise(function (resolve, reject) {
@@ -21,70 +20,65 @@ var promise = new Promise(function (resolve, reject) {
 // Should print out "Resolved!"
 // ADD CODE HERE
 function printResolve() {
-  console.log('RESOLVED!');
+  console.log("RESOLVED!");
 }
 promise.then(printResolve);
 
-
 // Challenge 3
 
-promise = new Promise(function(resolve, reject) {
+promise = new Promise(function (resolve, reject) {
   // ADD CODE HERE
   setTimeout(reject, 1000);
-})
+});
 
 // Should print out "Reject!"
 // ADD CODE HERE
 function printReject() {
-  console.log('REJECTED!');
+  console.log("REJECTED!");
 }
 promise.catch(printReject);
-
 
 // Challenge 4
 
 promise = new Promise(function (resolve, reject) {
   // ADD CODE HERE
-  resolve('Promise has been resolved!');
+  resolve("Promise has been resolved!");
 });
 
 // Uncomment the lines below when ready
-promise.then(() => console.log('Promise has been resolved!'));
+promise.then(() => console.log("Promise has been resolved!"));
 console.log("I'm not the promise!");
 
-
 // Challenge 5
-function delay(){
-	return new Promise(function (resolve, reject) {
-  	// ADD CODE HERE
-  	setTimeout(resolve, 1000);
-	});
+function delay() {
+  return new Promise(function (resolve, reject) {
+    // ADD CODE HERE
+    setTimeout(resolve, 1000);
+  });
 }
 
 // Uncomment the code below to test
 // This code should log "Hello" after 1000ms
 delay().then(sayHello);
 
-
 // Challenge 6
 //
 // ADD CODE BELOW
 var secondPromise = new Promise(function (resolve, reject) {
-	resolve('Second Promise');
+  resolve("Second Promise");
 });
 var firstPromise = new Promise(function (resolve, reject) {
-	resolve(secondPromise);
+  resolve(secondPromise);
 });
 
-firstPromise.then((val) => console.log(val))
-
+firstPromise.then((val) => console.log(val));
 
 // Challenge 7
 const fakePeople = [
-  { name: 'Rudolph', hasPets: false, currentTemp: 98.6 },
-  { name: 'Zebulon', hasPets: true, currentTemp: 22.6 },
-  { name: 'Harold', hasPets: true, currentTemp: 98.3 },
-]
+  { name: "Rudolph", hasPets: false, currentTemp: 98.6 },
+  { name: "Zebulon", hasPets: true, currentTemp: 22.6 },
+  { name: "Harold", hasPets: true, currentTemp: 98.3 },
+];
 
 const fakeAPICall = (i) => {
   const returnTime = Math.floor(Math.random() * 1000);
@@ -99,20 +93,12 @@ const fakeAPICall = (i) => {
 
 function getAllData() {
   // CODE GOES HERE
-  return Promise.all([fakeAPICall(0), fakeAPICall(1), fakeAPICall(2)])
+  return Promise.all([fakeAPICall(0), fakeAPICall(1), fakeAPICall(2)]);
 }
 
-getAllData().then((val) => console.log(val))
+getAllData().then((val) => console.log(val));
 
 // ******************************** //
-
-console.log('Hello, world!');
-
-// Challenge 8
-// Write a function that will console.log "hello there", or "gibberish", every three seconds depending on if the word passed into the function is 'english'.
-// Do not use any type of loop constructor and only make the call to createConversation once.
-// Challenge 9
-// Use async/await to console.log a sentence comprised of a noun and verb in which the non async function takes in a noun, concatenates it with a hard coded verb and returns it to the async function to be console.logged after a duration of 3 seconds. Call the async function only once, feeding it a noun to make this happen.
 
 /**
  * A rule of thumb for closures
@@ -154,8 +140,7 @@ function returnIterator(arr) {
       idx++;
       return value;
     }
-  }
-
+  };
 }
 
 // Uncomment the lines below to test your work
@@ -165,8 +150,6 @@ function returnIterator(arr) {
 // console.log(myIterator()); // -> should log 'b'
 // console.log(myIterator()); // -> should log 'c'
 // console.log(myIterator()); // -> should log 'd'
-
-
 
 // Challenge 2
 // Create an iterator with a next method that returns each value of the array when .next is called.
@@ -183,7 +166,7 @@ function nextIterator(arr) {
     }
   }
 
-  return {next: iterator};
+  return { next: iterator };
 }
 
 // Uncomment the lines below to test your work
@@ -192,8 +175,6 @@ function nextIterator(arr) {
 // console.log(iteratorWithNext.next()); // -> should log 1
 // console.log(iteratorWithNext.next()); // -> should log 2
 // console.log(iteratorWithNext.next()); // -> should log 3
-
-
 
 // Challenge 3
 // Write code to iterate through an entire array using your nextIterator and sum the values.
@@ -217,8 +198,6 @@ function sumArray(arr) {
 // const array4 = [1, 2, 3, 4];
 // console.log(sumArray(array4)); // -> should log 10
 
-
-
 // Challenge 4
 // Create an iterator with a next method that returns each value of a set when .next is called
 
@@ -237,7 +216,7 @@ function setIterator(set) {
     }
   }
 
-  return {next: iterator};
+  return { next: iterator };
 }
 
 // Uncomment the lines below to test your work
@@ -246,8 +225,6 @@ function setIterator(set) {
 // console.log(iterateSet.next()); // -> should log 'h'
 // console.log(iterateSet.next()); // -> should log 'e'
 // console.log(iterateSet.next()); // -> should log 'y'
-
-
 
 // Challenge 5
 // Create an iterator with a next method that returns an array with two elements (where the first element is the index and the second is the value at that index) when .next is called.
@@ -266,7 +243,7 @@ function indexIterator(arr) {
     }
   }
 
-  return {next: iterator};
+  return { next: iterator };
 }
 
 // Uncomment the lines below to test your work
@@ -276,8 +253,6 @@ function indexIterator(arr) {
 // console.log(iteratorWithIndex.next()); // -> should log [1, 'b']
 // console.log(iteratorWithIndex.next()); // -> should log [2, 'c']
 
-
-
 // Challenge 6
 // Create an iterator that returns each word from a string of words on the call of its .next method (hint: use regex!)
 // Then attach it as a method to the prototype of a constructor Words. Hint: research Symbol.iterator!
@@ -286,10 +261,10 @@ function Words(string) {
   this.str = string;
 }
 
-Words.prototype[Symbol.iterator] = function() {
+Words.prototype[Symbol.iterator] = function () {
   // YOUR CODE HERE
-  const tokens = this.str.split(' ');
-	let idx = 0;
+  const tokens = this.str.split(" ");
+  let idx = 0;
   function iterator() {
     const iteratorReturnObj = {};
 
@@ -300,13 +275,13 @@ Words.prototype[Symbol.iterator] = function() {
 
       return iteratorReturnObj;
     }
-			iteratorReturnObj.value = undefined;
-      iteratorReturnObj.done = true;
+    iteratorReturnObj.value = undefined;
+    iteratorReturnObj.done = true;
     return iteratorReturnObj;
   }
 
-  return {next: iterator};
-}
+  return { next: iterator };
+};
 
 // Uncomment the lines below to test your work
 // const helloWorld = new Words('Hello World');
@@ -316,12 +291,12 @@ Words.prototype[Symbol.iterator] = function() {
 // Build a function that walks through an array and returns the element concatenated with the string "was found after index x", where x is the previous index.
 // Note: if it is the first element it should say that it is the first
 
-function valueAndPrevIndex(array){
+function valueAndPrevIndex(array) {
   // YOUR CODE HERE
   let idx = 0;
   function iterator() {
     let value;
-    let returnString = '';
+    let returnString = "";
     while (idx < array.length) {
       value = array[idx];
       if (idx == 0) {
@@ -335,33 +310,46 @@ function valueAndPrevIndex(array){
     }
   }
 
-  return {sentence: iterator};
+  return { sentence: iterator };
 }
 
-const returnedSentence = valueAndPrevIndex([4,5,6])
+const returnedSentence = valueAndPrevIndex([4, 5, 6]);
 console.log(returnedSentence.sentence());
 console.log(returnedSentence.sentence());
 console.log(returnedSentence.sentence());
-
 
 //CHALLENGE 8
-
+// Write a function that will console.log "hello there", or "gibberish", every three seconds depending on if the word passed into the function is 'english'.
+// Do not use any type of loop constructor and only make the call to createConversation once.
 function* createConversation(string) {
-
-
+  if (string == "english") {
+    yield "hello there";
+  }
+  yield "gibberish";
 }
 
-console.log(createConversation('english').next());
+function wrapper() {
+  let str = "";
+  if (Math.random() < 0.5) {
+    str = "english";
+  }
+  console.log(createConversation(str).next());
+}
 
+setInterval(wrapper, 3000);
 
-
-//CHALLENGE 9
+// Challenge 9 Don't think impl is as per question
+// Use async/await to console.log a sentence comprised of a noun and verb in which the non async function takes in a noun, concatenates it with a hard coded verb and returns it to the async function to be console.logged after a duration of 3 seconds. Call the async function only once, feeding it a noun to make this happen.
 function waitForVerb(noun) {
-
+  return `${noun} plays`;
 }
 
 async function f(noun) {
+  const fn = () => {
+    console.log(waitForVerb(noun))
+  }
 
+  setTimeout(fn, 3000);
 }
 
 f("dog");
