@@ -1,14 +1,17 @@
 {
-  "name": "nodeadvanced",
+  "name": "networking",
   "version": "1.0.0",
-  "description": "Sandbox for Advanced features of node",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "@hapi/hapi": "^19.1.1",
+    "hapi-pino": "^8.0.0",
+    "mongodb": "^3.3.5"
   }
 }

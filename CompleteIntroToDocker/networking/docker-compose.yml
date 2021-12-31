@@ -1,0 +1,27 @@
+# What version of docker-compose we are using, backward compatible!
+version: "3"
+# Various services that docker-compose is going to spin up for us
+services:
+  # The main project
+  web:
+    # point to dockerfile, could do . as well
+    # Got this error while running: https://github.com/docker/compose/issues/5513
+    build:
+      context: .
+      dockerfile: networking.Dockerfile
+    # Cna have a bulleted list of ports
+    ports:
+      - "3000:3000"
+    # mount our code into the container (bind mount)
+    # don't bring over node_modules
+    volumes:
+      # copy everything from our host to conatiner --> .:/home/node/code
+      - .:/home/node/code
+      - /home/node/code/node_modules
+    # will start db first! Since our app depends on db to run
+    links:
+      - db
+    environment:
+      MONGO_CONNECTION_STRING: mongodb://db:27017
+  db:
+    image: mongo:3
