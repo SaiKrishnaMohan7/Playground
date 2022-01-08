@@ -31,8 +31,8 @@ A combination of 3 kernel features, _chroot_, _cgroups_ and _namespace_
 
 ### cgroups
 
-Allocate resources to the chroot'd, namespaced environments so that tenants don't hog each others resources. Namespaces give you process level isolation in the chroot'd env, the tenants of another env can still hog up resources like CPU, RAM. Google came up with this.
-
+- Resource level isolation
+  - Allocate resources to the chroot'd, namespaced environments so that tenants don't hog each others resources. Namespaces give you process level isolation in the chroot'd env, the tenants of another env can still hog up resources like CPU, RAM. Google came up with this.
 - [cgroups-bholt](https://btholt.github.io/complete-intro-to-containers/cgroups)
 - [shell scripts](https://github.com/btholt/projects-for-complete-intro-to-containers/tree/master/cgroups)
 
