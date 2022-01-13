@@ -3,7 +3,7 @@
 - The internet is a **Packet Switched** (First come first served, on demand; no reservation of resources like buffer, link transmission rate) n/w as opposed to a **Circuit Switched** (resources reservedfor th duration of communication) n/w as opposed to a **Cicuit Switched** n/w
   - It is a n/w of n/ws with ISP tiers (national and international ISPs are upper tier ISPs connecting, like Rogers, AT&T) coneecting to lower level ISP tier that in turn connect to WANs that in turn connect may or may not connect to other WANs. Your home n/w may be one such WAN
 
-![ISP Tiers](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/ISPTiers.png)
+![ISP Tiers](images/ISPTiers.png)
 
 - Devices connected to each other that typically sit at the edge of the n/w (Network Edge) are called **end s/ms** or **hosts**. They are connected to each other via communication links and packet switches (routers and link-layer switches)
   - Routers - n/w core
