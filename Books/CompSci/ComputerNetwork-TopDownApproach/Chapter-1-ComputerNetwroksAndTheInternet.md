@@ -9,7 +9,8 @@
   - Routers - n/w core
   - Link Layer switches - Access n/ws (the first packet switch, edge router, that connects to the end s/m directly)
 
-  ![Access Networks](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/AccessNetworks.png)
+  ![Access Networks](images/AccessNetworks.png)
+
 
   - End s/ms connecting to (or wanting to connect to or wanting to transfer data with) other end-s/ms via the Internet infra do so by providing a **socket interface** that specify how they should connect
   - End s/ms can be **clients** or **servers**
@@ -22,7 +23,8 @@
 
 - Home Internet Access
   - DSL - Digital Subscriber Line (telco)
-    ![DSL Internet Acess](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/DSLInternetAcess.png)
+    ![DSL Internet Acess](images/DSLInternetAcess.png)
+
 
     - Coaxial cable
     - Modem converts digital to analog tones to transmit over the telephone wire, which gets converted back to digital at the DSLAccessMultiplexer at the Central Office (CO)
@@ -33,12 +35,14 @@
   - Cable (DOCSIS, Cable company)
     - Use cableTV company's existing line
     - Hybrid Fiber Coax (HFC)
-    ![Hybrid Fiber Coax](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/HybridFiberCoax.png)
+    ![Hybrid Fiber Coax](images/HybridFiberCoax.png)
+
     - Cable Modem Termination s/m (CMTS) works much like DSLAM
     - Downstream channel - 42.8 Mbps Dictatec by DOCSIS 2.0 standard
     - Upstream channel - 30.7 Mbps
   - FTTH - (Fiber To The Home)
-    ![FTTH](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/FTTH.png)
+    ![FTTH](images/FTTH.png)
+
     - Optical Fiber form CO to home
     - Line shared by many homes, not until it gets close to the home does it split and connect directly
     - 2 Archs
@@ -48,17 +52,17 @@
   - Satellite
     - Geostationary and LEO (Moon rotation sync)
 
-![Store and Forward Packet Switching](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/StoreAndForwardPacketSwitching.png)
+![Store and Forward Packet Switching](images/StoreAndForwardPacketSwitching.png)
 
 - Packet switches store the packets in a buffer before sending out to the transmission link
 
-![Packet Switches Queueing in Buffer that cause delays](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/PacketSwitchesBufferQueueingDelays.png)
+![Packet Switches Queueing in Buffer that cause delays](images/PacketSwitchesBufferQueueingDelays.png)
 
 - Routing protocols in packet switches set forwarding tables that contain the address (IP) to the next hop or the destination for the packet
 
 - Delays in Packet Switched networks are Processing Delay (Time taken by the node/packet switch to inspect packet header), Queueing delays (buffer filled up other packets need to wait; µs - ms), transmission delays(Lenthof packet / TransmissionRateofLink; µs - ms) and propagation delays (time taken to go from one router to next; ms). These add up to a Nodal Delay
 
-![IP Stack and OSI model](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/IPStackAndOSIModel.png)
+![IP Stack and OSI model](images/IPStackAndOSIModel.png)
 
 - Internet Protocol Stack (IP Stack)
   - End systems (PCs etc) implement all the layers while Link Layer switches only implement Physical and Link layers and routers implement Network, Link adn Physical
@@ -89,4 +93,4 @@
 - Encapsulation
   - Each layer in the IP stack encapsulates the information from the layer above
 
-  ![Information Enacapsulation at each layer](https://github.com/SaiKrishnaMohan7/Playground/tree/master/Books/CompSci/ComputerNetwork-TopDownApproach/images/InformationEnacapsulation.png)
+  ![Information Enacapsulation at each layer](images/InformationEnacapsulation.png)
