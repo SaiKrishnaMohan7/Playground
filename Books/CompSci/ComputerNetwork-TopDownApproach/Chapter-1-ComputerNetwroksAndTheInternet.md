@@ -65,6 +65,7 @@
 ![IP Stack and OSI model](images/IPStackAndOSIModel.png)
 
 - Internet Protocol Stack (IP Stack)
+  - Each layer below provides services to the layer above via a well defined API
   - End systems (PCs etc) implement all the layers while Link Layer switches only implement Physical and Link layers and routers implement Network, Link adn Physical
 
   - App Layer protocols (Distributed in nature) and Trnasport Layer protocols are encoded in software, Link Layer and Physical Layer are embedded in hardware (n/w interface card). N/w layer protocols are mix between hardware and software
@@ -76,6 +77,7 @@
       - flow control (src and dest speed matching)
       - breaks long messages into chunks
       - congestion control
+    - IP running in the Network layer doesn't guarantee packet delivery nor order and hence if these qualities are desired, TCP is used (colloquially called TCP/IP)
     - UDP (Live Streams)
       - Connection less (no handshake)
       - No reliability
