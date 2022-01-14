@@ -64,6 +64,8 @@
 
 ![IP Stack and OSI model](images/IPStackAndOSIModel.png)
 
+![The 4 Layer model (most recent view of Internet) and how it maps to the 7 layer OSI model](images/4LayerModelMappedTo7LayerOSI.png)
+
 - Internet Protocol Stack (IP Stack)
   - Each layer below provides services to the layer above via a well defined API
   - End systems (PCs etc) implement all the layers while Link Layer switches only implement Physical and Link layers and routers implement Network, Link adn Physical
