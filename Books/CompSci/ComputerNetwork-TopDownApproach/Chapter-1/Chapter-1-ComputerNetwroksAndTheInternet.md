@@ -1,7 +1,7 @@
 # Chapter 1 Computer Networks and the Internet
 
-- The internet is a **Packet Switched** (First come first served, on demand; no reservation of resources like buffer, link transmission rate) n/w as opposed to a **Circuit Switched** (resources reservedfor th duration of communication) n/w as opposed to a **Cicuit Switched** n/w
-  - It is a n/w of n/ws with ISP tiers (national and international ISPs are upper tier ISPs connecting, like Rogers, AT&T) coneecting to lower level ISP tier that in turn connect to WANs that in turn connect may or may not connect to other WANs. Your home n/w may be one such WAN
+- The internet is a **Packet Switched** (First come first served, on demand; no reservation of resources like buffer, link transmission rate) n/w as opposed to **Circuit Switched** (resources reservedfor the duration of communication)
+  - It is a n/w of n/ws with ISP tiers (national and international ISPs are upper tier ISPs (Rogers, AT&T) connecting to Regional ISPs) conecting to lower level ISP tier that in turn connect to WANs that in turn connect may or may not connect to other WANs. Your home n/w may be one such WAN
 
 ![ISP Tiers](images/ISPTiers.png)
 
