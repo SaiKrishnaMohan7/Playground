@@ -66,6 +66,8 @@
 
 ![The 4 Layer model (most recent view of Internet) and how it maps to the 7 layer OSI model](images/4LayerModelMappedTo7LayerOSI.png)
 
+![The 4 Layer model (most recent view of Internet) and how it maps to the 7 layer OSI model; Close to my Exp](images/4LayerModelMappedTo7LayerOSICloseToExperience.png)
+
 - Internet Protocol Stack (IP Stack)
   - Each layer below provides services to the layer above via a well defined API
   - End systems (PCs etc) implement all the layers while Link Layer switches only implement Physical and Link layers and routers implement Network, Link adn Physical
@@ -79,6 +81,11 @@
       - flow control (src and dest speed matching)
       - breaks long messages into chunks
       - congestion control
+      - When server tells TCP to close connection, it doesn't, not till data has been received by the client
+      - TCP uses three way handshake between client and server
+        - small TCP segment sent to server (SYN; Wireshark snooping)
+        - server acknowledges (SYN, ACK)
+        - client acknowledges (ACK)
     - IP running in the Network layer doesn't guarantee packet delivery nor order and hence if these qualities are desired, TCP is used (colloquially called TCP/IP)
     - UDP (Live Streams)
       - Connection less (no handshake)
