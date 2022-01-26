@@ -83,3 +83,28 @@
 ![HTTP Res message](/images/HTTPresMsg.png)
 
 ### User - Server Interaction - Cookies
+
+- 4 components of the user-server interactions with cookies; Session layer atop stateless HTTP
+  - `Cookie` header in HTTP res
+  - `Cookie` header in HTTP req
+  - cookie file on the client's host managed by browser
+  - persistent storage used by the server
+
+![Saving Client/User-Server interaction state with cookies](/images/ClientServerInteractionWithCookies.png)
+
+- ...Post establishing TCP conn.
+  - Client sends a HTTP req to the server
+  - Server creates a uniqueId and saves it to the db keyed (indexed if relational db) by the uniqueId replies back with `Set-Cookie`: `<uniqueId>`
+  - Client browser writes a new line in the cookie file, that it maintains, with the server hostname and the `<uniqueId>` (dated... upon inspection in Chrome, it seems like stuff is stored in cache, localStorage, db and some serviceWorker)
+
+  ...Some long time later...
+  - Client makes a req to the same server, this time though, the browser knows the host the user is trying to contact and sets the `Cookie: <uniqueId>` header when sending the req and therefore allowing the server to recognize user
+  - As the client continues to browse WebPages, the browser sets `Cookie: <uniqueId>` each time
+
+### Web Caching (Proxy servers, network caches and CDNs)
+
+![Web caching - Proxy servers, network caches and CDNs](/images/WebCachingProxiesNetworkCache.png)
+
+- Proxy servers, network caches and CDNs, same basic concept, cater to a request on behalf of the server
+- Typically bought and maintained by ISP (Uni)
+- eases congestion of hte access link for smaller ISPs like unis
