@@ -41,7 +41,7 @@
 - Timing (not provided by internet; applications use smart arch to workaround) - An upper bound on timing for a message (stream of bits) to appear at the detination (say, in 200ms all bits sent by the sender will reach rxr)
 - Security - encryption
 
-![Some apps and their sensitivity](/images/SomeAppsAndBandwidthNeeds.png)
+![Some apps and their sensitivity](images/SomeAppsAndBandwidthNeeds.png)
 
 ## HTTP
 
@@ -76,11 +76,11 @@
 
 ### HTTP Request message
 
-![HTTP Req message](/images/HTTPreqMsg)
+![HTTP Req message](images/HTTPreqMsg)
 
 ### HTTP Response Message
 
-![HTTP Res message](/images/HTTPresMsg.png)
+![HTTP Res message](images/HTTPresMsg.png)
 
 ### User - Server Interaction - Cookies
 
@@ -90,7 +90,7 @@
   - cookie file on the client's host managed by browser
   - persistent storage used by the server
 
-![Saving Client/User-Server interaction state with cookies](/images/ClientServerInteractionWithCookies.png)
+![Saving Client/User-Server interaction state with cookies](images/ClientServerInteractionWithCookies.png)
 
 - ...Post establishing TCP conn.
   - Client sends a HTTP req to the server
@@ -103,7 +103,7 @@
 
 ### Web Caching (Proxy servers, network caches and CDNs)
 
-![Web caching - Proxy servers, network caches and CDNs](/images/WebCachingProxiesNetworkCache.png)
+![Web caching - Proxy servers, network caches and CDNs](images/WebCachingProxiesNetworkCache.png)
 
 - Proxy servers, network caches and CDNs, same basic concept, cater to a request on behalf of the server
 - Typically bought and maintained by ISP (Uni)
