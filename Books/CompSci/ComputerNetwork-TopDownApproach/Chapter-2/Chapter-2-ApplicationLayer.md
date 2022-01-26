@@ -46,7 +46,7 @@
 ## HTTP
 
 - implemented in two programs, client and server
-- WebPage ---1:n---> Objects
+- WebPage : Objects :: 1 : n
   - Objects can be HTML page, img, vid
   - One base HTML pg and several objects referenced by URL
     - URL is composed of
