@@ -21,7 +21,7 @@
 
 - The interface b/w the app the n/w is the **socket** (API between app and transport layer)
 
-![SocketAsAPIToTheTransportLayer](/images/SocketAsAPIToTheTransportLayer.png)
+![SocketAsAPIToTheTransportLayer](images/SocketAsAPIToTheTransportLayer.png)
 
 - App (process running in the app layer) has limited control over the transport layer
   - What Protocol to use? (TCP, UDP or RTP; Real time protocol)
