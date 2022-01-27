@@ -126,10 +126,10 @@
 - Is a distributed DB implemented as:
   - A hierarchy of servers, Domain Name Servers
   - App layer protocol that determines rules to access the info on the DB
-    - DNS protocol runs over UDP, port 53, running Berkley Internet Name Domain (BIND)
+    - DNS protocol runs over UDP, port 53 (query and reply messages are inside UDP Datagrams), running Berkley Internet Name Domain (BIND)
       - DNS protocol is also implemented as a client-server application with the client side running on teh user's host and the server side on a DNS server
       - When the user tries to access a WebPage on some server, the browser extracts the hostname and passes it to the client side of DNS which then contacts a DNS server to get the IP address of the server
-      - Once IP is received, our TCP hanshake story begins
+      - Once IP is received, and passed to the application, our TCP handshake story begins
 - Other than hostname to IP translation, DNS provides follwing services:
   - **_Hostname Aliasing_**
     - Most hostnames that we encounter today are mnemonic, easier to remember (have a sort of ring to it), these are called **Alias Hostnames**
@@ -143,4 +143,31 @@
     - DNS can cycle through (round robin) these IP addresses when replying to the client DNS of the user host
 - Interesting this: [mDNS](https://en.wikipedia.org/wiki/Multicast_DNS); maybe this is how my iphone is able to play music on WiFi connected speaker. Maybe when we enable Local Network for an app like Spotify, some sort of muliticast query action happens and the IP of the speaker is known for streaming music? Maybe...
 
-### How DNS works
+### A distributed, hierachical database
+
+- DNS is distributed as all app layer protocols and hence is not implemented as single server
+  - if it were
+    - Single point of failure
+    - Cannot serve millions queries
+    - Maintanance pains
+    - Too far geographically, too many hops, delays
+- Hence, implemented as a hierarchy of servers distributed geographically
+- Three classes of DNS (very similar to TLS certs)
+  - Root DNS servers
+    - >= 400 around the world
+    - Provides IPs of TLD DNS servers
+  - Top-level Domain (TLD) DNS servers
+    - .com, .net, .edu, .in, .gov, .jp, .ca
+    - Provides IPs of TLD servers Authoritative DNS servers
+  - Authoritative DNS servers
+    - Any publically accessible hosts on the internet must provide DNS records that map to the IPs of those hosts
+    - Primary and Secondary back ups usually
+
+  ![DNS Hierarchy](images/DNSHierarchy.png)
+
+- The flow
+  - Client DNS contacts Root DNS server that returns the IP of the TLD DNS server
+  - Client contacts TLD DNS server that returns IP of Authoritative DNS server
+  - Client contacts Authoritative DNS server that returns the IP of the web server of interest pertaining to the query
+  - TCP handshake story...
+
