@@ -108,3 +108,39 @@
 - Proxy servers, network caches and CDNs, same basic concept, cater to a request on behalf of the server
 - Typically bought and maintained by ISP (Uni)
 - eases congestion of hte access link for smaller ISPs like unis
+
+#### Conditional GET
+
+- Cached object maybe stale, if so, get from server
+  - HTTP Method should be GET
+  - `If-modified-since:` header line is included
+- Think about normal interaction with web server, hits a cache a miss happens
+  - Cache sends req to server, server responds with `Last-Modified:` header set
+  - Cache forwards res to client and saves the object locally with the `Last-Modified:` header
+  - When same object requested after a while, couple of days, the cache checks with server if objected saved locally is cached by setting the `If-modified-since: <valueOf Last-ModifiedHeader FromWhenCacheRequestedObjFromServer>`
+    - if not stale, server responds with `304 Not Modified` with no body (so way quicker), the cache responds with the saved obj to the client
+    - if stale then the usual thing happens
+
+## DNS - Domain Name System
+
+- Is a distributed DB implemented as:
+  - A hierarchy of servers, Domain Name Servers
+  - App layer protocol that determines rules to access the info on the DB
+    - DNS protocol runs over UDP, port 53, running Berkley Internet Name Domain (BIND)
+      - DNS protocol is also implemented as a client-server application with the client side running on teh user's host and the server side on a DNS server
+      - When the user tries to access a WebPage on some server, the browser extracts the hostname and passes it to the client side of DNS which then contacts a DNS server to get the IP address of the server
+      - Once IP is received, our TCP hanshake story begins
+- Other than hostname to IP translation, DNS provides follwing services:
+  - **_Hostname Aliasing_**
+    - Most hostnames that we encounter today are mnemonic, easier to remember (have a sort of ring to it), these are called **Alias Hostnames**
+    - A host can have more than 1 Alias hostname that point to a **Canonical Hostname**
+      - say us-east-1.relay.cloud.spicycurry.com is the canonical hostname that spicycurry.com and www.spicycurry.com point to
+    - DNS can be invoked to get the canonical hostname and the IP address of the server
+  - **_Mail Server Aliasing_**
+    - Web server and mail server can have the same Alias hostname (MX record)
+  - **_Load Distribution_**
+    - In the real world we have replicated webservers (multiple pods, containers or VMs), each with its own IP address
+    - DNS can cycle through (round robin) these IP addresses when replying to the client DNS of the user host
+- Interesting this: [mDNS](https://en.wikipedia.org/wiki/Multicast_DNS); maybe this is how my iphone is able to play music on WiFi connected speaker. Maybe when we enable Local Network for an app like Spotify, some sort of muliticast query action happens and the IP of the speaker is known for streaming music? Maybe...
+
+### How DNS works
