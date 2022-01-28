@@ -76,7 +76,7 @@
 
 ### HTTP Request message
 
-![HTTP Req message](images/HTTPreqMsg)
+![HTTP Req message](images/HTTPreqMsg.png)
 
 ### HTTP Response Message
 
