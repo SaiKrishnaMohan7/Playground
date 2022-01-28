@@ -227,3 +227,4 @@
   - Registrar - checks uniqueness of domain name
     - Give them the IP of Primary and Secondary authoritative servers for each of which a Type NS record and Type A record are for the authoritative servers created by them
     - You create Type A or Type MX (if mail server aliased to the same CNAME as Web server) record in the authoritative servers
+- DNS is quite secure, with packet filtering, caching most DDoS attacks are prevented
