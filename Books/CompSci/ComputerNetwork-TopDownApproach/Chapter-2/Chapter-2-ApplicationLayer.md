@@ -134,7 +134,7 @@
   - **_Hostname Aliasing_**
     - Most hostnames that we encounter today are mnemonic, easier to remember (have a sort of ring to it), these are called **Alias Hostnames**
     - A host can have more than 1 Alias hostname that point to a **Canonical Hostname**
-      - say us-east-1.relay.cloud.spicycurry.com is the canonical hostname that spicycurry.com and www.spicycurry.com point to
+      - say _us-east-1.relay.cloud.spicycurry.com_ is the canonical hostname that _spicycurry.com_ and _www.spicycurry.com_ point to
     - DNS can be invoked to get the canonical hostname and the IP address of the server
   - **_Mail Server Aliasing_**
     - Web server and mail server can have the same Alias hostname (MX record)
@@ -159,15 +159,71 @@
   - Top-level Domain (TLD) DNS servers
     - .com, .net, .edu, .in, .gov, .jp, .ca
     - Provides IPs of TLD servers Authoritative DNS servers
-  - Authoritative DNS servers
+  - Authoritative DNS servers (Type A RRs)
     - Any publically accessible hosts on the internet must provide DNS records that map to the IPs of those hosts
     - Primary and Secondary back ups usually
+  - Local DNS (not a class)
+    - More of a proxy between the client DNS and the DNS server
+    - Institutional and residential ISPs install them
+    - When host hits up ISP, IP (assigned via DHCP) of one of these is returned
+    - Typically close to the host, on the same LAN in the case of unis
+    - host to localDNS queries are recursive, typically and there on out, iterative
 
   ![DNS Hierarchy](images/DNSHierarchy.png)
-
 - The flow
   - Client DNS contacts Root DNS server that returns the IP of the TLD DNS server
   - Client contacts TLD DNS server that returns IP of Authoritative DNS server
   - Client contacts Authoritative DNS server that returns the IP of the web server of interest pertaining to the query
   - TCP handshake story...
 
+  ![DNS Flow](images/DNSFlow.png)
+- **_DNS Caching_**
+  - When a host queries a DNS server and the DNS responds with the IP matching the hostname, the DNS server saves that information with itself with a TTL (Time To Live) of 2 days
+  - If the another host queries the DNS server for the same hostname/IP pair, the DNS server immediatley returns that info even it is not the authoritative DNS for that hostname
+  - Can also cache IPs of TLD DNS servers, thereby avoiding hop to root DNS
+- **_DNS Records and Messages_**
+  - The hierarchical DNS servers implementing a distributed db hold *Resource Records (RR)*
+    - Each DNS reply contains 1 : n RRs
+  - RR is a 4 tuple `(Name, Value, Type, TTL)`
+    - TTL - When a RR is to be expunged from a cache
+    - *Name, Value, Type*
+      - if `_Type=A_` then `_Name=hostname_` and `_Value=IPaddrOfHost_`
+        - ex: `(us-east.relay1.spicycurry.com, 145.34.45.368, A, <TTL>)`
+      - if `_Type=NS_` then `_Name=domain_` and `_Value=hostnameOfAuthoritativeDNS_`, used to route queries along the chain
+        - ex: `(foo.com, dns.foo.com, NS, <TTL>)`
+      - if `_Type=CNAME_` then `_Name=AliasHostname_` and `_Value=CanonicalHostname_`
+        - ex: `(bar.com, relay1.bar.com, CNAME, <TTL>)`
+      - if `_Type=MX_` then `_Name=AliasHostname_` and `_Value=CanonicalHostnameOfMailServer_`
+        - Allows for having the same alias name for the web server and mail server
+        - To get mail server IP, DNS query would be for the MX record and a CNAME query for web server IP, for the same alias name (From the client's PoV, it is asking for IP of foo.com but how does DNS know if MX record is desired or CNAME record is desired?)
+        - ex: `(foo.com, mail.foo.com, MX, <TTL>)`
+  - If DNS server authoritative for a hostname will contain Type A RR for hostname (may contain Type A hostname if not authoritative, in cache)
+  - If not authoritative will contain Type NS RR and will also contain Type A RR with IP of DNS server as Value (multiple replies being returned)
+- **_DNS Mesages_**
+  - Queries and Replies same packet format
+
+  ![DNS Packet](images/DNSPacket.png)
+
+  - Header section - 12bytes
+    - first field - 16 bit query idnetifier (copied to reply to a query so that client can match queries to corresponding replies)
+    - Flags - 1 bit
+      - query or reply
+      - authoritative or not
+      - recursion desired
+      - recursion-available (reply)
+  - Question section
+    - Name being queried
+    - what Type of RR
+  - Answer Section
+    - RR for Name queried
+    - can be multiple (replicated web servers)
+  - Authority section
+    - RR of Authoritative servers
+  - Additional section
+    - Say a reply has the CNAME of a mail server, additional may contain Type A RR for the same
+- `nslookup` play around
+- **_DNS Record Insertion_**
+  - UPDATE is possible to dynamically update an RR
+  - Registrar - checks uniqueness of domain name
+    - Give them the IP of Primary and Secondary authoritative servers for each of which a Type NS record and Type A record are for the authoritative servers created by them
+    - You create Type A or Type MX (if mail server aliased to the same CNAME as Web server) record in the authoritative servers
