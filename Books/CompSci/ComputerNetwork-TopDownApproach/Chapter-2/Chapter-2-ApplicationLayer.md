@@ -277,7 +277,7 @@
       - When storage full deletes data that is not as frequently requested
 - **CDN Working**
   - When a host requests a vid
-    - CDN needs to intercept the req (Take advantage of DNS and redirect req) and determine which CDN server cluster to redirect req to
+    - CDN needs to intercept the req (Take advantage of DNS and redirect req; DNS redirect) and determine which CDN server cluster to redirect req to
 
     ![DNS Working](images/DNSWorking.png)
 
@@ -285,13 +285,17 @@
     2. When the user clicks on the link `http://video.netcinema.com/6Y7B23V`, the user’s host sends a
       DNS query for video.netcinema.com
     3. The user’s Local DNS Server (LDNS) relays the DNS query to an authoritative DNS server for
-      NetCinema, which observes the string “video” in the hostname video.netcinema.com. To “hand over” the DNS query to KingCDN, instead of returning an IP address, the NetCinema
-      authoritative DNS server returns to the LDNS a hostname in the KingCDN’s domain, for
-      example, _a1105.kingcdn.com_
+      NetCinema, which observes the string “video” in the hostname video.netcinema.com. To “hand over” the DNS query to KingCDN, instead of returning an IP address, the NetCinema authoritative DNS server returns to the LDNS a hostname in the KingCDN’s domain, for example, _a1105.kingcdn.com_
     4. From this point on, the DNS query enters into KingCDN’s private DNS infrastructure. The user’s
       LDNS then sends a second query, now for _a1105.kingcdn.com,_ and KingCDN’s DNS system eventually returns the IP addresses of a KingCDN content server to the LDNS. It is thus here, within the KingCDN’s DNS system, that the CDN server from which the client will receive its content is specified.
     5. The LDNS forwards the IP address of the content-serving CDN node to the user’s host.
     6. Once the client receives the IP address for a KingCDN content server, it establishes a direct TCP connection with the   server at that IP address and issues an HTTP GET request for the video. If DASH is used, the server will first send to the client a manifest file with a list of URLs, one for each version of the video, and the client will dynamically select chunks from the different versions
+
+  - _Cluster Selection Strategies_
+    - Dynamically driecting clients to a CDN server cluster within the CDN by learning the IP of client's LDNS from the DNS query
+    - Geographically closest strategy, LDNS IP mapped to geographic location
+      - may perform poorly for some clients as there maybe too many hops in-between
+        - realtime measurements of loss and delay can be used to workaround but many LDNSs are configured to not respond to such probes
 
   - _Google infra_
     - 14 mega data centres, server search results and Gmail messages (also a PWA)
@@ -301,3 +305,36 @@
       - The req is also forwarded to Google's private network to fetch personalized search results
     - For YouTube, when a video is resquested, video itslef may come from a Bring Home CDN while static assests coming from a Bring Home CDN and ads from Google's private data centres
 
+  - _Netflix Infra_
+    - Major components: AWS and its own private CDN (doesn't use DNS redirect instead service running on AWS directs client which DNS server cluster to fetch from)
+      - AWS
+        - **Content Ingestion**
+          - Ingest and process studio master versions of videos
+        - **Content Processing**
+          - AWS machines create multiple formats at various bit rates for various clients that Netflix serves. This is then served over DASH
+        - **Uploading Versions to CDN**
+          - Post processing, hosts push to CDN servers
+
+        ![Netflix Infra Action](images/NetflixInfraAction.png)
+
+    - Uses Bring Home and Enter Deep philosophies for their private CDN; Akamai CDN for WebPages, static assets
+    - Content pushed to CDN (no pull), during off hours; only popular ones, calculated everyday
+    - When user clicks a video tile on one of the clients, req goes to AWS that determines which CDN server has movie and if the user host is served by a residential ISP network
+      - Once that is known then, req forwarded to one of the Bring Home or Enter Deep CDNs
+      - Client and CDN directly talk to each other using a properitary version of DASH
+        - Client makes byte-range requests to get a 4s long file chunk
+          - While chunk is being downloaded, client measures throughput by running a rate determination algo to decide what encoded chunk, suitable for available badnwidth is to be requested
+          - _byte range requests_: (MDN)
+            - Can be done only if server accepts these req; A HEAD method call helps with that
+              - if server accepts, it replies with `Accept-Ranges: bytes`  header set in the reply
+              - When client reqs a chunk, `206 Partial Content` returned from server alongwith `Content-Range: <requestedChunkRage>/<TotalBytesOnServer>` and `Content-Length: 1024`
+  - _YouTube Infra_
+    - Uses pull caching
+    - Optimizes Round Trip Time (RTT) as cluster selection strategy
+    - Also employs DNS redirect to a distant CDN to balance load
+    - Doesn't use DASH, user manually changes quality
+    - Byte-range req used to limit flow of data after a preset amount of video is prefetched
+  - _Kankan Infra_
+    - Uses CDN-P2P hybrid model (peer assited download) for content delivery
+    - Content pushed to CDN that plays a huge roll in initial start-up of stream, remainder of chunks pulled from peers
+      - Once data downloading from peers (numPeers with chunks meets a certain number and isActive) reaches a certain threshold, CDN is not relied upon anymore
