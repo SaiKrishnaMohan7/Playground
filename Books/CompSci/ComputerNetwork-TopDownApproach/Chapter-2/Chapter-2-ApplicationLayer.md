@@ -101,11 +101,11 @@
   - Client makes a req to the same server, this time though, the browser knows the host the user is trying to contact and sets the `Cookie: <uniqueId>` header when sending the req and therefore allowing the server to recognize user
   - As the client continues to browse WebPages, the browser sets `Cookie: <uniqueId>` each time
 
-### Web Caching (Proxy servers, network caches and CDNs)
+### Web Caching (Proxy servers, network caches and application caches)
 
-![Web caching - Proxy servers, network caches and CDNs](images/WebCachingProxiesNetworkCache.png)
+![Web caching - Proxy servers, network caches](images/WebCachingProxiesNetworkCache.png)
 
-- Proxy servers, network caches and CDNs, same basic concept, cater to a request on behalf of the server
+- Proxy servers, network caches, same basic concept, cater to a request on behalf of the server
 - Typically bought and maintained by ISP (Uni)
 - eases congestion of hte access link for smaller ISPs like unis
 
@@ -130,6 +130,7 @@
       - DNS protocol is also implemented as a client-server application with the client side running on teh user's host and the server side on a DNS server
       - When the user tries to access a WebPage on some server, the browser extracts the hostname and passes it to the client side of DNS which then contacts a DNS server to get the IP address of the server
       - Once IP is received, and passed to the application, our TCP handshake story begins
+    - **DNS uses UDP for queries and replies and TCP for Zone tansfer** (maintaining consistency of RRs across Primary and Secondary servers -- Authoritative servers?)
 - Other than hostname to IP translation, DNS provides follwing services:
   - **_Hostname Aliasing_**
     - Most hostnames that we encounter today are mnemonic, easier to remember (have a sort of ring to it), these are called **Alias Hostnames**
@@ -187,13 +188,13 @@
   - RR is a 4 tuple `(Name, Value, Type, TTL)`
     - TTL - When a RR is to be expunged from a cache
     - *Name, Value, Type*
-      - if `_Type=A_` then `_Name=hostname_` and `_Value=IPaddrOfHost_`
+      - if `Type=A` then `Name=hostname` and `Value=IPaddrOfHost`
         - ex: `(us-east.relay1.spicycurry.com, 145.34.45.368, A, <TTL>)`
-      - if `_Type=NS_` then `_Name=domain_` and `_Value=hostnameOfAuthoritativeDNS_`, used to route queries along the chain
+      - if `Type=NS` then `Name=domain` and `Value=hostnameOfAuthoritativeDNS`, used to route queries along the chain
         - ex: `(foo.com, dns.foo.com, NS, <TTL>)`
-      - if `_Type=CNAME_` then `_Name=AliasHostname_` and `_Value=CanonicalHostname_`
+      - if `Type=CNAME` then `Name=AliasHostname` and `Value=CanonicalHostname`
         - ex: `(bar.com, relay1.bar.com, CNAME, <TTL>)`
-      - if `_Type=MX_` then `_Name=AliasHostname_` and `_Value=CanonicalHostnameOfMailServer_`
+      - if `Type=MX` then `Name=AliasHostname` and `Value=CanonicalHostnameOfMailServer`
         - Allows for having the same alias name for the web server and mail server
         - To get mail server IP, DNS query would be for the MX record and a CNAME query for web server IP, for the same alias name (From the client's PoV, it is asking for IP of foo.com but how does DNS know if MX record is desired or CNAME record is desired?)
         - ex: `(foo.com, mail.foo.com, MX, <TTL>)`
@@ -228,3 +229,75 @@
     - Give them the IP of Primary and Secondary authoritative servers for each of which a Type NS record and Type A record are for the authoritative servers created by them
     - You create Type A or Type MX (if mail server aliased to the same CNAME as Web server) record in the authoritative servers
 - DNS is quite secure, with packet filtering, caching most DDoS attacks are prevented
+
+## Peer to Peer Networks
+
+------NotDeepEnoughInBook------
+
+- _**BitTorrent**_
+  - Most pervasive
+  - Torrent - Set of all peers distributing a file
+    - Peers download files in equal sized chunks of 256 KB
+    - File is chunked and each peer has a subset
+    - Connection between peers is over TCP
+  - Tracker - central infra for peers to register with, advertise themselves intermittently after registeration
+  - _Working_
+    - A peer in a network requests for the _rarest_ chunk of the file, _rarest first_
+      - To distribute rare chunks as quickly as possible within the torrent and roughly equalize the numChunks
+    - Trading Algo
+      - Neighbors supplying data at the highest bit rate are favoured and peer reciprocates by exchanging data at the same rate
+      - Every 10s, set of neighbors recalculated favouring above (peers are uncoked)
+      - Every 30s, new neighbor is picked at random and chunks are shared (optimistically unchoked)
+- [Distributed Hash Tables (DHT)](https://mediaplayer.pearsoncmg.com/_ph_cc_ecs_set.title.Distributed_Hash_Tables_(DHTs)_(Chapter_2)__/aw/streaming/ecs_kurose_compnetw_6/DHT.m4v)
+  - CDNs implement a DHT
+
+## Video Streaming and CDNs
+
+- HTTP streaming flaw
+  - Stream the same video/file of same quality to all clients irrespective of bandwidth available to them
+    - DASH - Dynamic Adaptive Streaming over HTTP
+      - Several encode versions of files available to client at different quality; client can request different version more appropriate for the bandwidth availabile to teh client based on the manifest file (bit-rate to URL mapping) sent to client by server
+        - The client requests files in chunks, say when trying to req chunks at teh beginning (0:0:00 to 0:2:00) of a video the available bandwidth is not high, the client requests the video encode for lower bit rate say 340p. Allows for clients to request a diff file if bandwidth changes during the session
+- **CDNs** implements a DHT
+  - Problems solved by CDN
+    - Client is far away from the server, end to end throughput governed by bottleneck of the link
+    - Same popular video will be requested several times
+    - single data center single point of failure
+  - Multiple copies of file in geographically distributed locations, server routes clients to CDNs that will ensure the best quality for its users
+  - _CDN server placement philosophy_
+    - Enter Deep
+      - Place CDN servers deep in the access networks of  ISPs (Akamai)
+      - Higher cost to maintain but higher throughput to end users
+    - Bring Home
+      - Large cluster at a smaller number placed a Internet Exchange Points (IXP)
+      - Lower maintainance lower throughput to end users
+    - CDNs are populated by either pulling from or being pushed to from a central repository
+      - If client requests a video not stored at that CDN server, it gets it form the cntral repo or another CDN server
+      - Locally stores data
+      - When storage full deletes data that is not as frequently requested
+- **CDN Working**
+  - When a host requests a vid
+    - CDN needs to intercept the req (Take advantage of DNS and redirect req) and determine which CDN server cluster to redirect req to
+
+    ![DNS Working](images/DNSWorking.png)
+
+    1. The user visits the Web page at NetCinema
+    2. When the user clicks on the link `http://video.netcinema.com/6Y7B23V`, the user’s host sends a
+      DNS query for video.netcinema.com
+    3. The user’s Local DNS Server (LDNS) relays the DNS query to an authoritative DNS server for
+      NetCinema, which observes the string “video” in the hostname video.netcinema.com. To “hand over” the DNS query to KingCDN, instead of returning an IP address, the NetCinema
+      authoritative DNS server returns to the LDNS a hostname in the KingCDN’s domain, for
+      example, _a1105.kingcdn.com_
+    4. From this point on, the DNS query enters into KingCDN’s private DNS infrastructure. The user’s
+      LDNS then sends a second query, now for _a1105.kingcdn.com,_ and KingCDN’s DNS system eventually returns the IP addresses of a KingCDN content server to the LDNS. It is thus here, within the KingCDN’s DNS system, that the CDN server from which the client will receive its content is specified.
+    5. The LDNS forwards the IP address of the content-serving CDN node to the user’s host.
+    6. Once the client receives the IP address for a KingCDN content server, it establishes a direct TCP connection with the   server at that IP address and issues an HTTP GET request for the video. If DASH is used, the server will first send to the client a manifest file with a list of URLs, one for each version of the video, and the client will dynamically select chunks from the different versions
+
+  - _Google infra_
+    - 14 mega data centres, server search results and Gmail messages (also a PWA)
+    - Bring Home CDNs 50 - 100 servers, their own
+    - 100+ Enter Deep clusters, employs TCP splitting, serves static content for WebPage results of a search query
+    - When a user makes a serach query, req goes to nearby Enter Deep ISP CDNs retrieving static content for the results
+      - The req is also forwarded to Google's private network to fetch personalized search results
+    - For YouTube, when a video is resquested, video itslef may come from a Bring Home CDN while static assests coming from a Bring Home CDN and ads from Google's private data centres
+
