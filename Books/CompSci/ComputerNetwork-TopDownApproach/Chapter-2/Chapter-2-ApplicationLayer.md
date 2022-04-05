@@ -1,4 +1,4 @@
-# Chapter 2 Applications Layer
+# Chapter 2 Application Layer
 
 ## Network Application Arch
 
@@ -44,6 +44,8 @@
 ![Some apps and their sensitivity](images/SomeAppsAndBandwidthNeeds.png)
 
 ## HTTP
+
+[DistNode - HTTP](https://github.com/SaiKrishnaMohan7/Playground/blob/master/Books/CompSci/DistributedSystemsInNodeJs/Summaries/Chapter-2-Protocols.md#chapter-2-summary-by-sai-book-thomas-hunter-ii)
 
 - implemented in two programs, client and server
 - WebPage : Objects :: 1 : n
@@ -153,7 +155,7 @@
     - Maintanance pains
     - Too far geographically, too many hops, delays
 - Hence, implemented as a hierarchy of servers distributed geographically
-- Three classes of DNS (very similar to TLS certs)
+- Three classes of DNS
   - Root DNS servers
     - >= 400 around the world
     - Provides IPs of TLD DNS servers
