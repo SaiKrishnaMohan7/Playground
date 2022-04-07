@@ -4,20 +4,23 @@
  * @param {number} target
  * @return {number[]}
  */
+// Time: O(n), Space: O(n)
 var twoSum = function (nums, target) {
-  let left = 0;
-  let right = 1;
   let indices = [];
-
-  while (left < nums.length && right < nums.length) {
-    if (nums[left] + nums[right] == target) {
-      indices.push(left, right);
+  let arrayValuesVisitedToIdxMap = {};
+  // Build a hashmap of array values
+    // Check if target - currentArrayValue exists in the hashmap i.e. does it exist in the array?
+    // yes -> push the current index and and the value from hashmap into array
+    // no -> set arrayValue as key and index as value
+  for (let index = 0; index < nums.length; index++) {
+    const currentValue = nums[index];
+    const difference = target - currentValue;
+    if (arrayValuesVisitedToIdxMap[difference]) {
+      indices.push(arrayValuesVisitedToIdxMap[difference], index);
       return indices;
     }
-    left++;
-    right++;
+    arrayValuesVisitedToIdxMap[currentValue] = index;
   }
-  return indices;
 };
 
 twoSum([2, 7, 11, 15], 9);
