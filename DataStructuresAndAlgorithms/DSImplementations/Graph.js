@@ -131,6 +131,39 @@ class Graph {
       });
     }
   }
+
+  /*
+   * Searches through a Graph breadth first, meaning, all the nodes at a the same depth are visited first
+   *
+   * BFT uses a Queue to keep track of nodes to operate on and a map to keep track of nodes that have been visited
+   *
+   * @param {startingNode} Node node to start from
+   */
+  breadthFirstTraversal(startingNode) {
+    if (!startingNode || typeof startingNode !== Node) {
+      return null;
+    }
+
+    const nodesVisited = {};
+    const nodeQueue = [];
+    // add unvisited nodes to the Queue
+    nodeQueue.push(startingNode.identifier);
+    // mark as visited
+    nodesVisited[startingNode.identifier] = true;
+    while (nodeQueue.length) {
+      let current = nodeQueue.shift();
+      let neighborsOfCurrentNode = this.adjacencyList[current.identifier];
+      // See if node has any unvisited children
+      // add to stack if so
+      // add to visited map
+      neighborsOfCurrentNode.forEach((neighborNode) => {
+        if (!nodesVisited[neighborNode.identifier]) {
+          nodeQueue.push(neighborNode);
+          nodesVisited[neighborNode.identifier] = true;
+        }
+      });
+    }
+  }
 }
 
 const myGraph = new Graph(false, false);
