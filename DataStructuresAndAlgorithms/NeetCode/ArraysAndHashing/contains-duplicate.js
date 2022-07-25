@@ -5,7 +5,7 @@ let containsDuplicate = function (nums) {
   const freqMap = {};
   for (let i = 0; i < nums.length; i++) {
     const item = nums[i];
-    if (freqMap[item]) {
+    if (freqMap[item] > 1) {
       return true;
     } else if (freqMap[item]) {
       freqMap[item] += 1;

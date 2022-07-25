@@ -6,6 +6,7 @@
  * @return {boolean}
  */
 // Time: O(s+t) Space: O(s+t); sort and compare will be shorter but depending on the sorting algo Time maybe O(n^2) and maybe O(1) space
+// Another method would be to str.split('').sort().join('') and then see if they are equal
 var isAnagram = function (s, t) {
   const sMap = {};
   const tMap = {};
