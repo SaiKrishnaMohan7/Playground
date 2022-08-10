@@ -217,6 +217,7 @@ spec:
 - Creates a communication layer between the outside world and the container running inside the pod (req comes to kube-proxy and then to Service NodePort)
 - Facilatates communication with a Pod on a static port on the worker node (30000 - 32767; port values outside of this range will not be accepted)
 - When a NodePort service is creaetd a clusterIP service is automatically created which will route rwquets to the NodePort service
+- If the pods are on separate machines the NodePort service will open the same ports on the nodes as specified and load balance at random
 - Good for dev; BAD for Prod
 
 ##### LoadBalancer
