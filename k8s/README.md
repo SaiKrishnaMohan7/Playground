@@ -43,7 +43,10 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
         - Cluster state config, service discovery (coreDNS running in kube-system ns on the master, part of the control plane; Single process; Three pods managed by a reelicaSet)
         - light-weight distributed key-value store, consensus through *raft* distributed consensus algorithm
 
-      - _Kube Scheduler (Manager guy)_: [The last link](#Sources)
+      - _Kube Scheduler (Manager guy)_:
+        - Main function: [The last link](#Sources)
+        - The scheduler assigns pods to nodes by creating a _kind: Binding_ object and sets the `nodeName` key to the node the pod is scheduled on
+        - The same could be done by manually adding nodeName to the pod definition (after deleting the pod) and applying it
 
       - _Cloud Controller Manager (Cloud Provider Liason)_
         - Lets us link to a cloud provider
@@ -95,6 +98,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
 - _POD_
   - Create an NGINX Pod: `kubectl run nginx --image=nginx`: This actually creates a deployment (But I was able to delete the pod; Scrutinize)
   - Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run): `kubectl run nginx --image=nginx  --dry-run=client -o yaml`
+  - `kubectl replace pod --force <podNmae> -f <updatedPodSpec>`
 
 - Deployment
   - Create a deployment: `kubectl create deployment --image=nginx nginx`
