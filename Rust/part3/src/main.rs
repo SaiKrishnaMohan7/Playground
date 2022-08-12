@@ -16,13 +16,28 @@ impl City {
             CitySize::Town => {
                 let residents = 1_000;
 
+                // returning a tuple from the match
                 (
                     format!("a *town* of approximately {} residents", residents),
                     residents,
                 )
             }
-            // 👉 TODO Handle the other CitySize variants individually,
-            //    in a similar way to how *town* is handled here
+            CitySize::City => {
+                let residents = 10_000;
+
+                (
+                    format!("a *city* of approximately {} residents", residents),
+                    residents
+                )
+            }
+            CitySize::Metropolis => {
+                let residents = 1_000_000;
+
+                (
+                    format!("a *metropolis* of approximately {} residents", residents),
+                    residents
+                )
+            }
             _ => {
                 let residents = 1_000;
 
@@ -45,11 +60,7 @@ impl City {
 }
 
 fn main() {
-    // 👉 TODO Use City::new() to create a Metropolis-sized city here
-    let rustville = City {
-        description: String::new(),
-        residents: 0,
-    };
+    let rustville = City::new(CitySize::Metropolis, false);
 
     println!("This city is {}", rustville.description);
 
