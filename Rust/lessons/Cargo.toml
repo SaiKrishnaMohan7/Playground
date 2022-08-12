@@ -1,0 +1,8 @@
+[package]
+name = "generate-lessons-site"
+version = "0.1.0"
+authors = ["Richard Feldman <oss@rtfeldman.com>"]
+edition = "2018"
+
+[dependencies]
+pulldown-cmark = { version = "0.8", default-features = false }
