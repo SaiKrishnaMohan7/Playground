@@ -1,10 +1,10 @@
 fn main() {
-    let mut numbers = vec![2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
-    let numbers_mutable_reference = &mut numbers;
+    let numbers = vec![2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+    let numbers_immutable_reference = &numbers; // Can also send slice instead, Vec.as_slice(), or let num_slice = &numbers[0..] Slices are immutable references; BUT Just sending this to a fn that accepts &[i64] will also work because of traits!
 
-    let sum_of_nums = sum(numbers_mutable_reference);
-    let product_of_nums = product(numbers_mutable_reference);
-    let average_of_nums = average(numbers_mutable_reference);
+    let sum_of_nums = sum(numbers_immutable_reference);
+    let product_of_nums = product(numbers_immutable_reference);
+    let average_of_nums = average(numbers_immutable_reference);
 
     // 💡 TIP: You'll get a compile error. Here are two ways you can fix it:
     //
@@ -19,7 +19,7 @@ fn main() {
     println!("Average of these numbers: {}", average_of_nums);
 }
 
-fn sum(numbers: &mut Vec<i64>) -> i64 {
+fn sum(numbers: &Vec<i64>) -> i64 { // &[i64] if using slice
     let mut total = 0;
 
     for num in numbers.iter() {
@@ -29,7 +29,7 @@ fn sum(numbers: &mut Vec<i64>) -> i64 {
     total
 }
 
-fn product(numbers: &mut Vec<i64>) -> i64 {
+fn product(numbers: &Vec<i64>) -> i64 {
     let mut total = 1;
 
     for num in numbers.iter() {
@@ -39,7 +39,7 @@ fn product(numbers: &mut Vec<i64>) -> i64 {
     total
 }
 
-fn average(numbers: &mut Vec<i64>) -> i64 {
+fn average(numbers: &Vec<i64>) -> i64 {
     let length = numbers.len() as i64;
 
     sum(numbers) / length
