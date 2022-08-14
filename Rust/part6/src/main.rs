@@ -1,9 +1,10 @@
 fn main() {
-    let numbers = vec![2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+    let mut numbers = vec![2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+    let numbers_mutable_reference = &mut numbers;
 
-    let sum_of_nums = sum(numbers);
-    let product_of_nums = 0; // 👉 TODO call product() and put answer here
-    let average_of_nums = 0; // 👉 TODO call average() and put answer here
+    let sum_of_nums = sum(numbers_mutable_reference);
+    let product_of_nums = product(numbers_mutable_reference);
+    let average_of_nums = average(numbers_mutable_reference);
 
     // 💡 TIP: You'll get a compile error. Here are two ways you can fix it:
     //
@@ -18,7 +19,7 @@ fn main() {
     println!("Average of these numbers: {}", average_of_nums);
 }
 
-fn sum(numbers: Vec<i64>) -> i64 {
+fn sum(numbers: &mut Vec<i64>) -> i64 {
     let mut total = 0;
 
     for num in numbers.iter() {
@@ -28,7 +29,7 @@ fn sum(numbers: Vec<i64>) -> i64 {
     total
 }
 
-fn product(numbers: Vec<i64>) -> i64 {
+fn product(numbers: &mut Vec<i64>) -> i64 {
     let mut total = 1;
 
     for num in numbers.iter() {
@@ -38,7 +39,7 @@ fn product(numbers: Vec<i64>) -> i64 {
     total
 }
 
-fn average(numbers: Vec<i64>) -> i64 {
+fn average(numbers: &mut Vec<i64>) -> i64 {
     let length = numbers.len() as i64;
 
     sum(numbers) / length
