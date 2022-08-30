@@ -46,7 +46,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
       - _Kube Scheduler (Manager guy)_:
         - Main function: [The last link](#Sources)
         - The scheduler assigns pods to nodes by creating a _kind: Binding_ object and sets the `nodeName` key to the node the pod is scheduled on
-        - The same could be done by manually adding nodeName to the pod definition (after deleting the pod) and applying it
+        - The same could be done by manually adding `nodeName` to the pod definition (after deleting the pod) and applying it ([Daemon Set](#daemonset))
 
       - _Cloud Controller Manager (Cloud Provider Liason)_
         - Lets us link to a cloud provider
@@ -60,7 +60,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
     - Run on all nodes
     - Responsible for pod maintainance, provide runtime environment
     - Components:
-      - _Kubelet_
+      - _Kubelet_ (Runs as a part of the controlplane too)
         - Talks to the container runtime env
         - Communicates with the control plane via the kubeApiServer, gets pod definitions, resource constraints etc. and passes it to the Kube Scheduler
         - The Kubelet has a client-server type architecture (gRPC client and server) and communicates with the _Container Runtime_ via the _Container Runtime Interface (CRI)_
@@ -68,6 +68,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
             - *ImageService*: Image related operations
             - *RuntimeService*: Pod and container related operations
         - _cAdvisor_ is a sub component (container advisor) retrieves metrics from pods and exposes it to the Metrics server via the kubelet API
+        - Pods, and their lifecycle is the main concern of the (there are different types of controllers but no controllers for Pods, Kubelet is the pod expert) Kubelet. It can run and manage pods (only pods) without the presence of any of the control plane components. Such pods are called are [Static Pods](#pods)!
 
       - _KubeProxy_
         - Implements the K8s service concept
@@ -137,6 +138,17 @@ Or
   - Ready
 - A service that routes requests to pods will start doing so the moment it is in the `Ready` state
   - The app running in the container in the pod may not be ready, Readiness and Liveness probes help with that
+- **_StaticPods_**
+  - Kubelet can create and manage pods. It talks to the KubeApiServer to grab the pod manifest from etcd and uses it to create pods
+  - The Kubelet can create and manage pods without the KubeApiServer! This is accomplished by configuring the kubelet to read the manifest files from a dir (pod-manifest-path) on the node (kubeconfig.yaml or setting the path when installing the kubelet binary as an option)
+    - (Check the scheduling pdf for more)
+    - Clusters setup using the kubeadmin tool use kubeconfig.yaml setting `staticPodPath`
+    - When static pods are created, you can `docker ps` to get the state of the containers
+    - kcg po will also get you the pods but they will be read-only no editing (no delete; only control from the path) possible (Static pods will have the nodeName appended to them!)
+  - The kubelet will periodically checks the folder for changes and recreate the pods if changes. If the files are removed then the kubelet also deletes the pods
+  - USE CASE for static pods
+    - Deploying control plane components without dealing with the binaries of each component. Just install the Kublet binary and setup up the static pod path, add the manifests there and done (kubeadm does it like that)
+  - `k run static-busybox --image=busybox --dry-run=client -o yaml  --command -- sleep 1000 > pod-busybox.yaml` The command should always go last
 
 ### ReplicaSet
 
@@ -293,7 +305,11 @@ spec:
 
 ##### DaemonSet
 
-- used for instructing k8s to run pods on a particular machine (override kub scheduler) like loggging apps like sysdig, logDNA etc.
+- used for instructing k8s to run pods on a particular machine (override kub scheduler) like loggging apps like sysdig, logDNA, networking solutions like istio etc.
+- run a single pod on all machines, worker nodes, if a new machine is added, pod is created automatically
+  - Monitoring and logging applications are deployed like this
+- If we want to run daemon processes this is the way to go
+- Since v1.12 the DemonSet uses the default scheduler and [NodeAffinity](#node-selectors-and-node-affinity) to accomplish
 
 ##### ComponentStatus
 
@@ -497,11 +513,11 @@ spec:
 
 ## Taints and Tolerations
 
-- Taints are on nodes (`kc taint nodes <nodeName> key=value:taint-effect` key-value ex: app=elasticesearch-master) and toleraations on Pods
+- Taints are on nodes (`kc taint nodes <nodeName> key=value:taint-effect` key-value ex: app=elasticesearch-master) and tolerations on Pods
   - To untaint, `kubectl taint nodes <nodeName> key:NoSchedule-`
   - ex: `kubectl taint nodes controlplane node-role.kubernetes.io/master:NoSchedule-`
 - Tells nodes to accept pods with the right tolerations!
-- `taint-effect`: What happens to a Pod if a taint isnot tolerated
+- `taint-effect`: What happens to a Pod if a taint is not tolerated
   - NoSchedule: Won't schedule to node
   - PreferNoSchedule: Try to avoid schduling to the node
   - NoExecute: No new pods will be scheduled, if there are remaining pods that don't tolerate a taint, evict them
@@ -514,7 +530,7 @@ spec:
   containers:
     - name: nginx-container
       image: nginx
-  tolerations:
+  tolerations: # has to be in quotes
     - key: "app"
       operator: "Equal"
       value: "blue"
@@ -523,19 +539,21 @@ spec:
 
 - A taint is set on the Master node when the cluster is initialized so that no pods are scheduled
   - `kcdes node kubemaster | grep Taint`
-- Don't guarantee that your pod won't end up anywhere else
+- **Don't guarantee that your pod won't end up anywhere else**
+  - only meant to restrict nodes to accept only certain pods with certain tolerations no guarantee that the pod will end up in the tainted node that it can tolerate
+  - doesn't tell pod to go to some other node (NodeAffinity and Anti-Affinity)
 
 ## Node Selectors and Node Affinity
 
 - `kc label nodes <nodeName> <label-key>=<lable-value>`
   - ex: `kc label nodes node-1 size=Large`
-- You can't be too expressive with this. For instance we cannot say schdule a pod on a Large or Medium node etc. Solution: *NodeAffinity*
+- You can't be too expressive with this. For instance we cannot say schedule a pod on a Large or Medium node etc. Solution: _NodeAffinity_
 - NodeAffinity
 
 ```YAML
 apiVersion: v1
 kind: Pod
-metdata:
+metadata:
   name: mayapp-pod
 spec:
   containers:
@@ -549,7 +567,7 @@ spec:
 # Same thing using NodeAffinity
 apiVersion: v1
 kind: Pod
-metdata:
+metadata:
   name: mayapp-pod
 spec:
   containers:
@@ -572,6 +590,103 @@ spec:
           # - key: size
           #   operator: Exists Checks if the key size exists
 ```
+
+## Resource requirements and limits
+
+- The scheduler decides on which node to place the pod on based on what the resource requirements of the pod are and the resources available on the nodes
+
+```YAML
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mayapp-pod
+spec:
+  containers:
+  - name: bleh-container
+    image: bleh-container-image
+    resources: # set for each container
+      requests:
+        memory: "1Gi" # default 256Mi per container (kind: LimitRange is to be created per ns per resource for setting this default)
+        cpu: 1 # default 0.5 vcpu
+      limits:
+        memory: "2Gi" # default 512Mi per container but can end up using more than limit. If this happens frequently, conatiner killed
+        cpu: 2 # default 1 vcpu if exceeds, k8s throttles, container cannot use more vCpus than the limit
+---
+# kc apply -f -n <ns>
+    apiVersion: v1
+    kind: LimitRange
+    metadata:
+      name: mem-limit-range
+    spec:
+      limits:
+      - default:
+          memory: 512Mi
+        defaultRequest:
+          memory: 256Mi
+        type: Container
+---
+    apiVersion: v1
+    kind: LimitRange
+    metadata:
+      name: cpu-limit-range
+    spec:
+      limits:
+      - default:
+          cpu: 1
+        defaultRequest:
+          cpu: 0.5
+        type: Container
+```
+
+## Multiple Schedulers
+
+- We can choose to run multiple scheduler processes in the cluster or even replace the default scheduler
+  - Say, for some services in your application, some decisions of where the pods should be placed are based on some other predicates on top of what the default scheduler offers then we can write our own scheduler encapsulating those predicates! Something akin to this is what the Netflix infra team has built as part of their managed delivery pipeline
+
+  ```YAML
+  <!-- Kube Scheduler deployed as a Pod using kubeadm; Default Scheduler -->
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: kube-scheduler
+    namespace: kube-system
+  spec:
+    containers:
+    - command:
+      - kube-scheduler
+      - --address=127.0.0.1
+      - --kubeconfig=/etc/kubernetes/scheduler.conf
+      - --leader-elect=true # For electing leader in HA master setup
+    image: k8s.gcr.io/kube-scheduler-amd64:v1.23.0
+    name: kube-scheduler
+  ---
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: my-custom-scheduler
+    namespace: kube-system
+  spec:
+    containers:
+    - command:
+      - kube-scheduler
+      - --address=127.0.0.1
+      - --kubeconfig=/etc/kubernetes/scheduler.conf
+      - --leader-elect=true
+      - --scheduler-name=my-custom-scheduler
+      - --lock-object-name=my-custom-scheduler # To differentiate from default scheduler while leader election in HA setup
+    image: images.spicycurry.io/borg-scheduler:v0.0.1
+    name: my-custom-scheduler
+    ---
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: mayapp-pod
+    spec:
+      containers:
+      - name: bleh-big-container
+        image: bleh-big-container-image
+      schedulerName: my-custom-scheduler # If this has been configured correctly the pod will get scheduled by the custom scheduler and the Events will say so when kcg events
+  ```
 
 ## Multi-Container Pods
 
