@@ -47,7 +47,7 @@ Declarative Deployment: Our setup should look like this, make it happen (Master 
         - Main function: [The last link](#Sources)
         - The scheduler assigns pods to nodes by creating a _kind: Binding_ object and sets the `nodeName` key to the node the pod is scheduled on
         - The same could be done by manually adding `nodeName` to the pod definition (after deleting the pod) and applying it ([Daemon Set](#daemonset))
-
+        ![Scheduler Strategies](https://github.com/SaiKrishnaMohan7/Playground/blob/650e8344f9c5c1268b83f799a989d7345888df54/k8s/img/k8sSchedulerPredicates.png)
       - _Cloud Controller Manager (Cloud Provider Liason)_
         - Lets us link to a cloud provider
         - If running k8s locally, on prem, no cloud controller manager
@@ -898,5 +898,5 @@ Therefore, for the microservices pool, you would need 15 worker nodes with 2 cor
 - [Inner workings, high level in affinity rules and selectors context, of kube-scheduler](https://www.azuremonk.com/blog/kube-scheduler)
   - [How does the Scheduler work? Predicates and Priotrites](https://stackoverflow.com/questions/28857993/how-does-kubernetes-scheduler-work)
   - [How does the Scheduler work?](https://jvns.ca/blog/2017/07/27/how-does-the-kubernetes-scheduler-work/)
-  - [Predicates and Priority strategys - Medium article, Grain of salt!](https://aws.plainenglish.io/kubernetes-deep-dive-scheduling-strategy-6bff1939ac01)
+  - [Predicates and Priority strategies - Medium article, Grain of salt!](https://aws.plainenglish.io/kubernetes-deep-dive-scheduling-strategy-6bff1939ac01)
 - [TechWorld With Nana](https://www.youtube.com/channel/UCdngmbVKX1Tgre699-XLlUA)
