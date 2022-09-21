@@ -59,18 +59,18 @@ A set of instructions to docker on how to build your container
   - `docker run --init --rm -P node-app:1.0.0`: randomnly pick ports from the conatiner and map it to port 3000
   - better run: `docker run --init --detach -p 3000:3000 node-app:1.0.0` (--detach: run container in the background, -p is same as --publish)
 
-- `docker build -t <tagName> -f <dockerfileName>`: We can our custom dockerfile, named, *tagName.Dockerfile* ex: node-alpine.Dockerfile
+- `docker build -t <tagName> -f <dockerfileName>`: We can our custom dockerfile, named, _tagName.Dockerfile_ ex: node-alpine.Dockerfile
 
 ### Layers
 
-Docker is smart enough to see the your FROM, RUN, and WORKDIR instructions haven't changed and wouldn't change if you ran them again so it uses the same containers it cached from the previous but it can see that your COPY is different since files changed between last time and this time, so it begins the build process there and re-runs all instructinos after that.
+Docker is smart enough to see the your `FROM`, `RUN`, and `WORKDIR` instructions haven't changed and wouldn't change if you ran them again so it uses the same containers it cached from the previous but it can see that your `COPY` is different since files changed between last time and this time, so it begins the build process there and re-runs all instructinos after that.
 
-- Here, some problems occur, the install step (RUN npm ci) takes the most time and dockdr reruns all instructions from what it thniks has chnaged but in reality we chnageds something in our index file, which docker knows but we did nto chnage any dependencies. So for build performance, split *COPY into two COPY* instructions!
+- Here, some problems occur, the install step (RUN npm ci) takes the most time and dockdr reruns all instructions from what it thniks has chnaged but in reality we chnageds something in our index file, which docker knows but we did nto chnage any dependencies. So for build performance, split _`COPY` into two `COPY`_ instructions!
 - ! this makes sure that we make use of docker's LAYER caching and keep the LAYER of installed packages!
 
 ### Bind Mounts
 
-Run a container, without building it using a dockerfile, like a pre-built container (nginx) or say, I have a contianerized server that I am actively developing and I want the chnages to reflect in the contianer as I change it. *Sahre data between host and container*
+Run a container, without building it using a dockerfile, like a pre-built container (nginx) or say, I have a contianerized server that I am actively developing and I want the chnages to reflect in the contianer as I change it. _Sahre data between host and container_
 
 ex: `docker run --mount type=bind,source="$(pwd)"/build,target=/usr/share/nginx/html -p 8080:80 nginx`
 
@@ -111,11 +111,11 @@ Run multiple conatiners with one command, `docker-compose up`, without worrying 
 
 Container Orchestration tool
 
-- *Master*: the brain, controls everything else
-- *Nodes*: do the actual work, house 1:N containers, manage workloads; can also be looked at as deploy target, a VM, another container, bare metal server
-- *Pods*: 2 to N interdependent containers deployed as one
-- *Service*: A groiup of Pods making jup one service, like a shopping cart service. All these pods talk to each other and services ensure the connection between these pods is relaible since we create and destroy pods on the fly depending on scale
-- *Deployment*: tell K8s in what state you want the pods should be in
+- _Master_: the brain, controls everything else
+- _Nodes_: do the actual work, house 1:N containers, manage workloads; can also be looked at as deploy target, a VM, another container, bare metal server
+- _Pods_: 2 to N interdependent containers deployed as one
+- _Service_: A groiup of Pods making jup one service, like a shopping cart service. All these pods talk to each other and services ensure the connection between these pods is relaible since we create and destroy pods on the fly depending on scale
+- _Deployment_: tell K8s in what state you want the pods should be in
 
 ## Miscelleneous but important
 
