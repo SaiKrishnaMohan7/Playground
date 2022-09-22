@@ -133,6 +133,7 @@
       - When the user tries to access a WebPage on some server, the browser extracts the hostname and passes it to the client side of DNS which then contacts a DNS server to get the IP address of the server
       - Once IP is received, and passed to the application, our TCP handshake story begins
     - **DNS uses UDP for queries and replies and TCP for Zone tansfer** (maintaining consistency of RRs across Primary and Secondary servers -- Authoritative servers?)
+      - DNS Zone Transfer - replication of DNS servers for fault tolerance (storing redudant information in diff zones), query type *AXFR*
 - Other than hostname to IP translation, DNS provides follwing services:
   - **_Hostname Aliasing_**
     - Most hostnames that we encounter today are mnemonic, easier to remember (have a sort of ring to it), these are called **Alias Hostnames**
@@ -157,7 +158,7 @@
 - Hence, implemented as a hierarchy of servers distributed geographically
 - Three classes of DNS
   - Root DNS servers
-    - >= 400 around the world
+    - more than 400 around the world
     - Provides IPs of TLD DNS servers
   - Top-level Domain (TLD) DNS servers
     - .com, .net, .edu, .in, .gov, .jp, .ca
