@@ -303,7 +303,7 @@
   - _Google infra_
     - 14 mega data centres, server search results and Gmail messages (also a PWA)
     - Bring Home CDNs 50 - 100 servers, their own
-    - 100+ Enter Deep clusters, employs TCP splitting, serves static content for WebPage results of a search query
+    - 100+ Enter Deep clusters, employs TCP splitting (A method applied by Performance Enhancement Proxies, [PEPs](https://en.wikipedia.org/wiki/Performance-enhancing_proxy)), serves static content for WebPage results of a search query
     - When a user makes a serach query, req goes to nearby Enter Deep ISP CDNs retrieving static content for the results
       - The req is also forwarded to Google's private network to fetch personalized search results
     - For YouTube, when a video is resquested, video itslef may come from a Bring Home CDN while static assests coming from a Bring Home CDN and ads from Google's private data centres
