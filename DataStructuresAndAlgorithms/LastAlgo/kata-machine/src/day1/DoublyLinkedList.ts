@@ -14,6 +14,19 @@ export default class DoublyLinkedList<T> {
         this.tail = undefined;
     }
 
+    // As we traverse the linked list we print out the nodes and its neighbors
+    private debug () {
+        let curr = this.head;
+        let out = "";
+
+        for (let i = 0; curr && i < this.length; i++) {
+            out += `{i} => ${curr.value}`
+            curr = curr.next;
+        }
+
+        console.log(curr);
+    }
+
     prepend(item: T): void {
         const nodeToAdd = { value: item } as Node<T>;
 
