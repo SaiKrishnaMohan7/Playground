@@ -3,6 +3,7 @@ function traverse(curr: BinaryNode<number> | null, path: number[]): number[] {
     return path;
   }
 
+  // pre recurse - nothign to do pre recurse
   // recurse left
   traverse(curr.left, path);
   // visit node
@@ -10,6 +11,7 @@ function traverse(curr: BinaryNode<number> | null, path: number[]): number[] {
   // recurse right
   traverse(curr.right, path);
   // post recurse
+
   return path;
 }
 

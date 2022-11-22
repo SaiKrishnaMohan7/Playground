@@ -9,7 +9,8 @@ function traverse(curr: BinaryNode<number> | null, path: number[]) {
   // recurse
   traverse(curr.left, path); // recurse left
   traverse(curr.right, path); // recurse right
-  // post - nothing to do in post
+  // post - nothing to do in post recurse
+
   return path;
 }
 
