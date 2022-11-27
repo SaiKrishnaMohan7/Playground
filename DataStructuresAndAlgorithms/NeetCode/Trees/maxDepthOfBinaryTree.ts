@@ -18,3 +18,6 @@ function maxDepth(root: TreeNode | null): number {
   // DFS
   return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
 };
+
+// the bfs route for the same will need a while and a for loop
+// Check them here: https://neetcode.io/practice
