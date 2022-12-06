@@ -9,7 +9,7 @@ fs.readFile(dataPath)
     console.log(data);
 
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Unary_plus
-    writeTo(+data + 1);
+    writeTo(+data + 1); //The unary plus operator converts its operand to Number type.
   })
   .catch(e => {
     console.log("file not found, writing '0' to a new file");
