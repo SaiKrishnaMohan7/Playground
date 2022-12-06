@@ -47,3 +47,11 @@ function deserialize(data: string): TreeNode | null {
   let nodes = data.split(',');
   return dfsRecon(nodes, 0);
 };
+
+let testTree = new TreeNode(1);
+testTree.left = new TreeNode(2);
+testTree.right = new TreeNode(3);
+testTree.right.left = new TreeNode(4);
+testTree.left.right = new TreeNode(5);
+
+console.log(`${serialize(testTree)}`);
