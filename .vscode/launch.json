@@ -9,6 +9,12 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/JS/BalancedParans.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug DSA",
+            "program": "${workspaceFolder}/DataStructuresAndAlgorithms/NeetCode/ArraysAndHashing/longest-consecutive-sequence.js"
         }
     ]
 }
