@@ -14,7 +14,7 @@
             "type": "node",
             "request": "launch",
             "name": "Debug DSA",
-            "program": "${workspaceFolder}/DataStructuresAndAlgorithms/NeetCode/ArraysAndHashing/longest-consecutive-sequence.js"
+            "program": "${workspaceFolder}/DataStructuresAndAlgorithms/NeetCode/ArraysAndHashing/top-k-frequent-elements.js"
         }
     ]
 }
