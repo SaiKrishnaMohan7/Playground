@@ -4,6 +4,7 @@
  * @param {number[]} nums
  * @return {number[][]}
  */
+// O(n^2) time and O(1) space
 var threeSum = function(nums) {
   let result = [];
   if (!nums.length) {
