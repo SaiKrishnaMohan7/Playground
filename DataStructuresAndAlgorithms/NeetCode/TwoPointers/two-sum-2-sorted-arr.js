@@ -14,7 +14,7 @@ var twoSum = function(numbers, target) {
   let left = 0;
   let right = numbers.length - 1;
 
-  while (left < numbers.length && right >= 0) {
+  while (left < right) {
     let currentSum = numbers[left] + numbers[right];
     if (currentSum === target) {
       result.push(left + 1, right + 1); // since the pbm as of 30/1/2023 says 1 indexed arr
