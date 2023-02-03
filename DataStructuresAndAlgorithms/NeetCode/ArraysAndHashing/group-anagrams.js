@@ -12,11 +12,13 @@ var groupAnagrams = function(strs) {
     if (!map[sortedStr]) {
       map[sortedStr] = [];
     }
-    map[sortedStr].push(str);
+    map[sortedStr].push(str); // so that the first str also gets grouped!
   }
 
   const groupedAnagrams = Object.values(map);
   return groupedAnagrams;
 };
+
+
 
 groupAnagrams(["eat","tea","tan","ate","nat","bat"]);
