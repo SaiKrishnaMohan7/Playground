@@ -34,4 +34,19 @@ export class TaskService {
 
     return task;
   }
+
+  updateTaskStatus(id: string, status: TaskStatus): Task {
+    // Could have used this.getTaskById(id)
+    let updatedTask: Task = { id: '', status: TaskStatus.OPEN, title: '' };
+    this.tasks = this.tasks.map((task) => {
+      if (task.id === id) {
+        task.status = status;
+        updatedTask = task;
+      }
+
+      return task;
+    });
+
+    return updatedTask;
+  }
 }
