@@ -19,7 +19,7 @@ export class TaskService {
     if (search) {
       tasks = tasks.filter((task) => {
         if (
-          task.title.toLowerCase().includes(search) ||
+          task.title.toLowerCase().includes(search) || // this lowercasing can be handled at the pipe level
           task.description.toLowerCase().includes(search)
         ) {
           return true;
