@@ -27,4 +27,11 @@ export class TaskService {
 
     return task;
   }
+
+  deleteTaskById(id: string): Array<Task> {
+    const task = this.tasks.filter((task) => task.id === id);
+    this.tasks = this.tasks.filter((task) => task.id !== id); // can use slice
+
+    return task;
+  }
 }
