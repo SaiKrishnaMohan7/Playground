@@ -9,9 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
-import { Task, TaskStatus } from './task.model';
+import { Task } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskFilterDto } from './dto/task-filter.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 @Controller('task')
 export class TaskController {
   // readonly taskService: TaskService;
@@ -45,15 +46,15 @@ export class TaskController {
   }
 
   @Delete(':id')
-  deleteTaskById(@Param('id') id: string): Array<Task> {
+  deleteTaskById(@Param('id') id: string): Task {
     return this.taskService.deleteTaskById(id);
   }
 
   @Patch(':id/status')
   updateTaskStatus(
     @Param('id') id: string,
-    @Body('status') status: TaskStatus,
+    @Body() updateTaskStatusPayload: UpdateTaskStatusDto,
   ): Task {
-    return this.taskService.updateTaskStatus(id, status);
+    return this.taskService.updateTaskStatus(id, updateTaskStatusPayload);
   }
 }
