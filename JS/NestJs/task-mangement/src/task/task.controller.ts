@@ -22,22 +22,13 @@ export class TaskController {
   }
 
   @Get()
-  getAllTasks(): Promise<Array<Task>> {
-    return this.taskService.getAllTasks();
+  getTasksWithFilter(@Query() taskFilter: TaskFilterDto): Promise<Array<Task>> {
+    return this.taskService.getTaskWithFilter(taskFilter);
   }
 
   @Get(':id')
   getTaskById(@Param('id') id: string): Promise<Task> {
     return this.taskService.getTaskById(id);
-  }
-
-  @Get()
-  getTasksWithFilter(@Query() taskFilter: TaskFilterDto): Promise<Array<Task>> {
-    if (Object.keys(taskFilter).length) {
-      return this.taskService.getTaskWithFilter(taskFilter);
-    }
-
-    return this.taskService.getAllTasks();
   }
 
   @Post()

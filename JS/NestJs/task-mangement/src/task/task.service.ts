@@ -6,9 +6,11 @@ import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { Repository } from 'typeorm';
+// import { TasksRepository } from './task.repository';
 
 @Injectable()
 export class TaskService {
+  // constructor(private taskRepository: TeamRepository) {}
   constructor(
     @InjectRepository(Task)
     private tasksRepository: Repository<Task>,
