@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Task } from './task/task.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Task } from './task/task.entity';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

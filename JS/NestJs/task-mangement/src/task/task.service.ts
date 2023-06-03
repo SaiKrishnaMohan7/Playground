@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class TaskService {
-  // constructor(private taskRepository: TeamRepository) {}
+  // constructor(private taskRepository: TaskRepository) {}
   constructor(
     @InjectRepository(Task)
     private tasksRepository: Repository<Task>,
