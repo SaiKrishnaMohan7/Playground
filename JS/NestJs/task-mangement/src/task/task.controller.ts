@@ -15,6 +15,8 @@ import { TaskFilterDto } from './dto/task-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { Task } from './task.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 
 @Controller('task')
 @UseGuards(AuthGuard())
@@ -26,30 +28,40 @@ export class TaskController {
   }
 
   @Get()
-  getTasksWithFilter(@Query() taskFilter: TaskFilterDto): Promise<Array<Task>> {
-    return this.taskService.getTaskWithFilter(taskFilter);
+  getTasksWithFilter(
+    @Query() taskFilter: TaskFilterDto,
+    @GetUser() user: User,
+  ): Promise<Array<Task>> {
+    return this.taskService.getTaskWithFilter(taskFilter, user);
   }
 
   @Get(':id')
-  getTaskById(@Param('id') id: string): Promise<Task> {
-    return this.taskService.getTaskById(id);
+  getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
+    return this.taskService.getTaskById(id, user);
   }
 
   @Post()
-  createTask(@Body() createTaskPayload: CreateTaskDto): Promise<Task> {
-    return this.taskService.createTask(createTaskPayload);
+  createTask(
+    @Body() createTaskPayload: CreateTaskDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
+    return this.taskService.createTask(createTaskPayload, user);
   }
 
   @Delete(':id')
-  deleteTaskById(@Param('id') id: string): Promise<boolean> {
-    return this.taskService.deleteTaskById(id);
+  deleteTaskById(
+    @Param('id') id: string,
+    @GetUser() user: User,
+  ): Promise<boolean> {
+    return this.taskService.deleteTaskById(id, user);
   }
 
   @Patch(':id/status')
   updateTaskStatus(
     @Param('id') id: string,
     @Body() updateTaskStatusPayload: UpdateTaskStatusDto,
+    @GetUser() user: User,
   ): Promise<boolean> {
-    return this.taskService.updateTaskStatus(id, updateTaskStatusPayload);
+    return this.taskService.updateTaskStatus(id, updateTaskStatusPayload, user);
   }
 }

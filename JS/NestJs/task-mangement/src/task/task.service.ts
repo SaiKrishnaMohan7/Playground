@@ -6,6 +6,7 @@ import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { Repository } from 'typeorm';
+import { User } from '../auth/user.entity';
 // import { TasksRepository } from './task.repository';
 
 @Injectable()
@@ -17,27 +18,28 @@ export class TaskService {
   ) {}
 
   // default accessor is public
-  async getAllTasks(): Promise<Array<Task>> {
-    const tasks = await this.tasksRepository.find();
+  // async getAllTasks(): Promise<Array<Task>> {
+  //   const tasks = await this.tasksRepository.find();
 
-    return tasks;
-  }
+  //   return tasks;
+  // }
 
-  async getTaskWithFilter({
-    search,
-    status,
-  }: TaskFilterDto): Promise<Array<Task>> {
+  async getTaskWithFilter(
+    { search, status }: TaskFilterDto,
+    user: User,
+  ): Promise<Array<Task>> {
     const tasks = await this.tasksRepository.findBy({
       title: search,
       description: search,
       status,
+      user,
     });
 
     return tasks;
   }
 
-  async getTaskById(id: string): Promise<Task> {
-    const task = await this.tasksRepository.findOne({ where: { id } });
+  async getTaskById(id: string, user: User): Promise<Task> {
+    const task = await this.tasksRepository.findOne({ where: { id, user } });
 
     if (!task) {
       throw new NotFoundException();
@@ -46,18 +48,19 @@ export class TaskService {
     return task;
   }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+  async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const task = this.tasksRepository.create({
       ...createTaskDto,
       status: TaskStatus.OPEN,
+      user,
     });
     await this.tasksRepository.save(task);
 
     return task;
   }
 
-  async deleteTaskById(id: string): Promise<boolean> {
-    const deleteResult = await this.tasksRepository.delete(id);
+  async deleteTaskById(id: string, user: User): Promise<boolean> {
+    const deleteResult = await this.tasksRepository.delete({ id, user });
 
     if (!deleteResult.affected) {
       throw new NotFoundException(`Task with ${id} not found`);
@@ -69,10 +72,14 @@ export class TaskService {
   async updateTaskStatus(
     id: string,
     { status }: UpdateTaskStatusDto,
+    user: User,
   ): Promise<boolean> {
-    const updateResult = await this.tasksRepository.update(id, {
-      status: status,
-    });
+    const updateResult = await this.tasksRepository.update(
+      { id, user },
+      {
+        status,
+      },
+    );
 
     if (!updateResult.affected) {
       throw new NotFoundException(`Task with ${id} not found`);
