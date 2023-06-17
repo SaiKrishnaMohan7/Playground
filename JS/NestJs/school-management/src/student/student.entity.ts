@@ -1,7 +1,7 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class Lesson {
+export class Student {
   @ObjectIdColumn()
   _id: string;
 
@@ -9,14 +9,11 @@ export class Lesson {
   id: string;
 
   @Column()
-  name: string;
+  firstname: string;
 
   @Column()
-  startDate: string;
+  lastname: string;
 
-  @Column()
-  endDate: string;
-
-  @Column()
-  students: Array<string>;
+  // @Column()
+  // lessons: Array<string>;
 }
