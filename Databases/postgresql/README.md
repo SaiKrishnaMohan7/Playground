@@ -9,7 +9,6 @@
   - `\?` - **list all commads that can be used** (use this)
   - `\h` - **all the sql commands that you can use**
 
--
 
 ```sql
 CREATE TABLE users (

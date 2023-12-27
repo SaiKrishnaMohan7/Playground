@@ -14,7 +14,7 @@ GraphQL is like a query language for API's. Like how SQL is DSL for RDBMSs, Grap
 
 - GraphQL is used as a middleware. It needs a schema to function properly. Basically what every single object would look like just like DBSchemas
   - A _RootQuery_ is what determines the entry point into the graph, a type of GraphQL object
-    ```
+    ```javascript
       name: 'RootQueryType',
       fieds: {
         book: {
