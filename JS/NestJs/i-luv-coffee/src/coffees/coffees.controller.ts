@@ -37,7 +37,7 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  findOne() {
+  findOne(@Param() params) {
     // all params
     return 'This action returns one coffee';
   }
