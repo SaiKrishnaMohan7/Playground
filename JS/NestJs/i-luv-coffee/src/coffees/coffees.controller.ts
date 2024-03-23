@@ -11,9 +11,12 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
+import { CoffeesService } from './coffees.service';
 
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
+  constructor(private readonly coffeesService: CoffeesService) {}
+
   @Get()
   findAll() {
     return 'This action returns all coffees';
