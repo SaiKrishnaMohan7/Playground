@@ -12,6 +12,9 @@ import {
   Res,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
+import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto';
+import { UpdateCoffeeMappedTypesDto } from './dto/update-coffee-mapped-types.dto';
 
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
@@ -49,7 +52,7 @@ export class CoffeesController {
   }
 
   @Post()
-  create(@Body() body) {
+  create(@Body() createCoffeeDto: CreateCoffeeDto) {
     // the whole body
     return 'This action adds a new coffee';
   }
@@ -68,7 +71,16 @@ export class CoffeesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
+  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    // id param and the whole body
+    return `This action updates #${id} coffee`;
+  }
+
+  @Patch(':id')
+  update2(
+    @Param('id') id: string,
+    @Body() updateCoffeeDtoWithMappedTypes: UpdateCoffeeMappedTypesDto,
+  ) {
     // id param and the whole body
     return `This action updates #${id} coffee`;
   }

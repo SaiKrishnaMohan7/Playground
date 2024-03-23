@@ -168,7 +168,4 @@ const timber = await userRepository.findOneBy({
 	- Can be applied at global (app) level, handler level or param level
 
 ## Commands run
-- `nest generate controller <Path/controllerName>` or `nest g co <Path/controllerName>`
-	- if you do not want test file add `--no-spec`
-	- `--dryrun` to make sure the cli does the right thing
-	- To create the item in the right folder, you could navigate to that folder and invoke the cli there
+- look up nest js cli things, they can make mundane stuff convenient
