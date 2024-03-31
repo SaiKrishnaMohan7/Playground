@@ -169,3 +169,4 @@ const timber = await userRepository.findOneBy({
 
 ## Commands run
 - look up nest js cli things, they can make mundane stuff convenient
+- nest cli + copilot cli will help even more
