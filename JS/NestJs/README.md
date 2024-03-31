@@ -15,6 +15,15 @@ Is a backend framework built atop express for the NodeJS runtime. It is opiniona
 		- **imports**: modules required by this module
 ![[Screenshot 2023-05-26 at 8.45.25 PM.png]]![[Screenshot 2023-05-26 at 8.58.59 PM.png]]
 
+## How to use this repo?
+
+Sai is getting older and forgetful so there nice details written in comments in every file
+
+- The branch, `nest/basics_database_rdbms`, is where the rdbms setup happens
+- The branch, `nest/basics_database_nosql`, is where the nosql db setup happens
+
+Therefore, the notes will diverge accordingly.
+
 ## Modules
 
 - Modules are a schematic
