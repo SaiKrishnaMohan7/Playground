@@ -22,7 +22,7 @@ export class CoffeesController {
 
   @Get()
   findAll() {
-    return 'This action returns all coffees';
+    return this.coffeesService.findAll();
   }
 
   @Get()

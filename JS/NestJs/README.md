@@ -20,6 +20,7 @@ Is a backend framework built atop express for the NodeJS runtime. It is opiniona
 Sai is getting older and forgetful so there nice details written in comments in every file
 
 - The branch, `nest/basics_database_rdbms`, is where the rdbms setup happens
+	- Looking through the commit messages will give a decent structure to all this madness
 - The branch, `nest/basics_database_nosql`, is where the nosql db setup happens
 
 Therefore, the notes will diverge accordingly.
