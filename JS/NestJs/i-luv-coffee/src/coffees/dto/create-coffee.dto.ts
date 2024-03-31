@@ -12,5 +12,5 @@ export class CreateCoffeeDto {
   @IsArray()
   @IsString({ each: true, message: ({ value }) => `${value} is not a string` }) // Some intricate validation is possible here
   @ArrayMinSize(1)
-  readonly flavors: string[];
+  readonly flavors: string[]; // This will be an array of strings over the network; When it hits the service, it will be mapped to the entity type Flavor
 }
