@@ -10,7 +10,7 @@ export class Coffee {
   @Column()
   name: string;
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('json', { nullable: true }) // JSON type, optional field
