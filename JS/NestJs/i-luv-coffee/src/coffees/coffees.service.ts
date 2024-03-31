@@ -5,6 +5,7 @@ import { Coffee } from './entities/coffee.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Flavor } from './entities/flavor.entity';
+import { PaginatedQueryDto } from './common/paginated-query.dto';
 
 // Are for business logic so that it can be shared in the application
 // Services are Providers (can inject dependencies)
@@ -20,11 +21,13 @@ export class CoffeesService {
     private readonly flavorRepository: Repository<Flavor>,
   ) {}
 
-  findAll() {
+  findAll(paginationQuery: PaginatedQueryDto) {
     return this.coffeeRepository.find({
       relations: {
         flavors: true, // Relations are not loaded eagerly; Needs to be specified
       },
+      skip: paginationQuery.offset,
+      take: paginationQuery.limit,
     });
   }
 

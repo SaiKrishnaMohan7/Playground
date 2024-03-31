@@ -15,6 +15,7 @@ import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { UpdateCoffeeMappedTypesDto } from './dto/update-coffee-mapped-types.dto';
+import { PaginatedQueryDto } from './common/paginated-query.dto';
 
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
@@ -22,7 +23,7 @@ export class CoffeesController {
 
   @Get()
   findAll() {
-    return this.coffeesService.findAll();
+    return 'findAll3, look there';
   }
 
   @Get()
@@ -34,9 +35,8 @@ export class CoffeesController {
   }
 
   @Get()
-  findAll3(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery;
-    return `This action returns all coffees. Limit: ${limit}, offset: ${offset}`;
+  findAll3(@Query() paginationQuery: PaginatedQueryDto) {
+    return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')

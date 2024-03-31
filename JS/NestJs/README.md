@@ -21,6 +21,7 @@ Sai is getting older and forgetful so there nice details written in comments in 
 
 - The branch, `nest/basics_database_rdbms`, is where the rdbms setup happens
 	- Looking through the commit messages will give a decent structure to all this madness
+	- [PR](https://github.com/SaiKrishnaMohan7/Playground/pull/90)
 - The branch, `nest/basics_database_nosql`, is where the nosql db setup happens
 
 Therefore, the notes will diverge accordingly.
