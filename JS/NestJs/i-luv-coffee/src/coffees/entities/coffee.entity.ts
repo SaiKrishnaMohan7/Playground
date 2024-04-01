@@ -26,6 +26,9 @@ export class Coffee {
   @JoinTable() // What is this? See below
   @ManyToMany((type) => Flavor, (flavor) => flavor.coffees, { cascade: true }) // related object can be created or updated with the parent object; there are more options here
   flavors: Flavor[];
+
+  @Column({ default: 0 })
+  recommendations: number;
 }
 
 /*
