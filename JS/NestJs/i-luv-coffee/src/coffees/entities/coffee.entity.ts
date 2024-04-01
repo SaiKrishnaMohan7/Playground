@@ -4,16 +4,19 @@ import {
   Column,
   JoinTable,
   ManyToMany,
+  Index,
 } from 'typeorm';
 import { Flavor } from './flavor.entity';
 
+@Index(['name', 'brand']) // Indexes can be created on one or multiple columns (composite indices)
 // default, the names of the table are based on the lowercase name of the class; string could be passed to override the default table name
-// The module this entity is part of is importing the TypeOrmModule and using the `forFeature()` method to module aware of the entity
+// The module this entity is part of is importing the TypeOrmModule and using the `forFeature()` method to make the module aware of the entity
 @Entity()
 export class Coffee {
   @Column()
   brand: string;
 
+  // @Index() // Single column index
   @Column()
   name: string;
 
