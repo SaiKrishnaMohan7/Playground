@@ -103,4 +103,6 @@ export class CoffeesController {
  * returns a cached instance.
  * When it looks at the CoffeesService constructor, it sees that it has dependencies on Coffee and Flavor repositories, and the DataSource
  * and repeates the same process for those dependencies. This is the dependency injection chain, which is a graph problem
+ *
+ * The lookup is done by the token, which is a string or a class. The token is used to identify the provider in the container.
  */

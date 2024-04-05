@@ -7,3 +7,25 @@ import { CoffeesModule } from '../coffees/coffees.module';
   providers: [CoffeeRatingServiceService],
 })
 export class CoffeeRatingModule {}
+
+/**
+ * Custom Provider, Value Based
+ * Use Case:
+ *  - Testing with Mocks
+ *  - Injecting constant value
+ *  - Binding external libraries
+ *
+ * export class MockCoffeesService { }
+
+@Module({
+  providers: [
+    {
+      provide: CoffeesService,
+      useValue: new MockCoffeesService(), // <-- mock implementation
+    }
+  ]
+})
+export class CoffeesModule {}
+
+- Whenever CoffeesService token is resolved, it will point to the MockCoffeesService instance
+ */
