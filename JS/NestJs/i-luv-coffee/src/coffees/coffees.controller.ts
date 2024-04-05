@@ -91,3 +91,16 @@ export class CoffeesController {
     return `This action removes #${id} coffee`;
   }
 }
+
+/**
+ * Dependency Injection
+ *
+ * When the controller is instantiated, the Nest Injector will inject the CoffeesService instance into the controller.
+ * This is provided by the framework in the form of Inverson of Control (IoC) container. Do not fight this.
+ *
+ * CoffeesService is a provider, which is a class annotated with @Injectable() decorator, which is a singleton by default.
+ * Therefore, when the app is being bootstrapped, Nest sees CoffeesController has a dependency on CoffeesService and instantiates it, caches it or
+ * returns a cached instance.
+ * When it looks at the CoffeesService constructor, it sees that it has dependencies on Coffee and Flavor repositories, and the DataSource
+ * and repeates the same process for those dependencies. This is the dependency injection chain, which is a graph problem
+ */
