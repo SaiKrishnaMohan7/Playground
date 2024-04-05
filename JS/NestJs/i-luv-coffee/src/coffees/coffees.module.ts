@@ -11,6 +11,6 @@ import { Event } from './entities/event.entity';
   imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])], // Other modules this module imports also importing the providers those modules export
   controllers: [CoffeesController], // Routes this module exposes
   providers: [CoffeesService], // Any providers that need to be instantiated by the Nest Injector; available only in the scope of this module
-  exports: [], // Providers that will be available wherever this module is imported; Can be thought of as the module's public API
+  exports: [CoffeesService], // Providers that will be available wherever this module is imported; Can be thought of as the module's public API
 })
 export class CoffeesModule {}
