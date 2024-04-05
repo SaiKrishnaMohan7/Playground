@@ -5,6 +5,7 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { CoffeeRatingServiceService } from './coffee-rating/coffee-rating-service.service';
+import { DatabaseDynamicModuleExampleModule } from './database-dynamic-module-example/database-dynamic-module-example.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CoffeeRatingServiceService } from './coffee-rating/coffee-rating-servic
       synchronize: true, // disable in production *WHY??*
     }),
     CoffeeRatingModule,
+    DatabaseDynamicModuleExampleModule,
   ],
   controllers: [AppController],
   providers: [AppService, CoffeeRatingServiceService],
