@@ -13,6 +13,16 @@ import { Event } from './entities/event.entity';
 // Providers also handle interactions with data sources
 // Services are singletons by default
 
+/**
+ * Provider Scopes
+ * - Default: Singleton; All consumers get same instance
+ * - Transient: New instance for each consumer
+ * - Request: New instance for each request, instance gc'd after request in completed
+ *  - Implicitly, the controller using this provider will become request scoped
+ *  - They can also inject, @Inject(REQUEST) request: Request, the original request object
+ *  - Should be smart of memory usage and performance here but we are in JS land so... ¯\_(ツ)_/¯
+ */
+
 @Injectable() // This is a decorator that marks a class as a provider
 export class CoffeesService {
   constructor(
