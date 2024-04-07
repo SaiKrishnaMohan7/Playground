@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Flavor } from './entities/flavor.entity';
 import { PaginatedQueryDto } from './common/paginated-query.dto';
 import { Event } from './entities/event.entity';
+import { ConfigService } from '@nestjs/config';
 
 // Are for business logic so that it can be shared in the application
 // Services are Providers (can inject dependencies)
@@ -31,6 +32,7 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly dataSource: DataSource,
+    private readonly configService: ConfigService,
   ) {}
 
   findAll(paginationQuery: PaginatedQueryDto) {
