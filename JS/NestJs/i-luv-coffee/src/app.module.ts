@@ -7,12 +7,17 @@ import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
 import { CoffeeRatingServiceService } from './coffee-rating/coffee-rating-service.service';
 import { DatabaseDynamicModuleExampleModule } from './database-dynamic-module-example/database-dynamic-module-example.module';
 import { ConfigModule } from '@nestjs/config';
+import Joi from '@hapi/joi';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env', // default, will look at root
       ignoreEnvFile: process.env.NODE_ENV === 'production', // ignore .env file in production
+      validationSchema: Joi.object({
+        DATABASE_HOST: Joi.required(),
+        DATABASE_PORT: Joi.number().default(5432),
+      }),
     }), // Will merge definitions in process.env and .env file
     CoffeesModule,
     TypeOrmModule.forRoot({
