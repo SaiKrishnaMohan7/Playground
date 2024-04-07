@@ -11,10 +11,6 @@ import appConfig from './config/app.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      load: [appConfig],
-    }), // Will merge definitions in process.env and .env file
-    CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
@@ -24,6 +20,10 @@ import appConfig from './config/app.config';
       autoLoadEntities: true,
       synchronize: true, // disable in production *WHY??*
     }),
+    ConfigModule.forRoot({
+      load: [appConfig],
+    }), // Will merge definitions in process.env and .env file
+    CoffeesModule,
     CoffeeRatingModule,
     DatabaseDynamicModuleExampleModule,
   ],
