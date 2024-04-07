@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee } from './entities/coffee.entity';
@@ -7,7 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Flavor } from './entities/flavor.entity';
 import { PaginatedQueryDto } from './common/paginated-query.dto';
 import { Event } from './entities/event.entity';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import coffeesConfig from '../config/coffees.config';
 
 // Are for business logic so that it can be shared in the application
 // Services are Providers (can inject dependencies)
@@ -33,9 +34,15 @@ export class CoffeesService {
     private readonly flavorRepository: Repository<Flavor>,
     private readonly dataSource: DataSource,
     private readonly configService: ConfigService,
+    @Inject(coffeesConfig.KEY) // Good practice for pulling in module specific configuration objects
+    private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
   ) {
     const dbHost = this.configService.get('database.host');
     console.log(dbHost);
+
+    // This is bad practice
+    const coffeesConfigBad = this.configService.get('coffees');
+    console.log(coffeesConfigBad.foo);
   }
 
   findAll(paginationQuery: PaginatedQueryDto) {
