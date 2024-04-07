@@ -11,14 +11,16 @@ import appConfig from './config/app.config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: Number(process.env.DATABASE_PORT),
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      autoLoadEntities: true,
-      synchronize: true, // disable in production *WHY??*
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.DATABASE_HOST,
+        port: Number(process.env.DATABASE_PORT),
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        autoLoadEntities: true,
+        synchronize: true, // disable in production *WHY??*
+      }),
     }),
     ConfigModule.forRoot({
       load: [appConfig],
