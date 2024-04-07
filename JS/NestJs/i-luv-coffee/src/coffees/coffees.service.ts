@@ -33,7 +33,10 @@ export class CoffeesService {
     private readonly flavorRepository: Repository<Flavor>,
     private readonly dataSource: DataSource,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    const dbHost = this.configService.get('database.host');
+    console.log(dbHost);
+  }
 
   findAll(paginationQuery: PaginatedQueryDto) {
     return this.coffeeRepository.find({
