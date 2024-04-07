@@ -10,7 +10,10 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), // Will merge definitions in process.env and .env file
+    ConfigModule.forRoot({
+      envFilePath: '.env', // default, will look at root
+      ignoreEnvFile: process.env.NODE_ENV === 'production', // ignore .env file in production
+    }), // Will merge definitions in process.env and .env file
     CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
