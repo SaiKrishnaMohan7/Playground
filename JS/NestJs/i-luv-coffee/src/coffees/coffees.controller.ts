@@ -10,12 +10,14 @@ import {
   Post,
   Query,
   Res,
+  // SetMetadata,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { UpdateCoffeeMappedTypesDto } from './dto/update-coffee-mapped-types.dto';
 import { PaginatedQueryDto } from './common/paginated-query.dto';
+import { Public } from '../common/decorators/public.decorator';
 
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
@@ -26,7 +28,7 @@ export class CoffeesController {
     return 'findAll3, look there';
   }
 
-  @Get()
+  @Get('/all2')
   findAll2(@Res() response) {
     // use the response object of the underlying framework (Express in this case)
     // Nest allows for changing the underlying framework to Fastify
@@ -34,7 +36,9 @@ export class CoffeesController {
     return 'This action returns all coffees';
   }
 
-  @Get()
+  // @SetMetadata('isPublic', true) // Custom metadata for the route; Not good practice, better to write custom Guard
+  @Public()
+  @Get('/all3')
   findAll3(@Query() paginationQuery: PaginatedQueryDto) {
     return this.coffeesService.findAll(paginationQuery);
   }
