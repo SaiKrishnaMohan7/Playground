@@ -8,6 +8,8 @@ import { CoffeeRatingServiceService } from './coffee-rating/coffee-rating-servic
 import { DatabaseDynamicModuleExampleModule } from './database-dynamic-module-example/database-dynamic-module-example.module';
 import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
+import { APP_GUARD } from '@nestjs/core';
+import { ApiKeyGuard } from './common/guards/api-key.guard';
 
 @Module({
   imports: [
@@ -30,7 +32,14 @@ import appConfig from './config/app.config';
     DatabaseDynamicModuleExampleModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CoffeeRatingServiceService],
+  providers: [
+    AppService,
+    CoffeeRatingServiceService,
+    {
+      provide: APP_GUARD,
+      useClass: ApiKeyGuard, // If using this, useGlobalGuards in main.ts is not needed
+    },
+  ],
 })
 export class AppModule {}
 
