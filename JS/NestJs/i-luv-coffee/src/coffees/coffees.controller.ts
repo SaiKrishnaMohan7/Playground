@@ -10,7 +10,7 @@ import {
   Post,
   Query,
   Res,
-  // SetMetadata,
+  SetMetadata,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
@@ -18,6 +18,7 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { UpdateCoffeeMappedTypesDto } from './dto/update-coffee-mapped-types.dto';
 import { PaginatedQueryDto } from './common/paginated-query.dto';
 import { Public } from '../common/decorators/public.decorator';
+import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
 
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
@@ -50,7 +51,8 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  findOne2(@Param('id') id: string) {
+  findOne2(@Param('id' /*ParseIntPipe*/) id: string) {
+    // Use a custom pipe to transform the param; Only to show how to use a pipe
     // specific param
     return `This action returns #${id} coffee`;
   }
