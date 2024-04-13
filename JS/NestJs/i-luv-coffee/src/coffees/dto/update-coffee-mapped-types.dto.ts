@@ -3,6 +3,7 @@
 
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateCoffeeDto } from './create-coffee.dto';
+// import {PartialType} from '@nestjs/swagger'; // Swapping the above for this will give us docs for this dto
 
 //! PartialType is a utility function that is wrapper around TypeScript mapping special types like Partial, Omit etc.
 //! Another fine example of an abstraction of an abstraction for the sake of abstraction
