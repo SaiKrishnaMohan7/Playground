@@ -19,7 +19,9 @@ import { UpdateCoffeeMappedTypesDto } from './dto/update-coffee-mapped-types.dto
 import { PaginatedQueryDto } from './common/paginated-query.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffees') // If docs are to be created per module. Think, each bounded context is one module (DDD)
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
@@ -37,6 +39,7 @@ export class CoffeesController {
     return 'This action returns all coffees';
   }
 
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
   // @SetMetadata('isPublic', true) // Custom metadata for the route; Not good practice, better to write custom Guard
   @Public()
   @Get('/all3')
