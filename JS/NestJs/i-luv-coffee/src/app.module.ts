@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
@@ -10,6 +10,8 @@ import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
 import { APP_GUARD } from '@nestjs/core';
 import { ApiKeyGuard } from './common/guards/api-key.guard';
+import { ReqLoggingMiddleware } from './common/middleware/req-logging/req-logging.middleware';
+import { functionalMiddlware } from './common/middleware/functional/req-logging-fucntional-example.middleware';
 
 @Module({
   imports: [
@@ -41,7 +43,12 @@ import { ApiKeyGuard } from './common/guards/api-key.guard';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ReqLoggingMiddleware).forRoutes('*');
+    consumer.apply(functionalMiddlware).forRoutes('coffees');
+  }
+}
 
 /**
  * Why disable `synchronize` in production?
