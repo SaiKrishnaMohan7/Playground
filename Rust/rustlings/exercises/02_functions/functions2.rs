@@ -1,5 +1,5 @@
-// TODO: Add the missing type of the argument `num` after the colon `:`.
-fn call_me(num:) {
+
+fn call_me(num: usize) { // fn args should  always be annotated; usize means let the complier decide if running on a 32 bit machine or 64 bit machine
     for i in 0..num {
         println!("Ring! Call number {}", i + 1);
     }

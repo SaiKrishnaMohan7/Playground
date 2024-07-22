@@ -7,8 +7,8 @@ fn is_even(num: i64) -> bool {
     num % 2 == 0
 }
 
-// TODO: Fix the function signature.
-fn sale_price(price: i64) -> {
+// return type of functions should always be annotated
+fn sale_price(price: i64) -> i64 {
     if is_even(price) {
         price - 10
     } else {
