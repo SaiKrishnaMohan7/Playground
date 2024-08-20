@@ -3,9 +3,9 @@
 
 #[allow(dead_code)]
 mod delicious_snacks {
-    // TODO: Add the following two `use` statements after fixing them.
-    // use self::fruits::PEAR as ???;
-    // use self::veggies::CUCUMBER as ???;
+    // Added `pub` and used the expected alias after `as`.
+    pub use self::fruits::PEAR as fruit;
+    pub use self::veggies::CUCUMBER as veggie;
 
     mod fruits {
         pub const PEAR: &str = "Pear";

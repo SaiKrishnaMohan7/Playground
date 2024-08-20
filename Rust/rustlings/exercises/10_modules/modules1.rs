@@ -5,7 +5,8 @@ mod sausage_factory {
         String::from("Ginger")
     }
 
-    fn make_sausage() {
+    // All methods are private by default
+    pub fn make_sausage() {
         get_secret_recipe();
         println!("sausage!");
     }
