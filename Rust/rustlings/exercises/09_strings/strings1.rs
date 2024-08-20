@@ -1,6 +1,6 @@
-// TODO: Fix the compiler error without changing the function signature.
+// This was a returning an &str instead of a String (heap allocated)
 fn current_favorite_color() -> String {
-    "blue"
+    String::from("blue")
 }
 
 fn main() {
