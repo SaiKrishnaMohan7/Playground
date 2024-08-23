@@ -1,5 +1,12 @@
 fn main() {
-    // You can optionally experiment here.
+    //! Type of elements in the array is i8 so on pop() Option<i8> is returned and hence Some(number)
+
+    let mut numbers = vec![1, 2, 3, 4, 5];
+
+    while let Some(number) = numbers.pop() {
+        println!("Got: {}", number);
+    }
+
 }
 
 #[cfg(test)]
@@ -9,8 +16,9 @@ mod tests {
         let target = "rustlings";
         let optional_target = Some(target);
 
-        // TODO: Make this an if-let statement whose value is `Some`.
-        word = optional_target {
+        // !NOTE: Use this instead of a match statement if interested only in one value
+        // ! and you do not want to handle all the cases in a match statement
+        if let Some(word) = optional_target {
             assert_eq!(word, target);
         }
     }
@@ -26,10 +34,9 @@ mod tests {
 
         let mut cursor = range;
 
-        // TODO: Make this a while-let statement. Remember that `Vec::pop()`
-        // adds another layer of `Option`. You can do nested pattern matching
-        // in if-let and while-let statements.
-        integer = optional_integers.pop() {
+        // !Vec::pop() adds another layer of Option.
+        // !optional_integers is a Vec<Option<i8>> SO pop() returns Option<Option<i8>> and hence the e Some(Some(integer))
+        while let Some(Some(integer)) = optional_integers.pop() {
             assert_eq!(integer, cursor);
             cursor -= 1;
         }
