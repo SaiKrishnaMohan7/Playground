@@ -15,17 +15,18 @@ fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
 
 // TODO: Fix the compiler error by changing the signature and body of the
 // `main` function.
-fn main() {
+fn main() -> Result<(), ParseIntError> {
     let mut tokens = 100;
     let pretend_user_input = "8";
 
-    // Don't change this line.
     let cost = total_cost(pretend_user_input)?;
 
     if cost > tokens {
         println!("You can't afford that many!");
+        return Ok(());
     } else {
         tokens -= cost;
-        println!("You now have {tokens} tokens.");
+        println!("You now have {} tokens.", tokens);
+        return Ok(());
     }
 }
