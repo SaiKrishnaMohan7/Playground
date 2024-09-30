@@ -17,7 +17,9 @@ var isValid = function (s) {
       stack.push(char);
       continue;
     }
-    if (stack[stack.length - 1] === closeToOpenMap[char]) {
+
+    const topOfStack = stack[stack.length - 1];
+    if (topOfStack === closeToOpenMap[char]) {
       stack.pop();
       continue;
     }

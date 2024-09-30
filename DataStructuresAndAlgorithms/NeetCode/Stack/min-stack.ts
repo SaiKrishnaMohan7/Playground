@@ -3,7 +3,7 @@
 
 // Using the prev pointer here as it is easier to imagine the pointers pointing upwards
 
-class NodeS {
+class StackNode {
   public val;
   public min;
   public prev;
@@ -15,7 +15,7 @@ class NodeS {
   }
 }
 class MinStack {
-  private head?: NodeS;
+  private head?: StackNode;
 
   constructor() {
     this.head = undefined;
@@ -24,12 +24,12 @@ class MinStack {
   push(val: number): void {
     let node;
     if (!this.head) {
-      node = new NodeS(val, val, null);
+      node = new StackNode(val, val, null);
       this.head = node;
       return;
     }
     let min = Math.min(val, this.head.min);
-    node = new NodeS(val, min, this.head);
+    node = new StackNode(val, min, this.head);
     this.head = node;
   }
 
