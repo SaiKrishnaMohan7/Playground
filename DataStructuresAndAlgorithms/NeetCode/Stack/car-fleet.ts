@@ -30,11 +30,11 @@ function carFleet(target: number, position: number[], speed: number[]): number {
  *
  * A car fleet is a group of cars that travel together to the destination. A car fleet is formed when a car catches up to
  * another car or when a car is traveling slower than the car in front of it. This function calculates the number of such
- * car fleets.
+ * car fleets. A single car can also be considered a fleet composed of itself.
  *
  * The process:
  * 1. The car farthest from the destination will always form its own fleet since no cars are behind it.
- * 2. Each car after that will either:
+ * 2. Each car before that will either:
  *    - Form its own fleet if it travels slower than the car in front (meaning it won't catch up).
  *    - Join a fleet with the car in front of it if it catches up or is traveling slower, merging into the same fleet.
  *    - Be joined by cars behind it (if it's not the last car and cars behind it are slower or traveling at the same speed).
