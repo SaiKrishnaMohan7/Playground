@@ -10,9 +10,9 @@ var isValid = function (s) {
     ']': '[',
     ')': '(',
   };
-  let stack = [];
+  let stack: Array<string> = [];
 
-  for (char of s) {
+  for (let char of s) {
     if (!closeToOpenMap[char]) {
       stack.push(char);
       continue;
