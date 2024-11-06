@@ -14,11 +14,13 @@
 
 // Use cases for BFS
 
-// Level-by-Level View: BFS is useful when you need to process or display the tree by levels, such as in problems where you need to perform operations level by level.
-// Finding the Shortest Path: In graphs and trees, BFS helps find the shortest path from the root to a node if all edges (or steps) have the same weight.
+// Level-by-Level View: BFS is useful when you need to process or display the tree by levels,
+// such as in problems where you need to perform operations level by level.
+// Finding the Shortest Path: In graphs and trees
+// BFS helps find the shortest path from the root to a node if all edges (or steps) have the same weight.
 
 // Also called level order traversal; each level in visited in order starting from root, left, right
-function breadthFirstSearch(root: TreeNode | null): number[] {
+function breadthFirstTraversal(root: TreeNode | null): number[] {
   if (root == null) {
     return [];
   }

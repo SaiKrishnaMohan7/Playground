@@ -1,4 +1,4 @@
-function breadthFirstSearchWithRealQueue(root: TreeNode): number[] {
+function breadthFirstTraversalWithRealQueue(root: TreeNode): number[] {
   if (root == null) {
     return [];
   }

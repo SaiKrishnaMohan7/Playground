@@ -1,4 +1,4 @@
-function breadthFirstSearchWithBetterSpaceUtilisation(root:TreeNode): Array<number> {
+function breadthFirstTraversalWithBetterSpaceUtilisation(root:TreeNode): Array<number> {
   if (!root){
     return [];
   }

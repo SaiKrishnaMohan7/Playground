@@ -1,4 +1,4 @@
-function breadthFirstSearchRingBuffer(root: TreeNode): Array<number> {
+function breadthFirstTraversalRingBuffer(root: TreeNode): Array<number> {
   if (!root) {
     return [];
   }

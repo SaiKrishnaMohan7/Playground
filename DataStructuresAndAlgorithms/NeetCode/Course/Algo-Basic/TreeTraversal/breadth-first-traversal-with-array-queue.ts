@@ -1,4 +1,4 @@
-function breadthFirstSearchWithArrayQueue(root: TreeNode): Array<number> {
+function breadthFirstTraversalWithArrayQueue(root: TreeNode): Array<number> {
   if (root == null) {
     return [];
   }
