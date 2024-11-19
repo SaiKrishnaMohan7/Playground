@@ -1,0 +1,9 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - '5433:5432' # map host poet 5433 to container port 5432
+    environment:
+      POSTGRES_PASSWORD: pass123
