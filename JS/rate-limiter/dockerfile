@@ -1,0 +1,40 @@
+# Stage 1: Build
+FROM node:16-alpine AS builder
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy dependency files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --production
+
+# Copy application files
+COPY . .
+
+# Stage 2: Production
+FROM node:16-alpine
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy only necessary files from the builder stage
+COPY --from=builder /usr/src/app .
+
+# Add a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Expose application port
+EXPOSE 3000
+
+# Set environment variable for Node.js
+ENV NODE_ENV=production
+
+# Health check to verify the service is running
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:3000/ || exit 1
+
+# Start the application
+CMD ["npm", "start"]
