@@ -1,0 +1,31 @@
+{
+  "name": "agents",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx index.ts"
+  },
+  "overrides": {
+    "whatwg-url": "13.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "got": "^14.4.4",
+    "lowdb": "^7.0.1",
+    "openai": "^4.70.3",
+    "ora": "^8.1.1",
+    "terminal-image": "^3.0.0",
+    "tsx": "^4.19.2",
+    "uuid": "^11.0.2",
+    "zod": "^3.23.8"
+  },
+  "volta": {
+    "node": "22.13.0"
+  }
+}
