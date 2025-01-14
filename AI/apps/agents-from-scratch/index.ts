@@ -1,23 +1,22 @@
-import "dotenv/config";
-import { runLLM } from "./src/llm";
-import { getMessages, addMessages } from "./src/memory";
-import type { ChatCompletionContentPartRefusal, ChatCompletionContentPartText } from "openai/resources/index.mjs";
+import 'dotenv/config'
+import { runAgent } from './src/agent'
+import { z } from 'zod'
 
-const userMessage = process.argv[2]; // prompt
+const userMessage = process.argv[2]
 
 if (!userMessage) {
-  console.error("Please provide a message");
-  process.exit(1);
+  console.error('Please provide a message')
+  process.exit(1)
 }
 
-await addMessages([{role: 'user', content: userMessage}]); // add the current prompt to db or LLM will not remember
-const messages = await getMessages();
-const response = await runLLM({
-  messages,
-});
+const weatherTool = {
+  name: 'get_weather',
+  description: `use this to get the weather`,
+  parameters: z.object({
+    reasoning: z.string().describe('why did you pick this tool?'),
+  }),
+}
 
-const formattedResponse: string | (ChatCompletionContentPartText | ChatCompletionContentPartRefusal)[] | null | undefined = response as any;
+const response = await runAgent({ userMessage, tools: [weatherTool] })
 
-await addMessages([{role: 'assistant', content: formattedResponse}]) // add response from LLM to db
-
-console.log(response);
+console.log(response)

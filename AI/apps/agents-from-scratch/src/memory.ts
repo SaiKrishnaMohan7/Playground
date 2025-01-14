@@ -24,7 +24,6 @@ export function removeMetadata(message: MessageWithMetadata): AIMessage {
   return messageWithoutMetadata;
 }
 
-
 const defaultData: DataInDb = { messages: [] };
 
 export async function getDb() {
