@@ -2,33 +2,53 @@
   "messages": [
     {
       "role": "user",
+      "content": "hello",
+      "id": "8085dc5e-6228-4e55-8130-872f9c0ff38e",
+      "createdAt": "2025-01-15T19:48:39.609Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I assist you today?",
+      "refusal": null,
+      "id": "08c6f6ac-69dc-4c2d-86b5-dbdd26b3193c",
+      "createdAt": "2025-01-15T19:48:40.635Z"
+    },
+    {
+      "role": "user",
       "content": "What is the weather in Ottawa",
-      "id": "695aa15e-19c8-44f2-92c6-9eed29f35726",
-      "createdAt": "2025-01-15T18:40:58.309Z"
+      "id": "b8676a1f-ac2d-4305-bd7b-915f385003a2",
+      "createdAt": "2025-01-15T19:48:47.889Z"
     },
     {
       "role": "assistant",
       "content": null,
       "tool_calls": [
         {
-          "id": "call_9K9fszVxvt01wZ7WNQHGkh3M",
+          "id": "call_fDyZwxxLbc5TbZ8Kozv0SuYt",
           "type": "function",
           "function": {
             "name": "getWeather",
-            "arguments": "{\"reasoning\":\"To provide the current weather information for Ottawa.\"}"
+            "arguments": "{\"reasoning\":\"User asked for the current weather in Ottawa.\"}"
           }
         }
       ],
       "refusal": null,
-      "id": "4f25c639-f992-47e8-8a26-e08cb1d353e0",
-      "createdAt": "2025-01-15T18:41:00.764Z"
+      "id": "bbe932a7-2488-42e6-bb55-abc4dc605edf",
+      "createdAt": "2025-01-15T19:48:49.318Z"
     },
     {
       "role": "tool",
       "content": "It is cold and snowy",
-      "tool_call_id": "call_9K9fszVxvt01wZ7WNQHGkh3M",
-      "id": "c38e7f1b-859b-4f02-a6d9-2380d8676ffe",
-      "createdAt": "2025-01-15T18:41:00.767Z"
+      "tool_call_id": "call_fDyZwxxLbc5TbZ8Kozv0SuYt",
+      "id": "c2a6be02-8c84-4ed7-be61-f10019c13748",
+      "createdAt": "2025-01-15T19:48:49.326Z"
+    },
+    {
+      "role": "assistant",
+      "content": "The weather in Ottawa is currently cold and snowy. If you need more specific details or a forecast, let me know!",
+      "refusal": null,
+      "id": "63d69eb3-d201-4b58-a7cb-0b3ca1fd7333",
+      "createdAt": "2025-01-15T19:48:51.510Z"
     }
   ]
 }
