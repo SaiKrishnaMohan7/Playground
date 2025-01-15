@@ -2,39 +2,33 @@
   "messages": [
     {
       "role": "user",
-      "content": "hi",
-      "id": "e96b6148-35e9-4441-925a-ce90c1b3d684",
-      "createdAt": "2025-01-14T06:18:18.933Z"
-    },
-    {
-      "role": "assistant",
-      "content": "Hello! How can I assist you today?",
-      "refusal": null,
-      "id": "ad4f6f80-b240-4c15-9126-2d424d51cd6b",
-      "createdAt": "2025-01-14T06:18:19.669Z"
-    },
-    {
-      "role": "user",
       "content": "What is the weather in Ottawa",
-      "id": "02207cdd-bde6-46c9-9802-f33ded5c273c",
-      "createdAt": "2025-01-14T06:18:39.831Z"
+      "id": "695aa15e-19c8-44f2-92c6-9eed29f35726",
+      "createdAt": "2025-01-15T18:40:58.309Z"
     },
     {
       "role": "assistant",
       "content": null,
       "tool_calls": [
         {
-          "id": "call_zr3nGrYW891ttEr32yRaK2jl",
+          "id": "call_9K9fszVxvt01wZ7WNQHGkh3M",
           "type": "function",
           "function": {
-            "name": "get_stuff",
+            "name": "getWeather",
             "arguments": "{\"reasoning\":\"To provide the current weather information for Ottawa.\"}"
           }
         }
       ],
       "refusal": null,
-      "id": "af418cf8-abb5-433e-b1b3-d28a97aed82a",
-      "createdAt": "2025-01-14T06:18:41.069Z"
+      "id": "4f25c639-f992-47e8-8a26-e08cb1d353e0",
+      "createdAt": "2025-01-15T18:41:00.764Z"
+    },
+    {
+      "role": "tool",
+      "content": "It is cold and snowy",
+      "tool_call_id": "call_9K9fszVxvt01wZ7WNQHGkh3M",
+      "id": "c38e7f1b-859b-4f02-a6d9-2380d8676ffe",
+      "createdAt": "2025-01-15T18:41:00.767Z"
     }
   ]
 }

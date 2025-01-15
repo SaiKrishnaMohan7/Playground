@@ -44,3 +44,12 @@ export async function getMessages() {
 
   return db.data.messages.map(removeMetadata);
 }
+
+export async function saveToolResponse(
+  toolCallId: string,
+  toolResponse: string
+) {
+  return await addMessages([
+    { role: "tool", content: toolResponse, tool_call_id: toolCallId },
+  ]);
+}
