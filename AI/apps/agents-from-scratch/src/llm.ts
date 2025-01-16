@@ -2,6 +2,7 @@ import type { AIMessage } from '../types'
 import { z } from 'zod'
 import { openai } from './ai'
 import { zodFunction } from 'openai/helpers/zod'
+import { systemPrompt } from './systemPrompt'
 
 export const runLLM = async ({
   model = 'gpt-4o-mini',
@@ -19,7 +20,7 @@ export const runLLM = async ({
   const response = await openai.chat.completions.create({
     model,
     temperature,
-    messages,
+    messages: [{ role: 'system', content: systemPrompt }, ...messages],
     tools: formattedTools,
     tool_choice: 'auto',
     parallel_tool_calls: false,
