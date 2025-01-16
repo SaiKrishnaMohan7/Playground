@@ -3,47 +3,38 @@ import { addMessages, getMessages, saveToolResponse } from './memory'
 import { runLLM } from './llm'
 import { showLoader, logMessage } from './ui'
 import { runTool } from './toolRunner'
-import type { z } from 'zod'
 
 export const runAgent = async ({
-  turns = 10,
   userMessage,
-  tools = [],
+  tools,
 }: {
-  turns?: number,
   userMessage: string
-  tools: { name: string; parameters: z.AnyZodObject }[]
+  tools: any[]
 }) => {
   await addMessages([{ role: 'user', content: userMessage }])
 
-  const loader = showLoader('🤔');
+  const loader = showLoader('🤔')
 
   while (true) {
-    const history = await getMessages();
-    const response = await runLLM({ messages: history, tools });
-    await addMessages([response]);
-    logMessage(response);
+    const history = await getMessages()
+    const response = await runLLM({ messages: history, tools })
 
-    // When LLM responds with content, it is done! This is a terminal state
+    await addMessages([response])
+
     if (response.content) {
-      loader.stop();
-      return getMessages();
+      loader.stop()
+      logMessage(response)
+      return getMessages()
     }
+
     if (response.tool_calls) {
-      const toolCall = response.tool_calls[0];
-      loader.update(`executing tool: ${toolCall.function.name}`);
+      const toolCall = response.tool_calls[0]
+      logMessage(response)
+      loader.update(`executing: ${toolCall.function.name}`)
 
-      const toolResponse = await runTool(toolCall, userMessage);
-
-      if (toolResponse) {
-        await saveToolResponse(toolCall.id, toolResponse);
-      }
-
-      loader.update(`executed: ${toolCall.function.name}`);
+      const toolResponse = await runTool(toolCall, userMessage)
+      await saveToolResponse(toolCall.id, toolResponse)
+      loader.update(`done: ${toolCall.function.name}`)
     }
   }
 }
-
-//! Pay close attention to the order of messages in the agent's memory!
-//! The sequence is crucial for maintaining context—if the messages are out of order, the agent may misinterpret the conversation history, leading to errors or confusion.
-// contents of db will be in git history in the commit "Agent tool calling in a loop"
