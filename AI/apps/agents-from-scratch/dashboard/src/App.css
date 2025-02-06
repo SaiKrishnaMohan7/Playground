@@ -1,0 +1,15 @@
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.controls {
+  margin: 2rem 0;
+}
+
+select {
+  margin-left: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
