@@ -2,20 +2,7 @@ import { runLLM } from "../../src/llm"
 import { redditToolDefinition } from "../../src/tools/reddit"
 import { runEval } from "../evalTools"
 import { ToolCallMatch } from "../scorer"
-
-const createToolCallMessage = (toolName: string) => {
-  return {
-    role: 'assistant',
-    tool_calls: [
-      {
-        type: 'function',
-        function: {
-          name: toolName
-        }
-      }
-    ]
-  }
-}
+import { createToolCallMessage } from "./eval-utils"
 
 runEval('reddit', {
   task: (input) => runLLM({

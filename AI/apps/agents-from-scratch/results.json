@@ -72,6 +72,209 @@
           "createdAt": "2025-02-06T20:37:47.702Z"
         }
       ]
+    },
+    {
+      "name": "dadJoke",
+      "sets": [
+        {
+          "runs": [
+            {
+              "input": "tell me a dad joke",
+              "output": {
+                "role": "assistant",
+                "content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_z9xQKgRs0uUwOo00khPIiXiK",
+                    "type": "function",
+                    "function": {
+                      "name": "dad_joke",
+                      "arguments": "{}"
+                    }
+                  }
+                ],
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "dad_joke"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 1
+                }
+              ],
+              "createdAt": "2025-02-06T21:01:25.609Z"
+            }
+          ],
+          "score": 1,
+          "createdAt": "2025-02-06T21:01:25.609Z"
+        }
+      ]
+    },
+    {
+      "name": "generateImage",
+      "sets": [
+        {
+          "runs": [
+            {
+              "input": "generate me an image of Pipin smoking a fat blunt",
+              "output": {
+                "role": "assistant",
+                "content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_wvKuitqPEO9YwWpHis4jsqGh",
+                    "type": "function",
+                    "function": {
+                      "name": "generate_image",
+                      "arguments": "{\"prompt\":\"A humorous scene depicting Pippin from The Lord of the Rings, sitting on a grassy hill in the Shire, with a cheeky grin on his face, smoking a large blunt. The background features rolling hills, hobbit holes, and a bright blue sky. Pippin is wearing his usual hobbit attire, with a mischievous sparkle in his eye, surrounded by a few curious squirrels and birds looking on in surprise.\"}"
+                    }
+                  }
+                ],
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "generate_image"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 1
+                }
+              ],
+              "createdAt": "2025-02-06T23:05:37.106Z"
+            }
+          ],
+          "score": 1,
+          "createdAt": "2025-02-06T23:05:37.106Z"
+        }
+      ]
+    },
+    {
+      "name": "allTools",
+      "sets": [
+        {
+          "runs": [
+            {
+              "input": "tell me something interesting from reddit",
+              "output": {
+                "role": "assistant",
+                "content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_pSznPtxPTGd263sY9tUS2pup",
+                    "type": "function",
+                    "function": {
+                      "name": "reddit",
+                      "arguments": "{}"
+                    }
+                  }
+                ],
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "reddit"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 1
+                }
+              ],
+              "createdAt": "2025-02-06T23:19:48.489Z"
+            },
+            {
+              "input": "generate an image of a mountain landscape",
+              "output": {
+                "role": "assistant",
+                "content": "Ah, ye want a picture of a mountain, eh? Well, I can’t paint with me trollish fingers, but I can sure imagine it! Picture this: a mountain so tall it tickles the belly of the clouds, with rocks that look like they’ve been chewed by a giant! And there’s a river that flows like a drunken dwarf, zigzagging down the valley, while a bunch of sheep are having a gossip session about the best grass to munch on. \n\nNow, if ye want me to conjure up an image, ye best give me a bit more detail! What kind of mountain? Is it a happy mountain or a grumpy one? Let me know, and I’ll see what I can do!",
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "generate_image"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 0
+                }
+              ],
+              "createdAt": "2025-02-06T23:19:48.490Z"
+            },
+            {
+              "input": "tell me a dad joke",
+              "output": {
+                "role": "assistant",
+                "content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_MnKVXOpHagn1Diljvgv9weJW",
+                    "type": "function",
+                    "function": {
+                      "name": "dad_joke",
+                      "arguments": "{}"
+                    }
+                  }
+                ],
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "dad_joke"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 1
+                }
+              ],
+              "createdAt": "2025-02-06T23:19:48.490Z"
+            }
+          ],
+          "score": 0.6666666666666666,
+          "createdAt": "2025-02-06T23:19:48.490Z"
+        }
+      ]
     }
   ]
 }
