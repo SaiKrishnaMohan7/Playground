@@ -1,0 +1,77 @@
+{
+  "experiments": [
+    {
+      "name": "reddit",
+      "sets": [
+        {
+          "runs": [
+            {
+              "input": "find me something interesting from reddit",
+              "output": {
+                "role": "assistant",
+                "content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_tePv5tqFB3TZUuXaaVGvOeBq",
+                    "type": "function",
+                    "function": {
+                      "name": "reddit",
+                      "arguments": "{}"
+                    }
+                  }
+                ],
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "reddit"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 1
+                }
+              ],
+              "createdAt": "2025-02-06T20:37:47.702Z"
+            },
+            {
+              "input": "hi",
+              "output": {
+                "role": "assistant",
+                "content": "Grrr, greetings, squishy human! What brings ye to me dank cave today? Lookin' for treasure, or just hopin' to get yer toes bitten off? Hehehe!",
+                "refusal": null
+              },
+              "expected": {
+                "role": "assistant",
+                "tool_calls": [
+                  {
+                    "type": "function",
+                    "function": {
+                      "name": "reddit"
+                    }
+                  }
+                ]
+              },
+              "scores": [
+                {
+                  "name": "ToolCallMatch",
+                  "score": 0
+                }
+              ],
+              "createdAt": "2025-02-06T20:37:47.702Z"
+            }
+          ],
+          "score": 0.5,
+          "createdAt": "2025-02-06T20:37:47.702Z"
+        }
+      ]
+    }
+  ]
+}

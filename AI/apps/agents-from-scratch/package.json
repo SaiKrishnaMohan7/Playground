@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "npx tsx index.ts",
-    "evals": "npx tsx evals/run.ts",
+    "eval": "npx tsx evals/run.ts",
     "ingest": "npx tsx src/rag/ingest.ts"
   },
   "overrides": {
