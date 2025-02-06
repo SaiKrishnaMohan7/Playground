@@ -3,7 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "npx tsx index.ts"
+    "start": "npx tsx index.ts",
+    "evals": "npx tsx evals/run.ts",
+    "ingest": "npx tsx src/rag/ingest.ts"
   },
   "overrides": {
     "whatwg-url": "13.0.0"
@@ -15,6 +17,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "autoevals": "^0.0.119",
     "dotenv": "^16.4.5",
     "got": "^14.4.4",
     "lowdb": "^7.0.1",
