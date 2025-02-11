@@ -1,8 +1,8 @@
 import { Index as UpstashIndex } from "@upstash/vector";
 
 const index = new UpstashIndex({
-  url: process.env.UPSTASH_VECTOR_REST_URL as string,
-  token: process.env.UPSTASH_VECTOR_REST_TOKEN as string,
+  url: process.env.VECTOR_DB_URL as string,
+  token: process.env.VECTOR_DB_TOKEN as string,
 })
 
 type MovieMetadata = {
@@ -44,6 +44,8 @@ export const queryMovies = async (
     includeMetadata: true,
     includeVectors: true,
   });
+
+  console.log({ results });
 
   return results;
 }

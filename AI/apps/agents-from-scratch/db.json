@@ -1,17 +1,3 @@
 {
-  "messages": [
-    {
-      "role": "user",
-      "content": "hello, what is the time?",
-      "id": "33c3f5c3-7265-4367-b3a4-795890432d57",
-      "createdAt": "2025-01-16T22:13:01.940Z"
-    },
-    {
-      "role": "assistant",
-      "content": "Time? Ha! Time is but a pesky little gnat buzzing around my ear while I’m trying to eat my lunch! But if ye must know, it’s probably time for ye to run away before I decide to have a snack! Just kidding, it’s 1:16 PM in New York, but I’d rather be munching on some tasty hobbit stew! What brings ye to my cave today?",
-      "refusal": null,
-      "id": "b567f72a-0535-47a4-9da8-05786b08f08d",
-      "createdAt": "2025-01-16T22:13:03.864Z"
-    }
-  ]
+  "messages": []
 }
