@@ -41,7 +41,7 @@ func main() {
 
     app.POST("/count", func(c echo.Context) error {
         count.Count++
-        return c.Render(200, "index", count)
+        return c.Render(200, "count", count)
     });
 
 

@@ -5,8 +5,12 @@
         <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
     </head>
     <body>
-        Count {{ .Count }}
-        <button hx-target="body" hx-post="/count">Moar Count</button>
+        {{ template "count" . }}
     </body>
 </html>
+{{ end }}
+
+{{ block "count" .}}
+  Count {{ .Count }}
+  <button hx-target="body" hx-post="/count">Moar Count</button>
 {{ end }}
