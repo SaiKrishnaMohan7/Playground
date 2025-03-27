@@ -28,17 +28,22 @@ type Count struct {
 
 func main() {
 
-    server := echo.New()
+    app := echo.New()
 
     count := Count{Count: 0}
 
-    server.Renderer = newTemplate()
-    server.Use(middleware.Logger())
+    app.Renderer = newTemplate()
+    app.Use(middleware.Logger())
 
-    server.GET("/", func(c echo.Context) error {
+    app.GET("/", func(c echo.Context) error {
+        return c.Render(200, "index", count)
+    });
+
+    app.POST("/count", func(c echo.Context) error {
         count.Count++
         return c.Render(200, "index", count)
     });
 
-    server.Logger.Fatal(server.Start(":42069"))
+
+    app.Logger.Fatal(app.Start(":42069"))
 }

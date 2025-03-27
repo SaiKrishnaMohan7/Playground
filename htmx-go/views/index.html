@@ -2,9 +2,11 @@
 <html>
     <head>
         <title>Our First HTML Site!</title>
+        <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
     </head>
     <body>
         Count {{ .Count }}
+        <button hx-post="/count">Moar Count</button>
     </body>
 </html>
 {{ end }}
