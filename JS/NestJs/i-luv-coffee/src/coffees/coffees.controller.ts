@@ -10,22 +10,28 @@ import {
   Post,
   Query,
   Res,
+  SetMetadata,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { UpdateCoffeeMappedTypesDto } from './dto/update-coffee-mapped-types.dto';
+import { PaginatedQueryDto } from './common/paginated-query.dto';
+import { Public } from '../common/decorators/public.decorator';
+import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffees') // If docs are to be created per module. Think, each bounded context is one module (DDD)
 @Controller('coffees') // The API scope; so each controller is for a specific resource/scope
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
   @Get()
   findAll() {
-    return 'This action returns all coffees';
+    return 'findAll3, look there';
   }
 
-  @Get()
+  @Get('/all2')
   findAll2(@Res() response) {
     // use the response object of the underlying framework (Express in this case)
     // Nest allows for changing the underlying framework to Fastify
@@ -33,10 +39,12 @@ export class CoffeesController {
     return 'This action returns all coffees';
   }
 
-  @Get()
-  findAll3(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery;
-    return `This action returns all coffees. Limit: ${limit}, offset: ${offset}`;
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
+  // @SetMetadata('isPublic', true) // Custom metadata for the route; Not good practice, better to write custom Guard
+  @Public()
+  @Get('/all3')
+  findAll3(@Query() paginationQuery: PaginatedQueryDto) {
+    return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')
@@ -46,7 +54,8 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  findOne2(@Param('id') id: string) {
+  findOne2(@Param('id' /*ParseIntPipe*/) id: string) {
+    // Use a custom pipe to transform the param; Only to show how to use a pipe
     // specific param
     return `This action returns #${id} coffee`;
   }
@@ -91,3 +100,18 @@ export class CoffeesController {
     return `This action removes #${id} coffee`;
   }
 }
+
+/**
+ * Dependency Injection
+ *
+ * When the controller is instantiated, the Nest Injector will inject the CoffeesService instance into the controller.
+ * This is provided by the framework in the form of Inverson of Control (IoC) container. Do not fight this.
+ *
+ * CoffeesService is a provider, which is a class annotated with @Injectable() decorator, which is a singleton by default.
+ * Therefore, when the app is being bootstrapped, Nest sees CoffeesController has a dependency on CoffeesService and instantiates it, caches it or
+ * returns a cached instance.
+ * When it looks at the CoffeesService constructor, it sees that it has dependencies on Coffee and Flavor repositories, and the DataSource
+ * and repeates the same process for those dependencies. This is the dependency injection chain, which is a graph problem
+ *
+ * The lookup is done by the token, which is a string or a class. The token is used to identify the provider in the container.
+ */
